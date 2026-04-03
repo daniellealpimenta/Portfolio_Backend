@@ -1,3 +1,4 @@
+from sqlalchemy.orm import DeclarativeBase 
 from sqlalchemy import create_engine
 # from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
@@ -22,9 +23,13 @@ engine = create_engine(DATABASE_URL)
 # https://docs.sqlalchemy.org/en/20/core/pooling.html#switching-pool-implementations
 # engine = create_engine(DATABASE_URL, poolclass=NullPool)
 
+class Base(DeclarativeBase):
+    pass
+
 # Test the connection
 try:
     with engine.connect() as connection:
         print("Connection successful!")
 except Exception as e:
     print(f"Failed to connect: {e}")
+
