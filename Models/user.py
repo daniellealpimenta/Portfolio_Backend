@@ -1,27 +1,29 @@
-from fastapi import FastAPI
-from pydantic import EmailStr
-from database import Base
+from sqlalchemy.orm import mapped_column, Mapped, relationship
+from Models.base import BaseORMModel
+from Models.project import Project
+from Models.skill import Skill
+from Models.experience import Experience
+from Models.certificate import Certificate
 
-from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, relationship
-from sqlalchemy import String, Integer, Date, ForeignKey
-from uuid import uuid4
-from datetime import date, datetime, timezone
 
-app = FastAPI()
-
-class User(Base):
+class User(BaseORMModel):
     __tablename__ = "user"
 
-    id: Mapped[str]  = mapped_column(primary_key=True, default=lambda: str(uuid4()))
-    name: str
-    age: int
-    description: str
-    main_phrase: str
-    email: EmailStr
-    phone_number: str
-    url_linkedin: str
-    personality_test_url: str
-    curriculum_url: str
-    url_github: str
-    url_medium: str
-    url_instagram: str
+    name: Mapped[str] = mapped_column(nullable=False)
+    age: Mapped[int] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(nullable=False)
+    main_phrase: Mapped[str] = mapped_column(nullable=True)
+    email: Mapped[str] = mapped_column(unique=True, nullable=False)
+    phone_number: Mapped[str] = mapped_column(unique=True, nullable=False)
+    url_linkedin: Mapped[str] = mapped_column(nullable=False)
+    personality_test_url: Mapped[str] = mapped_column(nullable=True)
+    curriculum_url: Mapped[str] = mapped_column(nullable=False)
+    url_github: Mapped[str] = mapped_column(nullable=True)
+    url_medium: Mapped[str] = mapped_column(nullable=True)
+    url_instagram: Mapped[str] = mapped_column(nullable=True)
+
+    # Relationships
+    projects: Mapped[list["Project"]] = relationship("Project", back_populates="user")
+    skills: Mapped[list["Skill"]] = relationship("Skill", back_populates="user")
+    experiences: Mapped[list["Experience"]] = relationship("Experience", back_populates="user")
+    certificates: Mapped[list["Certificate"]] = relationship("Certificate", back_populates="user")
