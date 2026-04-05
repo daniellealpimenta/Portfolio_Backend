@@ -1,15 +1,18 @@
-from fastapi import FastAPI
 from enum import Enum
-from database import Base
+from typing import TYPE_CHECKING
+from Models.base import BaseORMModel
 
-from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, relationship
-from sqlalchemy import String, Integer, Date, ForeignKey
-from uuid import uuid4
-from datetime import date, datetime, timezone
+from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy import ForeignKey
+from datetime import date as Date
+import uuid
 
-app = FastAPI()
+if TYPE_CHECKING:
+    from Models.user import User
+    from Models.tool import Tool
+    from Models.project_image import ProjectImage
 
-class Categories(str, Enum):
+class Category(str, Enum):
     FrontEnd = "FrontEnd"
     BackEnd = "BackEnd"
     FullStack = "FullStack"
@@ -18,19 +21,18 @@ class Categories(str, Enum):
     Mobile = "Mobile"
     Other = "Other"
 
-class Project(Base):
+class Project(BaseORMModel):
     __tablename__ = "project"
 
-    id: Mapped[str]  = mapped_column(primary_key=True, default=lambda: str(uuid4()))
-    user_id: Mapped[str]  = mapped_column(ForeignKey("user.id"))
-    name:        Mapped[str]  = mapped_column(String(100))
-    description: Mapped[str]  = mapped_column(String(500))
-    link_github: Mapped[str]  = mapped_column(String(200))
-    link_usage:  Mapped[str | None] = mapped_column(String(200))
-    category:    Mapped[Categories]  = mapped_column(Categories)
-    likes:       Mapped[int]  = mapped_column(Integer, default=0)
-    created_at:  Mapped[date] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("user.id"), nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False)
+    github_url: Mapped[str] = mapped_column(nullable=True)
+    test_url: Mapped[str] = mapped_column(nullable=True)
+    category: Mapped[Category] = mapped_column(nullable=False)
+    likes: Mapped[int] = mapped_column(default=0, nullable=False)
+    date: Mapped[Date] = mapped_column(nullable=False)
 
-    # Relacionamento many-to-many com Tool via tabela de junção
-    tools: Mapped[list["Tool"]] = relationship(secondary="projeto_ferramenta")
-
+    # Relationship
+    user: Mapped["User"] = relationship("User", back_populates="projects")
+    tools: Mapped[list["Tool"]] = relationship(secondary="project_tool", back_populates="projects")
+    images: Mapped[list["ProjectImage"]] = relationship("ProjectImage", back_populates="project")

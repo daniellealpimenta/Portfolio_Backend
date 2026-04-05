@@ -1,20 +1,15 @@
-from fastapi import FastAPI
-from database import Base
+from sqlalchemy.orm import mapped_column, Mapped, relationship
+from Models.base import BaseORMModel
+from typing import TYPE_CHECKING
 
-from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, relationship
-from sqlalchemy import String, Integer, Date, ForeignKey
-from uuid import uuid4
-from datetime import date, datetime, timezone
+if TYPE_CHECKING:
+    from Models.project import Project
 
-app = FastAPI()
-
-class Tool(Base):
+class Tool(BaseORMModel):
     __tablename__ = "tool"
 
-    id: Mapped[str]  = mapped_column(primary_key=True, default=lambda: str(uuid4()))
-    name:        Mapped[str]  = mapped_column(String(100))
-    url_icon:       Mapped[str]  = mapped_column(String(200))
-    created_at:  Mapped[date] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    name: Mapped[str] = mapped_column(nullable=False)
+    icon_url: Mapped[str] = mapped_column(nullable=True)
 
-    # Relacionamento many-to-many com Tool via tabela de junção
-    project: Mapped[list["Project"]] = relationship(secondary="projeto_ferramenta")
+    # Relationship
+    projects: Mapped[list["Project"]] = relationship(secondary="project_tool", back_populates="tools")
