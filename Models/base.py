@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from database import Base
+from Core.database import Base
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, timezone
 from uuid6 import uuid7

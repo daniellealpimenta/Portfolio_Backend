@@ -1,10 +1,9 @@
-from enum import Enum
 from typing import TYPE_CHECKING
 from Models.base import BaseORMModel
-
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from sqlalchemy import ForeignKey
 from datetime import date as Date
+from Schemas.project import Category
 import uuid
 
 if TYPE_CHECKING:
@@ -12,14 +11,7 @@ if TYPE_CHECKING:
     from Models.tool import Tool
     from Models.project_image import ProjectImage
 
-class Category(str, Enum):
-    FrontEnd = "FrontEnd"
-    BackEnd = "BackEnd"
-    FullStack = "FullStack"
-    DataScience = "DataScience"
-    GameDev = "GameDev"
-    Mobile = "Mobile"
-    Other = "Other"
+
 
 class Project(BaseORMModel):
     __tablename__ = "project"

@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from Models.experience import Experience
     from Models.certificate import Certificate
     from Models.skill import Skill
+    from Models.recommendation import Recommendation
 
 
 class User(BaseORMModel):
@@ -32,3 +33,4 @@ class User(BaseORMModel):
     skills: Mapped[list["Skill"]] = relationship("Skill", back_populates="user")
     experiences: Mapped[list["Experience"]] = relationship("Experience", back_populates="user")
     certificates: Mapped[list["Certificate"]] = relationship("Certificate", back_populates="user")
+    recommendations: Mapped[list["Recommendation"]] = relationship("Recommendation", back_populates="user")
