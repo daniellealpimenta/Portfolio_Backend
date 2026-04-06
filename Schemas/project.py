@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, List
 from datetime import date as Date, datetime
 from uuid import UUID
@@ -15,11 +15,11 @@ class Category(str, Enum):
 
 
 class ProjectBase(BaseModel):
-    name: str
-    github_url: Optional[str] = None 
-    test_url: Optional[str] = None
-    category: Category
-    date: Date
+    name: str = Field(min_length=5, max_length=255, example="Todo List App")
+    github_url: Optional[str] = Field(min_length=5, max_length=255, example="https://github.com/username/todo-list-app", default=None)
+    test_url: Optional[str] = Field(min_length=5, max_length=255, example="https://vercel.com/username/todo-list-app", default=None)
+    category: Category = Field(example="FullStack")
+    date: Date = Field(example="2023-08-15")
 
 class ProjectCreate(ProjectBase):
     user_id: UUID  
