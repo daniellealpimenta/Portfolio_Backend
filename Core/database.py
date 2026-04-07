@@ -1,4 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
@@ -19,6 +20,7 @@ DATABASE_URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?
 
 # Create the SQLAlchemy engine
 engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, poolclass=NullPool)
 
 # Test the connection
 try:
@@ -37,6 +39,4 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
 
