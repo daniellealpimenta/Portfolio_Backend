@@ -1,0 +1,181 @@
+/* =========================================================================
+   PORTFOLIO DESIGN SYSTEM & GLOBAL STYLES
+   ========================================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0A0F22;
+  color: #F1F0F7;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.small-caps {
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+}
+
+/* Light Theme (Pastel Paper) */
+body.light {
+  background-color: #F5F1EA;
+  color: #171A2E;
+}
+
+body.light .bg-navy {
+  background-color: #EFECE6;
+}
+
+body.light .bg-navypanel {
+  background-color: #FFFFFF;
+}
+
+body.light .ink-border {
+  border-color: #E4DECE;
+}
+
+body.light .ink-muted {
+  color: #6B6A72;
+}
+
+body.light .text-paper {
+  color: #171A2E;
+}
+
+/* Standard Border & Text Colors */
+.ink-border {
+  border-color: #212C50;
+}
+
+.ink-muted {
+  color: #8FA0C4;
+}
+
+/* Cursor Blink Animation */
+.cursor-blink::after {
+  content: '_';
+  display: inline-block;
+  margin-left: 2px;
+  color: #A8C0F0;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Aurora Glow Effect behind Avatar */
+.aurora {
+  position: absolute;
+  inset: -40px;
+  z-index: -1;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, rgba(168,192,240,0.35), transparent 60%),
+              radial-gradient(circle at 65% 70%, rgba(240,196,211,0.28), transparent 60%),
+              radial-gradient(circle at 50% 50%, rgba(169,228,196,0.18), transparent 65%);
+  filter: blur(28px);
+}
+
+/* Focus outline accessibility */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid #A8C0F0;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Interactive Cards & Tiles */
+.work-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.25s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -16px rgba(168, 192, 240, 0.25);
+  border-color: #A8C0F0;
+}
+
+.icon-tile {
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.icon-tile:hover {
+  transform: translateY(-2px);
+  border-color: #A8C0F0;
+}
+
+.tab-btn {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Custom Modal Scrollbar */
+.modal-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: #212C50;
+  border-radius: 4px;
+}
+
+.pre-anim {
+  opacity: 0;
+}
+
+/* Timeline Components */
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #A8C0F0;
+  box-shadow: 0 0 8px rgba(168, 192, 240, 0.6);
+}
+
+/* Hobbies Orbit Diagram */
+.hobby-orbit {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  margin: 0 auto;
+}
+
+.hobby-node {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: #131B36;
+  border: 1px solid #212C50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  text-align: center;
+  font-family: 'Fraunces', serif;
+  font-variant: small-caps;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.hobby-node:hover {
+  transform: scale(1.1);
+  border-color: #A8C0F0;
+  box-shadow: 0 0 12px rgba(168, 192, 240, 0.3);
+}
+
+/* Mobile Drawer Smooth Transition */
+#mobile-menu {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#mobile-menu.hidden {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+}

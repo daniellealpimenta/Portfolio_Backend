@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Currículo — Daniel</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Tailwind CDN & GSAP -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: {
+        navy:      '#0A0F22', navypanel: '#131B36', navyline: '#212C50',
+        mist:      '#8FA0C4', paper:     '#F1F0F7',
+        periwinkle:'#A8C0F0', lilac:     '#CBB8ED', mint:     '#A9E4C4', blush: '#F0C4D3',
+      },
+      fontFamily: { display: ['"Fraunces"', 'serif'], body: ['"Inter"', 'sans-serif'] },
+    }}
+  }
+</script>
+
+<!-- Centralized Portfolio Design System -->
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="font-body antialiased">
+
+<!-- HEADER / NAVBAR -->
+<header class="fixed top-0 inset-x-0 z-40 bg-navy/90 backdrop-blur border-b ink-border">
+  <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+    <a href="index.html" class="flex items-center gap-2 font-display text-sm tracking-widest small-caps text-paper" id="logo">
+      <svg class="logo-bubble" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 3C6.9 3 3 6.4 3 10.6c0 2.4 1.3 4.6 3.4 6.1-.1 1-.5 2.2-1.3 3.3 1.6-.3 3-1 4.1-1.8 .9.2 1.8.4 2.8.4 5.1 0 9-3.4 9-7.6S17.1 3 12 3Z"/>
+      </svg>
+      Hire Me
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-xs tracking-widest small-caps font-display">
+      <a href="index.html" class="ink-muted hover:text-paper transition">Home</a>
+      <a href="#about" class="underline underline-offset-4 decoration-periwinkle text-paper font-semibold">About</a>
+      <a href="work.html" class="ink-muted hover:text-paper transition">Work</a>
+      <a href="#resume" class="ink-muted hover:text-paper transition">Resume</a>
+    </nav>
+    <div class="flex items-center gap-4">
+      <button id="theme-toggle" aria-label="Alternar paleta" class="w-10 h-6 rounded-full bg-navypanel border ink-border relative cursor-pointer">
+        <span id="theme-knob" class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-periwinkle transition-transform"></span>
+      </button>
+      <button id="lang-toggle" class="text-xs font-display tracking-widest small-caps flex items-center gap-1 cursor-pointer">
+        <span id="lang-pt" class="underline underline-offset-4 decoration-periwinkle text-paper">Pt</span><span class="ink-muted">|</span><span id="lang-en" class="ink-muted">En</span>
+      </button>
+      <!-- Mobile Hamburger Button -->
+      <button id="mobile-menu-btn" class="md:hidden text-paper p-1 focus:outline-none" aria-label="Abrir menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-navypanel border-b ink-border px-6 py-4 flex flex-col gap-4 text-sm font-display small-caps tracking-widest">
+    <a href="index.html" class="text-paper hover:text-periwinkle transition">Home</a>
+    <a href="#about" class="text-periwinkle font-semibold">About</a>
+    <a href="work.html" class="text-paper hover:text-periwinkle transition">Work</a>
+    <a href="#resume" class="text-paper hover:text-periwinkle transition">Resume</a>
+  </div>
+</header>
+
+<main class="pt-32 max-w-4xl mx-auto px-6 pb-24">
+
+  <!-- ABOUT -->
+  <section id="about" class="flex flex-col md:flex-row items-start gap-8 mb-20">
+    <div class="page-hero flex flex-col items-center gap-3 shrink-0">
+      <div class="w-32 h-32 rounded-full bg-navypanel border ink-border flex items-center justify-center">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#8FA0C4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/></svg>
+      </div>
+      <a href="#" class="text-xs font-display small-caps px-4 py-2 rounded-full border ink-border ink-muted hover:text-paper transition">⬇ Currículo PDF</a>
+    </div>
+    <div class="page-hero">
+      <h1 class="font-display text-3xl small-caps text-paper mb-3 font-semibold">Daniel</h1>
+      <p class="ink-muted leading-relaxed mb-4">
+        Desenvolvedor freelancer, conduzindo projetos do primeiro contato com o
+        cliente até a entrega final — propostas técnicas, protótipos, código e
+        documentação, em mobile, web e automação.
+      </p>
+      <p class="ink-muted leading-relaxed">
+        Também curso Engenharia de Software, unindo prática de mercado com
+        formação acadêmica em cada novo projeto.
+      </p>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE TIMELINE -->
+  <section id="resume" class="mb-20">
+    <h2 class="page-hero font-display text-2xl small-caps text-paper mb-8 font-semibold">🧳 Experiências</h2>
+    <div class="border-l ink-border pl-6 space-y-8" id="experiences-timeline"></div>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section class="mb-20">
+    <h2 class="page-hero font-display text-2xl small-caps text-paper mb-8 font-semibold">🎓 Certificados</h2>
+    <div class="space-y-3" id="certificates"></div>
+  </section>
+
+  <!-- HOBBIES ORBIT -->
+  <section class="mb-20">
+    <h2 class="page-hero font-display text-2xl small-caps text-paper mb-10 text-center font-semibold">💎 Valores e Hobbies</h2>
+    <div class="hobby-orbit page-hero" id="hobby-orbit"></div>
+  </section>
+
+  <!-- WHY HIRE ME -->
+  <section>
+    <h2 class="page-hero font-display text-2xl small-caps text-paper mb-6 font-semibold">🔍 Por que me contratar?</h2>
+    <p class="page-hero ink-muted leading-relaxed mb-4">
+      Combino disciplina técnica com comunicação clara: cada projeto começa com
+      um entendimento honesto do problema, segue com decisões documentadas e
+      termina com um sistema que o cliente entende e consegue manter.
+    </p>
+    <p class="page-hero ink-muted leading-relaxed">
+      Estou sempre estudando — o que aprendo na graduação entra direto nos
+      projetos freelance, e o que aprendo com clientes reais volta para a sala
+      de aula.
+    </p>
+  </section>
+</main>
+
+<footer class="border-t ink-border pt-14 pb-10 text-center">
+  <h2 class="font-display text-3xl small-caps tracking-widest text-paper font-semibold">Hire Me</h2>
+  <p class="ink-muted mt-2 text-sm">Entre em contato comigo</p>
+  <a href="index.html#contact" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-full border ink-border text-sm font-display small-caps tracking-wide text-paper hover:bg-periwinkle hover:text-navy hover:border-periwinkle transition">
+    💬 Converse Comigo
+  </a>
+</footer>
+
+<!-- MODULAR JS APP MODULES -->
+<script src="js/api.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

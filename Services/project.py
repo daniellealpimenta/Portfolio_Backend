@@ -8,18 +8,13 @@ from uuid import UUID
 
 class ProjectService:
     def __init__(self, db: Session):
-        # O Service instancia o Repository para poder usá-lo
         self.repository = ProjectRepository(db)
 
     def create_project(self, project_data: ProjectCreate):
-
         if project_data.user_id:
-            # Se o projeto tem um user_id, checa se o usuário existe
-            user_repo = UserRepository(self.repository.db)  # Reaproveita a conexão do banco
+            user_repo = UserRepository(self.repository.db)
             if not user_repo.get_by_id(project_data.user_id):
                 raise HTTPException(status_code=400, detail="Usuário associado não existe")
-        
-        # Se passou nas regras, manda o repositório salvar
         return self.repository.create(project_data)
 
     def get_project(self, project_id: UUID):
@@ -27,3 +22,25 @@ class ProjectService:
         if not project:
             raise HTTPException(status_code=404, detail="Projeto não encontrado")
         return project
+
+    def get_all_projects(self):
+        return self.repository.get_all()
+
+    def get_projects_by_category(self, category: str):
+        try:
+            cat_enum = Category(category)
+        except ValueError:
+            raise HTTPException(status_code=400, detail=f"Categoria inválida: {category}")
+        return self.repository.get_by_category(cat_enum)
+
+    def update_project(self, project_id: UUID, project_data: ProjectUpdate):
+        updated = self.repository.update(project_id, project_data)
+        if not updated:
+            raise HTTPException(status_code=404, detail="Projeto não encontrado")
+        return updated
+
+    def delete_project(self, project_id: UUID):
+        success = self.repository.delete(project_id)
+        if not success:
+            raise HTTPException(status_code=404, detail="Projeto não encontrado")
+        return {"detail": "Projeto deletado com sucesso"}
