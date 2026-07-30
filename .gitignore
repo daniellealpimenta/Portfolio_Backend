@@ -182,11 +182,8 @@ cython_debug/
 .abstra/
 
 # Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#  you could uncomment the following to ignore the entire vscode folder
-# .vscode/
+.vscode/
+
 
 # Ruff stuff:
 .ruff_cache/
@@ -205,3 +202,16 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Frontend / Nuxt 3 & Node.js
+Frontend/node_modules/
+Frontend/.nuxt/
+Frontend/.output/
+Frontend/.nitro/
+Frontend/.cache/
+Frontend/dist/
+Frontend/*.log
+Frontend/.env
+Frontend/.env.*
+!Frontend/.env.example
+
