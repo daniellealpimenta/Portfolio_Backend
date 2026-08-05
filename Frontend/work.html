@@ -33,6 +33,7 @@
 </head>
 
 <body class="font-body antialiased">
+<a href="#main" class="skip-link">Pular para o conteúdo</a>
 
 <!-- HEADER / NAVBAR -->
 <header class="fixed top-0 inset-x-0 z-40 bg-navy/90 backdrop-blur border-b ink-border">
@@ -72,7 +73,7 @@
   </div>
 </header>
 
-<main class="pt-32 max-w-6xl mx-auto px-6 pb-24">
+<main id="main" class="pt-32 max-w-6xl mx-auto px-6 pb-24">
   <h1 class="page-hero font-display text-3xl small-caps text-paper mb-2 font-semibold">Projetos</h1>
   <p class="page-hero ink-muted mb-8 max-w-lg leading-relaxed">Uma seleção de trabalhos recentes, entre apps mobile, sistemas web e automações.</p>
 
@@ -83,6 +84,34 @@
     <button data-filter="mobile" data-active="false" class="tab-btn ink-muted px-4 py-2 rounded-full border ink-border text-xs font-display small-caps tracking-wide cursor-pointer">Mobile</button>
   </div>
 
+  <div class="project-spotlight mb-10">
+    <div class="project-spotlight__media">
+      <span class="project-spotlight__tag bg-lilac">Mobile</span>
+    </div>
+    <div>
+      <span class="eyebrow">TCC · 2026</span>
+      <h3 class="font-display text-3xl small-caps text-paper font-semibold mt-2">AgroBot</h3>
+      <p class="project-spotlight__desc">
+        Aplicativo mobile de assistência agrícola em Swift, projeto final
+        do curso de Engenharia de Software.
+      </p>
+      <div class="project-spotlight__stack">
+        <span>Swift</span><span>SwiftUI</span><span>SwiftData</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-spotlight project-spotlight--reverse mb-14">
+    <div class="project-spotlight__media">
+      <span class="project-spotlight__tag bg-lilac">Mobile</span>
+    </div>
+    <div>
+      <span class="eyebrow">Challenge 15 · 2025</span>
+      <h3 class="font-display text-3xl small-caps text-paper font-semibold mt-2">DioramaVirtual</h3>
+      <p class="project-spotlight__desc">App iOS em SwiftUI e SwiftData.</p>
+    </div>
+  </div>
+
   <div class="bg-navypanel rounded-3xl p-4 md:p-6 border ink-border">
     <div id="project-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
   </div>
@@ -91,7 +120,7 @@
 <footer class="border-t ink-border pt-14 pb-10 text-center">
   <h2 class="font-display text-3xl small-caps tracking-widest text-paper font-semibold">Hire Me</h2>
   <p class="ink-muted mt-2 text-sm">Entre em contato comigo</p>
-  <a href="index.html#contact" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-full border ink-border text-sm font-display small-caps tracking-wide text-paper hover:bg-periwinkle hover:text-navy hover:border-periwinkle transition">
+  <a href="index.html#contact" data-magnetic class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-full border ink-border text-sm font-display small-caps tracking-wide text-paper hover:bg-periwinkle hover:text-navy hover:border-periwinkle transition">
     💬 Converse Comigo
   </a>
 </footer>
@@ -123,6 +152,7 @@
 
 <!-- MODULAR JS APP MODULES -->
 <script src="js/api.js"></script>
+<script src="js/effects.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
 </body>

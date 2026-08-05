@@ -1,12 +1,12 @@
 <template>
-  <button 
-    @click="$emit('select', project)"
-    class="work-card text-left bg-navy rounded-2xl p-3 border ink-border w-full flex flex-col justify-between cursor-pointer"
+  <NuxtLink 
+    :to="`/projects/${project.id}`"
+    class="work-card text-left bg-background rounded-2xl p-3 border border-border w-full flex flex-col justify-between cursor-pointer block"
   >
     <div>
-      <div class="rounded-xl bg-navypanel h-28 mb-3 relative overflow-hidden flex items-center justify-center">
+      <div class="rounded-xl bg-surface h-28 mb-3 relative overflow-hidden flex items-center justify-center">
         <span 
-          class="absolute top-2 left-2 text-[10px] px-2 py-0.5 rounded-full text-navy font-display small-caps font-semibold"
+          class="absolute top-2 left-2 text-[10px] px-2 py-0.5 rounded-full text-background font-display small-caps font-semibold"
           :class="categoryColorClass"
         >
           {{ categoryLabel }}
@@ -17,19 +17,29 @@
           <line x1="12" y1="17" x2="12" y2="21"/>
         </svg>
       </div>
-      <div class="flex items-center justify-between text-xs ink-muted">
+      <div class="flex items-center justify-between text-xs text-muted">
         <span>{{ project.year }}</span>
-        <span class="flex items-center gap-1">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="inline-block -mt-0.5">
-            <path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.4-9.5 9-9.5 9Z"/>
-          </svg>
+        <span class="flex items-center gap-1 cursor-pointer hover:text-primary transition-colors" @click.stop="toggleLike">
+          <span class="icon-coracao" :class="project.liked ? 'bg-primary' : 'bg-muted'"></span>
           {{ project.likes }}
         </span>
       </div>
-      <p class="font-display text-sm mt-1.5 small-caps text-paper font-semibold">{{ project.title }}</p>
+      <p class="font-display text-sm mt-1.5 small-caps text-text font-semibold">{{ project.title }}</p>
     </div>
-  </button>
+  </NuxtLink>
 </template>
+
+<style scoped>
+.icon-coracao {
+  display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  -webkit-mask-image: url('~/assets/icons/coracao.svg');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+</style>
 
 <script setup lang="ts">
 import type { Project } from '~/composables/usePortfolioApi'
@@ -38,16 +48,22 @@ const props = defineProps<{
   project: Project
 }>()
 
-defineEmits<{
-  (e: 'select', project: Project): void
-}>()
+function toggleLike() {
+  if ((props.project as any).liked) {
+    props.project.likes--
+    ;(props.project as any).liked = false
+  } else {
+    props.project.likes++
+    ;(props.project as any).liked = true
+  }
+}
 
 const categoryColorClass = computed(() => {
   switch (props.project.cat) {
-    case 'mobile': return 'bg-lilac'
-    case 'back': return 'bg-blush'
-    case 'data': return 'bg-mint'
-    default: return 'bg-periwinkle'
+    case 'mobile': return 'bg-secondary'
+    case 'back': return 'bg-danger'
+    case 'data': return 'bg-success'
+    default: return 'bg-primary'
   }
 })
 

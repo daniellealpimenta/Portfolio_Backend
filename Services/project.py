@@ -26,6 +26,12 @@ class ProjectService:
     def get_all_projects(self):
         return self.repository.get_all()
 
+    def get_projects_by_user(self, user_id: UUID):
+        user_repo = UserRepository(self.repository.db)
+        if not user_repo.get_by_id(user_id):
+            raise HTTPException(status_code=404, detail="Usuário não encontrado")
+        return self.repository.get_by_user_id(user_id)
+
     def get_projects_by_category(self, category: str):
         try:
             cat_enum = Category(category)

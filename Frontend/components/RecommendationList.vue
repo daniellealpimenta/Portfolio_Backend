@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-12">
     <div 
-      v-for="item in testimonials" 
+      v-for="item in recommendations" 
       :key="item.id" 
       class="relative bg-navypanel rounded-3xl p-6 md:p-8 border ink-border"
     >
@@ -16,6 +16,6 @@
 import type { Testimonial } from '~/composables/usePortfolioApi'
 
 defineProps<{
-  testimonials: Testimonial[]
+  recommendations: Testimonial[]
 }>()
 </script>

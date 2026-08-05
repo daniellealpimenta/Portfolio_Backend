@@ -38,5 +38,12 @@ def get_db():
     finally:
         db.close()
 
-
-
+from Models.user import User
+from Models.project import Project
+from Models.skill import Skill
+from Models.tool import Tool
+from Models.experience import Experience
+from Models.certificate import Certificate
+from Models.recommendation import Recommendation
+from Models.project_image import ProjectImage
+import Models.associations

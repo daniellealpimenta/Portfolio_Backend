@@ -15,6 +15,7 @@ class User(BaseORMModel):
     __tablename__ = "user"
 
     name: Mapped[str] = mapped_column(nullable=False)
+    username: Mapped[str] = mapped_column(nullable=True, unique=True)
     description: Mapped[str] = mapped_column(nullable=False)
     birth_date: Mapped[date] = mapped_column(nullable=False)
     main_phrase: Mapped[str] = mapped_column(nullable=True)
@@ -26,7 +27,8 @@ class User(BaseORMModel):
     medium_url: Mapped[str] = mapped_column(nullable=True, unique=True)
     instagram_url: Mapped[str] = mapped_column(nullable=True, unique=True)
     personality_test_url: Mapped[str] = mapped_column(nullable=True, unique=True)
-    curriculum_url: Mapped[str] = mapped_column(nullable=False, unique=True)
+    curriculum_url: Mapped[str] = mapped_column(nullable=True, unique=True)
+    curriculum_en_url: Mapped[str] = mapped_column(nullable=True, unique=True)
 
     # Relationships
     projects: Mapped[list["Project"]] = relationship("Project", back_populates="user")

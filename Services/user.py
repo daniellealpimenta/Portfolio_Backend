@@ -32,10 +32,25 @@ class UserService:
             raise HTTPException(status_code=404, detail="Usuário não encontrado")
         return user
     
+    def get_user_by_identifier(self, identifier: str):
+        try:
+            # Tenta verificar se é um UUID válido
+            user_uuid = UUID(identifier)
+            user = self.repository.get_by_id(user_uuid)
+        except ValueError:
+            # Se não for UUID, assume que é username
+            user = self.repository.get_by_username(identifier)
+            
+        if not user:
+            raise HTTPException(status_code=404, detail="Usuário não encontrado")
+        return user
+    
     def update_user(self, user_id: UUID, user_data: UserUpdate):
         # Você pode colocar regras de negócio aqui também, como validação de email
-        if user_data.email and self.repository.get_by_email(user_data.email):
-            raise HTTPException(status_code=400, detail="Email já cadastrado")
+        if user_data.email:
+            existing_user = self.repository.get_by_email(user_data.email)
+            if existing_user and existing_user.id != user_id:
+                raise HTTPException(status_code=400, detail="Email já cadastrado")
         
         updated_user = self.repository.update(user_id, user_data)
         if not updated_user:

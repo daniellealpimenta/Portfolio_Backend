@@ -1,0 +1,14 @@
+<svg width="91" height="35" viewBox="0 0 91 35" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path d="M57.2392 22.0361C36.2948 21.2815 -4.04765 16.2366 2.13789 2.09465C16.0947 1.02171 49.8132 0.647537 73.033 7.73439C82.3742 11.1376 97.2234 20.8814 81.8904 32.6309L67.9745 32.3321C68.5822 28.075 66.9079 22.3845 57.2392 22.0361Z" fill="url(#pattern0_474_198)" stroke="black" stroke-width="3"/>
+<defs>
+<pattern id="pattern0_474_198" patternUnits="userSpaceOnUse" patternTransform="matrix(-39.9908 -0.858544 -1.19761 39.9821 97.7986 1.67771)" preserveAspectRatio="none" viewBox="3.8147e-06 0 40 40" width="1" height="1">
+<use xlink:href="#pattern0_474_198_inner" transform="translate(0 -40)"/>
+<g id="pattern0_474_198_inner">
+<line y1="-0.5" x2="55.1543" y2="-0.5" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 39 40)" stroke="black"/>
+<line y1="-0.5" x2="26.8701" y2="-0.5" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 19 40)" stroke="black"/>
+<line y1="-0.5" x2="41.7253" y2="-0.5" transform="matrix(-0.695022 -0.718988 -0.718988 0.695022 29 41)" stroke="black"/>
+<line y1="-0.5" x2="41.7253" y2="-0.5" transform="matrix(-0.695022 -0.718988 -0.718988 0.695022 39 31)" stroke="black"/>
+<line y1="-0.5" x2="26.8701" y2="-0.5" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 39 20)" stroke="black"/>
+</g>
+</pattern></defs>
+</svg>

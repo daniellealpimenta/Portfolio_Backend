@@ -5,6 +5,7 @@ from uuid import UUID
 
 class UserBase(BaseModel):
     name: str
+    username: Optional[str] = None
     description: str
     birth_date: Date
     main_phrase: Optional[str] = None
@@ -16,13 +17,15 @@ class UserBase(BaseModel):
     medium_url: Optional[str] = None
     instagram_url: Optional[str] = None
     personality_test_url: Optional[str] = None
-    curriculum_url: str
+    curriculum_url: Optional[str] = None
+    curriculum_en_url: Optional[str] = None
 
 class UserCreate(UserBase):
     pass
 
 class UserUpdate(BaseModel):
     name: Optional[str] = None
+    username: Optional[str] = None
     description: Optional[str] = None
     birth_date: Optional[Date] = None
     main_phrase: Optional[str] = None
@@ -35,6 +38,7 @@ class UserUpdate(BaseModel):
     instagram_url: Optional[str] = None
     personality_test_url: Optional[str] = None
     curriculum_url: Optional[str] = None
+    curriculum_en_url: Optional[str] = None
 
 class UserResponse(UserBase):
     id: UUID

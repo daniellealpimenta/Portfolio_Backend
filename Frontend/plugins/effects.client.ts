@@ -14,7 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     initStarfield({ reduceMotion })
     initCursorGlow({ enabled: isFinePointer && !reduceMotion })
     initMagneticButtons({ enabled: isFinePointer && !reduceMotion })
-    initScrollDots()
+    // initScrollDots() is now handled natively by components/ui/ScrollSpy.vue
     initTimelineDraw({ reduceMotion })
   })
 })
@@ -125,50 +125,7 @@ function initMagneticButtons({ enabled }: { enabled: boolean }) {
   setTimeout(attachEvents, 300)
 }
 
-/* Scroll-Spy Dots Navigation */
-function initScrollDots() {
-  const updateDots = () => {
-    const sections = document.querySelectorAll('[data-section]')
-    let wrap = document.querySelector('.scroll-dots') as HTMLDivElement | null
-
-    if (sections.length === 0) {
-      if (wrap) wrap.remove()
-      return
-    }
-
-    if (!wrap) {
-      wrap = document.createElement('div')
-      wrap.className = 'scroll-dots'
-      document.body.appendChild(wrap)
-    } else {
-      wrap.innerHTML = ''
-    }
-
-    sections.forEach((section, i) => {
-      const secEl = section as HTMLElement
-      const dot = document.createElement('button')
-      dot.setAttribute('aria-label', secEl.dataset.section || `Seção ${i + 1}`)
-      dot.dataset.active = i === 0 ? 'true' : 'false'
-      dot.addEventListener('click', () => secEl.scrollIntoView({ behavior: 'smooth', block: 'start' }))
-      wrap!.appendChild(dot)
-    })
-
-    const dots = wrap.querySelectorAll('button')
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return
-          const idx = [...sections].indexOf(entry.target)
-          dots.forEach((d, i) => (d.dataset.active = i === idx ? 'true' : 'false'))
-        })
-      },
-      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
-    )
-    sections.forEach(s => observer.observe(s))
-  }
-
-  setTimeout(updateDots, 300)
-}
+// Scroll-Spy Dots logic was removed in favor of components/ui/ScrollSpy.vue
 
 /* Timeline Draw-Line */
 function initTimelineDraw({ reduceMotion }: { reduceMotion: boolean }) {

@@ -14,7 +14,7 @@
     @pointerleave="handlePointerLeave"
   >
     <div ref="innerRef" data-glow></div>
-    <slot />
+    <slot></slot>
   </div>
 </template>
 
@@ -37,8 +37,8 @@ const props = withDefaults(defineProps<GlowCardProps>(), {
   customSize: false
 })
 
-const cardRef = ref<HTMLDivElement | null>(null)
-const innerRef = ref<HTMLDivElement | null>(null)
+const cardRef = ref<HTMLElement | null>(null)
+const innerRef = ref<HTMLElement | null>(null)
 const isHovered = ref(false)
 
 const glowColorMap = {
@@ -66,6 +66,8 @@ function handlePointerLeave() {
 function handlePointerMove(e: PointerEvent) {
   if (!cardRef.value) return
   const rect = cardRef.value.getBoundingClientRect()
+  
+  // Coordenadas locais, relativas ao card em si
   const x = e.clientX - rect.left
   const y = e.clientY - rect.top
 
@@ -77,50 +79,46 @@ function handlePointerMove(e: PointerEvent) {
 
 const sizeClasses = computed(() => {
   if (props.customSize) return ''
-  return sizeMap[props.size] || ''
+  return sizeMap[props.size]
 })
 
 const inlineStyles = computed(() => {
-  const { base, spread } = glowColorMap[props.glowColor] || glowColorMap.blue
-  const baseStyles: Record<string, any> = {
-    '--base': base,
-    '--spread': spread,
+  const { base, spread } = glowColorMap[props.glowColor]
+  const styles: Record<string, string> = {
+    '--base': base.toString(),
+    '--spread': spread.toString(),
     '--radius': '14',
-    '--border': '2',
+    '--border': '3',
     '--backdrop': 'hsl(0 0% 60% / 0.12)',
     '--backup-border': 'var(--backdrop)',
-    '--size': '220',
+    '--size': '200',
     '--outer': '1',
-    '--border-size': 'calc(var(--border, 2) * 1px)',
-    '--spotlight-size': 'calc(var(--size, 220) * 1px)',
+    '--border-size': 'calc(var(--border, 3) * 1px)',
+    '--spotlight-size': 'calc(var(--size, 150) * 1px)',
     '--hue': 'calc(var(--base) + (var(--xp, 0) * var(--spread, 0)))',
-    '--opacity': isHovered.value ? '1' : '0',
-    '--border-spot-opacity': isHovered.value ? '1' : '0',
-    '--border-light-opacity': isHovered.value ? '1' : '0',
-    '--bg-spot-opacity': isHovered.value ? '0.15' : '0',
+    '--hover-opacity': isHovered.value ? '1' : '0',
     backgroundImage: `radial-gradient(
       var(--spotlight-size) var(--spotlight-size) at
       calc(var(--x, 0) * 1px)
       calc(var(--y, 0) * 1px),
-      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0)), transparent
+      hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / calc(0.1 * var(--hover-opacity))), transparent
     )`,
     backgroundColor: 'var(--backdrop, transparent)',
-    backgroundSize: '100% 100%',
+    backgroundSize: 'calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)))',
     backgroundPosition: '50% 50%',
     border: 'var(--border-size) solid var(--backup-border)',
     position: 'relative',
-    touchAction: 'none',
-    transition: 'border-color 0.3s ease, background-color 0.3s ease'
+    touchAction: 'none'
   }
 
   if (props.width !== undefined) {
-    baseStyles.width = typeof props.width === 'number' ? `${props.width}px` : props.width
+    styles.width = typeof props.width === 'number' ? `${props.width}px` : props.width
   }
   if (props.height !== undefined) {
-    baseStyles.height = typeof props.height === 'number' ? `${props.height}px` : props.height
+    styles.height = typeof props.height === 'number' ? `${props.height}px` : props.height
   }
 
-  return baseStyles
+  return styles
 })
 </script>
 
@@ -130,38 +128,38 @@ const inlineStyles = computed(() => {
   pointer-events: none;
   content: "";
   position: absolute;
-  inset: calc(var(--border-size, 2px) * -1);
-  border: var(--border-size, 2px) solid transparent;
-  border-radius: calc(var(--radius, 14) * 1px);
-  background-size: 100% 100%;
+  inset: calc(var(--border-size) * -1);
+  border: var(--border-size) solid transparent;
+  border-radius: calc(var(--radius) * 1px);
+  background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
   background-repeat: no-repeat;
   background-position: 50% 50%;
   mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
-  mask-clip: padding-box, border-box;
-  mask-composite: intersect;
   -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
   -webkit-mask-clip: padding-box, border-box;
-  -webkit-mask-composite: destination-in;
-  opacity: var(--opacity, 0);
-  transition: opacity 0.25s ease;
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+  opacity: var(--hover-opacity);
+  transition: opacity 0.3s ease;
 }
 
 [data-glow]::before {
   background-image: radial-gradient(
-    calc(var(--spotlight-size, 220px) * 0.75) calc(var(--spotlight-size, 220px) * 0.75) at
+    calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
     calc(var(--x, 0) * 1px)
     calc(var(--y, 0) * 1px),
-    hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)), transparent 100%
+    hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / 1), transparent 100%
   );
   filter: brightness(2);
 }
 
 [data-glow]::after {
   background-image: radial-gradient(
-    calc(var(--spotlight-size, 220px) * 0.5) calc(var(--spotlight-size, 220px) * 0.5) at
+    calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
     calc(var(--x, 0) * 1px)
     calc(var(--y, 0) * 1px),
-    hsl(0 100% 100% / var(--border-light-opacity, 1)), transparent 100%
+    hsl(0 100% 100% / 1), transparent 100%
   );
 }
 
@@ -169,14 +167,13 @@ const inlineStyles = computed(() => {
   position: absolute;
   inset: 0;
   will-change: filter;
-  opacity: var(--opacity, 0);
-  border-radius: calc(var(--radius, 14) * 1px);
-  border-width: calc(var(--border-size, 2px) * 20);
-  filter: blur(calc(var(--border-size, 2px) * 10));
+  opacity: var(--outer, 1);
+  border-radius: calc(var(--radius) * 1px);
+  border-width: calc(var(--border-size) * 20);
+  filter: blur(calc(var(--border-size) * 10));
   background: none;
   pointer-events: none;
   border: none;
-  transition: opacity 0.25s ease;
 }
 
 [data-glow] > [data-glow]::before {

@@ -21,10 +21,10 @@ def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
     # 3. Retorna pro usuário (O FastAPI converte pro UserResponse magicamente)
     return usuario_criado
 
-@router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: UUID, db: Session = Depends(get_db)):
+@router.get("/{identifier}", response_model=UserResponse)
+def get_user(identifier: str, db: Session = Depends(get_db)):
     service = UserService(db)
-    return service.get_user_by_id(user_id)
+    return service.get_user_by_identifier(identifier)
 
 @router.get("/email/{email}", response_model=UserResponse)
 def get_user_by_email(email: str, db: Session = Depends(get_db)):

@@ -4,21 +4,16 @@
     <!-- ABOUT SECTION -->
     <section id="about" class="flex flex-col md:flex-row items-start gap-8 mb-16">
       <div ref="avatarRef" class="flex flex-col items-center gap-3 shrink-0">
-        <div class="w-32 h-32 rounded-full bg-navypanel border ink-border flex items-center justify-center">
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#8FA0C4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/></svg>
+        <div class="w-32 h-32 rounded-full overflow-hidden bg-surface border border-border flex items-center justify-center">
+          <img v-if="user?.avatar_url" :src="user.avatar_url" alt="Avatar" class="w-full h-full object-cover" />
+          <svg v-else width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#8FA0C4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/></svg>
         </div>
-        <a href="#" data-magnetic class="text-xs font-display small-caps px-4 py-2 rounded-full border ink-border ink-muted hover:text-paper transition">⬇ Currículo PDF</a>
+        <button @click="handleDownload" data-magnetic class="text-meta text-xs px-4 py-2 rounded-full border border-border text-muted hover:text-text transition">⬇ Currículo PDF</button>
       </div>
       <div ref="aboutInfoRef">
-        <h1 class="font-display text-3xl small-caps text-paper mb-3 font-semibold">Daniel</h1>
-        <p class="ink-muted leading-relaxed mb-4">
-          Desenvolvedor freelancer, conduzindo projetos do primeiro contato com o
-          cliente até a entrega final — propostas técnicas, protótipos, código e
-          documentação, em mobile, web e automação.
-        </p>
-        <p class="ink-muted leading-relaxed">
-          Também curso Engenharia de Software, unindo prática de mercado com
-          formação acadêmica em cada novo projeto.
+        <h1 class="text-h1 mb-3">{{ user?.name || 'Daniel' }}</h1>
+        <p class="text-body text-muted whitespace-pre-line mb-4">
+          {{ user?.description || 'Carregando informações do servidor...' }}
         </p>
       </div>
     </section>
@@ -27,15 +22,15 @@
     <section class="mb-20">
       <div class="mb-6 text-center">
         <span class="eyebrow">Visualização Interativa 3D</span>
-        <h2 class="font-display text-2xl small-caps text-paper font-semibold mt-1">Mapa de Trajetória & Habilidades</h2>
-        <p class="text-xs ink-muted mt-1">Clique nos nós para expandir detalhes, níveis de domínio e conexões.</p>
+        <h2 class="font-display text-2xl small-caps text-text font-semibold mt-1">Mapa de Trajetória & Habilidades</h2>
+        <p class="text-xs text-muted mt-1">Clique nos nós para expandir detalhes, níveis de domínio e conexões.</p>
       </div>
       <RadialOrbitalTimeline :timeline-data="orbitalData" />
     </section>
 
     <!-- EXPERIENCE TIMELINE SECTION -->
     <section id="resume" class="mb-20" ref="timelineSectionRef">
-      <h2 class="font-display text-2xl small-caps text-paper mb-8 font-semibold">Linha do Tempo de Experiência</h2>
+      <h2 class="font-display text-2xl small-caps text-text mb-8 font-semibold">Linha do Tempo de Experiência</h2>
       <div id="experiences-timeline">
         <ExperienceTimeline :experiences="experiences" />
       </div>
@@ -43,7 +38,7 @@
 
     <!-- CERTIFICATES SECTION -->
     <section ref="certSectionRef">
-      <h2 class="font-display text-2xl small-caps text-paper mb-8 font-semibold">Certificados & Cursos</h2>
+      <h2 class="font-display text-2xl small-caps text-text mb-8 font-semibold">Certificados & Cursos</h2>
       <CertificateList :certificates="certificates" />
     </section>
 
@@ -56,8 +51,31 @@ import { gsap } from 'gsap'
 import { Calendar, Code, FileText, User, Clock } from 'lucide-vue-next'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
 import RadialOrbitalTimeline, { type TimelineItem } from '~/components/ui/RadialOrbitalTimeline.vue'
+import { useLanguage } from '~/composables/useLanguage'
 
-const { experiences, certificates, loadData } = usePortfolioApi()
+const { user, experiences, certificates, loadData } = usePortfolioApi()
+const { lang } = useLanguage()
+
+async function handleDownload() {
+  const url = lang.value === 'en' ? user.value?.curriculum_en_url : user.value?.curriculum_url
+  if (!url || url === '#') return
+  
+  try {
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const blobUrl = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = blobUrl
+    a.download = `Curriculo_Daniel_${lang.value.toUpperCase()}.pdf`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    window.URL.revokeObjectURL(blobUrl)
+  } catch (error) {
+    console.error('Download failed, opening in new tab', error)
+    window.open(url, '_blank')
+  }
+}
 
 const orbitalData: TimelineItem[] = [
   {

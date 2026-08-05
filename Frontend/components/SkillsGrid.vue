@@ -1,7 +1,10 @@
 <template>
   <div class="bg-navypanel rounded-3xl p-6 border ink-border flex flex-col justify-between">
     <div>
-      <h3 class="font-display small-caps text-lg mb-5 text-paper font-semibold">⚙️ Habilidades</h3>
+      <div class="flex items-center gap-2 mb-5">
+        <span class="icon-habilidades text-text"></span>
+        <h3 class="font-display small-caps text-lg text-text font-semibold">Habilidades</h3>
+      </div>
       <div class="grid grid-cols-3 gap-3">
         <div 
           v-for="skill in previewSkills" 
@@ -32,8 +35,11 @@
           ref="panelRef" 
           class="bg-navypanel rounded-3xl w-full max-w-2xl max-h-[80vh] overflow-y-auto modal-scroll p-6 border ink-border"
         >
-          <div class="flex items-center justify-between mb-5">
-            <h3 class="font-display small-caps text-lg text-paper font-semibold">⚙️ Habilidades</h3>
+          <div class="mb-6 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <span class="icon-habilidades text-text"></span>
+              <h3 class="font-display small-caps text-lg text-text font-semibold">Habilidades</h3>
+            </div>
             <button @click="closeModal" class="text-xl leading-none text-paper cursor-pointer p-1" aria-label="Fechar">✕</button>
           </div>
           <div class="space-y-4">
@@ -51,6 +57,19 @@
     </Teleport>
   </div>
 </template>
+
+<style scoped>
+.icon-habilidades {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: currentColor;
+  -webkit-mask-image: url('~/assets/icons/habilidades.svg');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+</style>
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'

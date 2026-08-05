@@ -1,0 +1,14 @@
+<svg width="115" height="56" viewBox="0 0 115 56" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path d="M72.5 23.7047C62.5 23.7047 26.9 21.9047 2.5 48.7047C2.5 41.038 7.4 22.5047 27 9.70469C38.1667 5.87135 67.4 -0.595314 95 4.20469C103 5.59599 116.2 8.50469 111 25.7047L72.5 23.7047Z" fill="url(#pattern0_473_167)" stroke="black" stroke-width="5"/>
+<defs>
+<pattern id="pattern0_473_167" patternUnits="userSpaceOnUse" patternTransform="matrix(40 0 0 40 2.5 -0.595314)" preserveAspectRatio="none" viewBox="0 0 40 40" width="1" height="1">
+<use xlink:href="#pattern0_473_167_inner" transform="translate(0 -40)"/>
+<g id="pattern0_473_167_inner">
+<line x1="0.646447" y1="39.6464" x2="39.6465" y2="0.646446" stroke="black"/>
+<line x1="20.6464" y1="39.6464" x2="39.6464" y2="20.6464" stroke="black"/>
+<line x1="10.6405" y1="40.6525" x2="39.6405" y2="10.6525" stroke="black"/>
+<line x1="0.640506" y1="30.6525" x2="29.6405" y2="0.65249" stroke="black"/>
+<line x1="0.646447" y1="19.6464" x2="19.6464" y2="0.646445" stroke="black"/>
+</g>
+</pattern></defs>
+</svg>

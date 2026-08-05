@@ -23,6 +23,12 @@ def get_tool_by_id(tool_id: UUID, db: Session = Depends(get_db)):
     service = ToolService(db)
     return service.get_tool_by_id(tool_id)
 
+@router.get("/user/{user_id}", response_model=list[ToolResponse])
+def get_tools_by_user(user_id: UUID, db: Session = Depends(get_db)):
+    service = ToolService(db)
+    # Tools are global, just return all tools for now
+    return service.get_all_tools()
+
 @router.patch("/{tool_id}", response_model=ToolResponse)
 def update_tool(tool_id: UUID, tool_in: ToolUpdate, db: Session = Depends(get_db)):
     service = ToolService(db)

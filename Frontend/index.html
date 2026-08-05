@@ -42,6 +42,7 @@
 </head>
 
 <body class="font-body antialiased">
+<a href="#main" class="skip-link">Pular para o conteúdo</a>
 
 <!-- HEADER / NAVBAR -->
 <header class="fixed top-0 inset-x-0 z-40 bg-navy/90 backdrop-blur border-b ink-border">
@@ -81,10 +82,10 @@
   </div>
 </header>
 
-<main class="pt-28">
+<main id="main" class="pt-28">
 
   <!-- HERO SECTION -->
-  <section class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start gap-10 md:gap-14 pb-24">
+  <section class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start gap-10 md:gap-14 pb-24" id="hero-avatar-section" data-section="Início">
     <div class="pre-anim relative shrink-0" id="hero-avatar">
       <div class="aurora"></div>
       <svg width="150" height="150" viewBox="0 0 150 150" fill="none" stroke="#F1F0F7" stroke-width="1.4">
@@ -95,22 +96,23 @@
       </svg>
     </div>
     <div class="max-w-xl">
-      <h1 class="pre-anim font-display text-4xl md:text-5xl font-semibold leading-tight small-caps text-paper" id="hero-title">
-        Daniel — código com propósito<span class="cursor-blink"></span>
+      <span class="eyebrow hero-kicker">Dev Full Stack &amp; Mobile</span>
+      <h1 class="pre-anim font-display hero-statement font-semibold text-paper" id="hero-title">
+        Código com propósito<span class="cursor-blink"></span>
       </h1>
       <p class="pre-anim mt-5 ink-muted leading-relaxed" id="hero-sub">
         Desenvolvedor freelancer especializado em aplicativos mobile, sistemas web
         e automações sob medida. Aluno de Engenharia de Software, apaixonado por
         transformar problemas reais em produtos bem construídos.
       </p>
-      <a href="resume.html#about" id="about-me-btn" class="pre-anim inline-block mt-6 px-5 py-2.5 rounded-full bg-periwinkle text-navy text-sm font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">
+      <a href="resume.html#about" id="about-me-btn" data-magnetic class="pre-anim inline-block mt-6 px-5 py-2.5 rounded-full bg-periwinkle text-navy text-sm font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">
         Sobre Mim
       </a>
     </div>
   </section>
 
   <!-- WORK PREVIEW SECTION -->
-  <section class="max-w-6xl mx-auto px-6 pb-24 reveal-section">
+  <section class="max-w-6xl mx-auto px-6 pb-24 reveal-section" data-section="Projetos">
     <div class="flex items-end justify-between mb-6">
       <h2 class="font-display text-2xl small-caps text-paper font-semibold">Projetos Recentes</h2>
       <a href="work.html" class="text-xs font-display small-caps ink-muted hover:text-paper transition">Ver todos →</a>
@@ -121,7 +123,7 @@
   </section>
 
   <!-- TOOLS & SKILLS SECTION -->
-  <section class="max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-8 reveal-section">
+  <section class="max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-8 reveal-section" data-section="Ferramentas">
     <div class="bg-navypanel rounded-3xl p-6 border ink-border flex flex-col justify-between">
       <div>
         <h3 class="font-display small-caps text-lg mb-5 text-paper font-semibold">🧰 Ferramentas</h3>
@@ -142,7 +144,7 @@
   <section class="max-w-4xl mx-auto px-6 pb-24 space-y-14 reveal-section" id="testimonials"></section>
 
   <!-- CONTACT SECTION -->
-  <section class="max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-10 items-center reveal-section" id="contact">
+  <section class="max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-10 items-center reveal-section" id="contact" data-section="Contato">
     <svg width="180" height="180" viewBox="0 0 180 180" fill="none" stroke="#F1F0F7" stroke-width="1.4" class="mx-auto md:mx-0">
       <rect x="20" y="70" width="110" height="80" rx="6"/>
       <path d="M20 78 75 118 130 78"/>
@@ -154,7 +156,7 @@
       <input required type="email" placeholder="E-mail" class="w-full rounded-lg bg-navypanel border ink-border px-4 py-3 text-sm placeholder:text-mist text-paper focus:outline-none focus:border-periwinkle transition" />
       <textarea required rows="4" placeholder="Mensagem" class="w-full rounded-lg bg-navypanel border ink-border px-4 py-3 text-sm placeholder:text-mist text-paper focus:outline-none focus:border-periwinkle transition"></textarea>
       <div class="flex justify-end">
-        <button type="submit" class="px-5 py-2.5 rounded-full bg-periwinkle text-navy text-sm font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">Enviar Mensagem</button>
+        <button type="submit" data-magnetic class="px-5 py-2.5 rounded-full bg-periwinkle text-navy text-sm font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">Enviar Mensagem</button>
       </div>
       <p id="form-status" class="text-xs text-mint h-4 text-right font-medium"></p>
     </form>
@@ -222,6 +224,7 @@
 
 <!-- MODULAR JS APP MODULES -->
 <script src="js/api.js"></script>
+<script src="js/effects.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
 </body>

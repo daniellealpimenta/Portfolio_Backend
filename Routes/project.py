@@ -23,6 +23,11 @@ def get_all_projects(db: Session = Depends(get_db)):
     service = ProjectService(db)
     return service.get_all_projects()
 
+@router.get("/user/{user_id}", response_model=list[ProjectResponse])
+def get_projects_by_user(user_id: UUID, db: Session = Depends(get_db)):
+    service = ProjectService(db)
+    return service.get_projects_by_user(user_id)
+
 @router.get("/category/{category}", response_model=list[ProjectResponse])
 def get_projects_by_category(category: str, db: Session = Depends(get_db)):
     service = ProjectService(db)

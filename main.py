@@ -21,6 +21,8 @@ from Routes.tool import router as tool_router
 from Routes.experience import router as experience_router
 from Routes.certificate import router as certificate_router
 from Routes.recommendation import router as recommendation_router
+from Routes.contact import router as contact_router
+from Routes.system import router as system_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -47,6 +49,8 @@ app.include_router(tool_router)
 app.include_router(experience_router)
 app.include_router(certificate_router)
 app.include_router(recommendation_router)
+app.include_router(contact_router)
+app.include_router(system_router)
 
 @app.get("/")
 def read_root():

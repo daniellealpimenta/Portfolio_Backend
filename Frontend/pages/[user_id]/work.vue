@@ -34,7 +34,7 @@
             v-for="project in filteredProjects" 
             :key="project.id" 
             :project="project"
-            @select="selectedProject = $event"
+            @click="router.push(`/${route.params.user_id}/project-${project.id}`.replace('//', '/'))"
           />
         </div>
         <p v-if="filteredProjects.length === 0" class="text-sm ink-muted col-span-full py-8 text-center">
@@ -42,26 +42,21 @@
         </p>
       </div>
     </div>
-
-    <!-- PROJECT MODAL -->
-    <ProjectModal 
-      :project="selectedProject" 
-      :is-open="!!selectedProject" 
-      @close="selectedProject = null" 
-    />
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { gsap } from 'gsap'
+import { useRouter, useRoute } from 'vue-router'
 import { usePortfolioApi, type Project } from '~/composables/usePortfolioApi'
 import ProjectSpotlight from '~/components/ProjectSpotlight.vue'
 
 const { projects, loadData } = usePortfolioApi()
+const router = useRouter()
+const route = useRoute()
 
 const activeFilter = ref('all')
-const selectedProject = ref<Project | null>(null)
 
 const tabs = [
   { id: 'all', label: 'Todos' },
@@ -97,6 +92,6 @@ async function setFilter(filterId: string) {
 }
 
 onMounted(() => {
-  loadData()
+  loadData(route.params.user_id as string)
 })
 </script>

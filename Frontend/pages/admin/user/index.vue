@@ -1,0 +1,280 @@
+<template>
+  <div class="max-w-2xl">
+    <div class="mb-6 flex items-center gap-4">
+      <h1 class="text-h2 m-0 text-text">Configurações do Perfil</h1>
+    </div>
+
+    <form @submit.prevent="handleSubmit" class="bg-surface border border-border rounded-2xl p-6 space-y-6">
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Nome</label>
+        <input v-model="form.name" type="text" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+      </div>
+      
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Descrição (Bio)</label>
+        <textarea v-model="form.description" rows="4" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Frase Principal</label>
+        <input v-model="form.main_phrase" type="text" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">Email</label>
+          <input v-model="form.email" type="email" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        </div>
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">Telefone</label>
+          <input v-model="form.cellphone_number" type="text" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        </div>
+      </div>
+
+      <!-- UPLOAD DE ARQUIVOS (SUPABASE) -->
+      <div class="grid md:grid-cols-1 gap-6 p-5 bg-background border border-primary/20 rounded-xl">
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">Foto de Perfil (Atualize fazendo Upload)</label>
+          <input @change="(e) => handleFileChange(e, 'avatar')" type="file" accept="image/*" class="w-full bg-background border border-border rounded-xl px-4 py-2 text-text text-body focus:outline-none focus:border-primary transition-colors cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-background hover:file:bg-primary/80">
+          <div v-if="form.avatar_url" class="text-xs text-muted mt-2 flex items-center gap-4">
+            <span>Atual: <a :href="form.avatar_url" target="_blank" class="text-primary hover:underline">Ver Foto</a></span>
+            <button type="button" @click="removeFile('avatar')" class="text-error hover:underline">Excluir</button>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-4 mb-2">
+            <label class="block text-meta text-xs text-muted">Currículo PDF (Atualize fazendo Upload)</label>
+            <div class="flex items-center gap-2 text-xs">
+              <button type="button" @click="resumeUploadLang = 'pt'" :class="resumeUploadLang === 'pt' ? 'text-primary font-bold underline' : 'text-muted'">PT</button>
+              <span class="text-muted">|</span>
+              <button type="button" @click="resumeUploadLang = 'en'" :class="resumeUploadLang === 'en' ? 'text-primary font-bold underline' : 'text-muted'">EN</button>
+            </div>
+          </div>
+          <input @change="(e) => handleFileChange(e, 'curriculum')" type="file" accept="application/pdf" class="w-full bg-background border border-border rounded-xl px-4 py-2 text-text text-body focus:outline-none focus:border-primary transition-colors cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-background hover:file:bg-primary/80">
+          <div v-if="resumeUploadLang === 'pt' && form.curriculum_url" class="text-xs text-muted mt-2 flex items-center gap-4">
+            <span>Atual (PT): <a :href="form.curriculum_url" target="_blank" class="text-primary hover:underline">Ver PDF</a></span>
+            <button type="button" @click="removeFile('curriculum_pt')" class="text-error hover:underline">Excluir</button>
+          </div>
+          <div v-if="resumeUploadLang === 'en' && form.curriculum_en_url" class="text-xs text-muted mt-2 flex items-center gap-4">
+            <span>Atual (EN): <a :href="form.curriculum_en_url" target="_blank" class="text-primary hover:underline">Ver PDF</a></span>
+            <button type="button" @click="removeFile('curriculum_en')" class="text-error hover:underline">Excluir</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">Teste de Personalidade PDF (Atualize fazendo Upload)</label>
+          <input @change="(e) => handleFileChange(e, 'personality')" type="file" accept="application/pdf" class="w-full bg-background border border-border rounded-xl px-4 py-2 text-text text-body focus:outline-none focus:border-primary transition-colors cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-background hover:file:bg-primary/80">
+          <div v-if="form.personality_test_url" class="text-xs text-muted mt-2 flex items-center gap-4">
+            <span>Atual: <a :href="form.personality_test_url" target="_blank" class="text-primary hover:underline">Ver Teste PDF</a></span>
+            <button type="button" @click="removeFile('personality')" class="text-error hover:underline">Excluir</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">LinkedIn URL</label>
+          <input v-model="form.linkedin_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        </div>
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">GitHub URL</label>
+          <input v-model="form.github_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">Instagram URL</label>
+          <input v-model="form.instagram_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        </div>
+        <div>
+          <label class="block text-meta text-xs text-muted mb-2">Medium URL</label>
+          <input v-model="form.medium_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        </div>
+      </div>
+      
+      <div v-if="errorMsg" class="text-sm text-error bg-error/10 border border-error/20 rounded-xl p-3">
+        {{ errorMsg }}
+      </div>
+
+      <div v-if="savingStatus" class="text-sm text-primary bg-primary/10 border border-primary/20 rounded-xl p-3">
+        {{ savingStatus }}
+      </div>
+
+      <div v-if="successMsg" class="text-sm text-success bg-success/10 border border-success/20 rounded-xl p-3">
+        {{ successMsg }}
+      </div>
+
+      <div class="pt-4 border-t border-border flex justify-end">
+        <button type="submit" :disabled="saving" class="bg-primary text-background px-6 py-3 rounded-xl font-semibold hover:opacity-90 disabled:opacity-50 transition-all flex items-center gap-2">
+          <span v-if="saving">Salvando...</span>
+          <span v-else>Salvar Alterações</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
+import { definePageMeta } from '#imports'
+import { usePortfolioApi } from '~/composables/usePortfolioApi'
+import { useAuth } from '~/composables/useAuth'
+import { createClient } from '@supabase/supabase-js'
+
+definePageMeta({ layout: 'admin', middleware: 'auth' })
+
+const { user, updateUser, loadData } = usePortfolioApi()
+const { adminUserId } = useAuth()
+
+const form = ref({
+  name: '',
+  description: '',
+  main_phrase: '',
+  email: '',
+  cellphone_number: '',
+  avatar_url: '',
+  curriculum_url: '',
+  curriculum_en_url: '',
+  personality_test_url: '',
+  linkedin_url: '',
+  github_url: '',
+  instagram_url: '',
+  medium_url: ''
+})
+
+const resumeUploadLang = ref<'pt' | 'en'>('pt')
+
+const avatarFile = ref<File | null>(null)
+const curriculumFile = ref<File | null>(null)
+const personalityFile = ref<File | null>(null)
+
+const saving = ref(false)
+const savingStatus = ref('')
+const errorMsg = ref('')
+const successMsg = ref('')
+
+onMounted(async () => {
+  if (!user.value) {
+    await loadData('daniel.pimenta')
+  }
+  syncData()
+})
+
+watch(user, () => syncData())
+
+function syncData() {
+  if (user.value) {
+    form.value.name = user.value.name || ''
+    form.value.description = user.value.description || ''
+    form.value.main_phrase = user.value.main_phrase || ''
+    form.value.email = user.value.email || ''
+    form.value.cellphone_number = user.value.cellphone_number || ''
+    form.value.avatar_url = user.value.avatar_url || ''
+    form.value.curriculum_url = user.value.curriculum_url || ''
+    form.value.curriculum_en_url = user.value.curriculum_en_url || ''
+    form.value.personality_test_url = user.value.personality_test_url || ''
+    form.value.linkedin_url = user.value.linkedin_url || ''
+    form.value.github_url = user.value.github_url || ''
+    form.value.instagram_url = user.value.instagram_url || ''
+    form.value.medium_url = user.value.medium_url || ''
+  }
+}
+
+function removeFile(type: 'avatar' | 'curriculum_pt' | 'curriculum_en' | 'personality') {
+  if (confirm('Tem certeza que deseja remover este arquivo do seu perfil? (Lembre-se de salvar no final)')) {
+    if (type === 'avatar') form.value.avatar_url = ''
+    if (type === 'curriculum_pt') form.value.curriculum_url = ''
+    if (type === 'curriculum_en') form.value.curriculum_en_url = ''
+    if (type === 'personality') form.value.personality_test_url = ''
+  }
+}
+
+function handleFileChange(event: Event, type: 'avatar' | 'curriculum' | 'personality') {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files.length > 0) {
+    if (type === 'avatar') avatarFile.value = target.files[0]
+    if (type === 'curriculum') curriculumFile.value = target.files[0]
+    if (type === 'personality') personalityFile.value = target.files[0]
+  }
+}
+
+async function uploadToSupabase(file: File, folder: string): Promise<string> {
+  const supabaseUrl = useRuntimeConfig().public.supabaseUrl || import.meta.env.VITE_SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = useRuntimeConfig().public.supabaseKey || import.meta.env.VITE_SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_KEY
+  
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Supabase credentials not configured')
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey)
+  
+  const ext = file.name.split('.').pop()
+  const fileName = `${folder}/${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`
+  
+  const { data, error } = await supabase.storage
+    .from('portfolio-assets')
+    .upload(fileName, file, { upsert: true })
+
+  if (error) {
+    console.error('Supabase upload error:', error)
+    throw new Error('Erro ao fazer upload do arquivo')
+  }
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('portfolio-assets')
+    .getPublicUrl(data.path)
+    
+  return publicUrl
+}
+
+async function handleSubmit() {
+  saving.value = true
+  errorMsg.value = ''
+  successMsg.value = ''
+  savingStatus.value = 'Iniciando salvamento...'
+
+  try {
+    const payload = { ...form.value }
+    
+    // Process Uploads
+    if (avatarFile.value) {
+      savingStatus.value = 'Enviando nova foto...'
+      payload.avatar_url = await uploadToSupabase(avatarFile.value, 'avatars')
+    }
+    
+    if (curriculumFile.value) {
+      savingStatus.value = 'Enviando novo currículo...'
+      const uploadedUrl = await uploadToSupabase(curriculumFile.value, 'curriculums')
+      if (resumeUploadLang.value === 'pt') {
+        payload.curriculum_url = uploadedUrl
+      } else {
+        payload.curriculum_en_url = uploadedUrl
+      }
+    }
+    
+    if (personalityFile.value) {
+      savingStatus.value = 'Enviando teste de personalidade...'
+      payload.personality_test_url = await uploadToSupabase(personalityFile.value, 'tests')
+    }
+
+    // Clean empty values
+    Object.keys(payload).forEach(k => {
+      if ((payload as any)[k] === '') {
+        (payload as any)[k] = null
+      }
+    })
+    
+    savingStatus.value = 'Atualizando banco de dados...'
+    const idToUpdate = user.value?.id || adminUserId.value || '019fb45c-4672-7ab1-8d67-c04858251df8'
+    await updateUser(idToUpdate, payload)
+    
+    successMsg.value = 'Perfil atualizado com sucesso!'
+  } catch (e: any) {
+    console.error(e)
+    errorMsg.value = e.message || 'Ocorreu um erro ao salvar as alterações.'
+  } finally {
+    saving.value = false
+    savingStatus.value = ''
+    setTimeout(() => { successMsg.value = '' }, 3000)
+  }
+}
+</script>

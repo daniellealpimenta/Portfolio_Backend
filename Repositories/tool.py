@@ -20,6 +20,9 @@ class ToolRepository:
     def get_by_id(self, tool_id: UUID) -> Tool | None:
         return self.db.query(Tool).filter(Tool.id == tool_id).first()
 
+    def get_by_user_id(self, user_id: UUID) -> list[Tool]:
+        return self.db.query(Tool).filter(Tool.user_id == user_id).all()
+
     def update(self, tool_id: UUID, tool_data: ToolUpdate) -> Tool | None:
         ferramenta = self.get_by_id(tool_id)
         if not ferramenta:

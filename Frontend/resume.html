@@ -33,6 +33,7 @@
 </head>
 
 <body class="font-body antialiased">
+<a href="#main" class="skip-link">Pular para o conteúdo</a>
 
 <!-- HEADER / NAVBAR -->
 <header class="fixed top-0 inset-x-0 z-40 bg-navy/90 backdrop-blur border-b ink-border">
@@ -72,7 +73,7 @@
   </div>
 </header>
 
-<main class="pt-32 max-w-4xl mx-auto px-6 pb-24">
+<main id="main" class="pt-32 max-w-4xl mx-auto px-6 pb-24">
 
   <!-- ABOUT -->
   <section id="about" class="flex flex-col md:flex-row items-start gap-8 mb-20">
@@ -80,7 +81,7 @@
       <div class="w-32 h-32 rounded-full bg-navypanel border ink-border flex items-center justify-center">
         <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#8FA0C4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/></svg>
       </div>
-      <a href="#" class="text-xs font-display small-caps px-4 py-2 rounded-full border ink-border ink-muted hover:text-paper transition">⬇ Currículo PDF</a>
+      <a href="#" data-magnetic class="text-xs font-display small-caps px-4 py-2 rounded-full border ink-border ink-muted hover:text-paper transition">⬇ Currículo PDF</a>
     </div>
     <div class="page-hero">
       <h1 class="font-display text-3xl small-caps text-paper mb-3 font-semibold">Daniel</h1>
@@ -133,13 +134,14 @@
 <footer class="border-t ink-border pt-14 pb-10 text-center">
   <h2 class="font-display text-3xl small-caps tracking-widest text-paper font-semibold">Hire Me</h2>
   <p class="ink-muted mt-2 text-sm">Entre em contato comigo</p>
-  <a href="index.html#contact" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-full border ink-border text-sm font-display small-caps tracking-wide text-paper hover:bg-periwinkle hover:text-navy hover:border-periwinkle transition">
+  <a href="index.html#contact" data-magnetic class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-full border ink-border text-sm font-display small-caps tracking-wide text-paper hover:bg-periwinkle hover:text-navy hover:border-periwinkle transition">
     💬 Converse Comigo
   </a>
 </footer>
 
 <!-- MODULAR JS APP MODULES -->
 <script src="js/api.js"></script>
+<script src="js/effects.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
 </body>

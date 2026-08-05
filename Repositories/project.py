@@ -2,6 +2,10 @@ from sqlalchemy.orm import Session
 from Models.project import Project
 from Schemas.project import ProjectCreate, ProjectResponse, ProjectBase, Category, ProjectUpdate
 from uuid import UUID
+import Models.associations
+from Models.tool import Tool
+from Models.user import User
+from Models.project_image import ProjectImage
 
 class ProjectRepository:
     def __init__(self, db: Session):
@@ -23,6 +27,9 @@ class ProjectRepository:
     
     def get_by_category(self, category: Category) -> list[Project]:
         return self.db.query(Project).filter(Project.category == category).all()
+    
+    def get_by_user_id(self, user_id: UUID) -> list[Project]:
+        return self.db.query(Project).filter(Project.user_id == user_id).all()
     
     def update(self, project_id: UUID, project_data: ProjectUpdate) -> Project | None:
         projeto = self.get_by_id(project_id)

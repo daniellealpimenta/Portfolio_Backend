@@ -1,0 +1,17 @@
+<svg width="1440" height="300" viewBox="0 0 1440 300" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect width="1440" height="300" fill="url(#pattern0_523_279)"/>
+<defs>
+<pattern id="pattern0_523_279" patternUnits="userSpaceOnUse" patternTransform="matrix(100 0 0 50 0 0)" preserveAspectRatio="none" viewBox="0 0 100 50" width="1" height="1">
+<g id="pattern0_523_279_inner">
+<line y1="-0.5" x2="109.008" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 2.5 50)" stroke="black"/>
+<line y1="-0.5" x2="83.8525" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 25 50)" stroke="black"/>
+<line y1="-0.5" x2="83.8525" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 2.5 38.75)" stroke="black"/>
+<line y1="-0.5" x2="58.6968" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 47.5 50)" stroke="black"/>
+<line y1="-0.5" x2="58.6968" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 2.5 27.5)" stroke="black"/>
+<line y1="-0.5" x2="33.541" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 70 50)" stroke="black"/>
+<line y1="-0.5" x2="33.541" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 2.5 16.25)" stroke="black"/>
+<line y1="-0.5" x2="8.38525" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 92.5 50)" stroke="black"/>
+<line y1="-0.5" x2="8.38525" y2="-0.5" transform="matrix(0.894427 -0.447214 0.894427 0.447214 2.5 5)" stroke="black"/>
+</g>
+</pattern></defs>
+</svg>

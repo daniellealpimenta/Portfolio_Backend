@@ -1,70 +1,110 @@
 <template>
-  <section id="contact" class="max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-10 items-center">
-    <svg width="180" height="180" viewBox="0 0 180 180" fill="none" stroke="#F1F0F7" stroke-width="1.4" class="mx-auto md:mx-0">
-      <rect x="20" y="70" width="110" height="80" rx="6"/>
-      <path d="M20 78 75 118 130 78"/>
-      <circle cx="150" cy="55" r="16"/>
-      <path d="M150 39v-14M150 39l10-6"/>
-    </svg>
-    <form @submit.prevent="handleSubmit" class="space-y-3">
-      <input 
-        v-model="name" 
-        required 
-        type="text" 
-        placeholder="Nome" 
-        class="w-full rounded-lg bg-navypanel border ink-border px-4 py-3 text-sm placeholder:text-mist text-paper focus:outline-none focus:border-periwinkle transition" 
-      />
-      <input 
-        v-model="email" 
-        required 
-        type="email" 
-        placeholder="E-mail" 
-        class="w-full rounded-lg bg-navypanel border ink-border px-4 py-3 text-sm placeholder:text-mist text-paper focus:outline-none focus:border-periwinkle transition" 
-      />
-      <textarea 
-        v-model="message" 
-        required 
-        rows="4" 
-        placeholder="Mensagem" 
-        class="w-full rounded-lg bg-navypanel border ink-border px-4 py-3 text-sm placeholder:text-mist text-paper focus:outline-none focus:border-periwinkle transition"
-      ></textarea>
-      <div class="flex justify-end">
-        <button 
-          type="submit" 
-          :disabled="sending"
-          class="px-5 py-2.5 rounded-full bg-periwinkle text-navy text-sm font-display small-caps tracking-wide hover:opacity-85 transition font-semibold cursor-pointer disabled:opacity-50"
-        >
-          {{ sending ? 'Enviando...' : 'Enviar Mensagem' }}
-        </button>
+  <section id="contact" class="max-w-4xl mx-auto px-6 pb-24">
+    <div class="flex flex-col md:flex-row items-center md:items-stretch gap-10 justify-center">
+      <div class="w-40 h-40 md:w-64 md:h-auto flex items-center justify-center shrink-0">
+        <span class="icon-email text-text"></span>
       </div>
-      <p v-if="statusMsg" class="text-xs text-mint h-4 text-right font-medium">{{ statusMsg }}</p>
-    </form>
+      <form @submit.prevent="handleSubmit" class="space-y-4 w-full max-w-lg">
+        <input 
+          v-model="name" 
+          required 
+          type="text" 
+          placeholder="Nome" 
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition" 
+        />
+        <input 
+          v-model="email" 
+          required 
+          type="email" 
+          placeholder="Seu email" 
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition" 
+        />
+        <input 
+          v-model="subject" 
+          required 
+          type="text" 
+          placeholder="Assunto" 
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition" 
+        />
+        <textarea 
+          v-model="message" 
+          required 
+          rows="5" 
+          placeholder="Mensagem" 
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition resize-none"
+        ></textarea>
+        <div class="flex justify-end">
+          <button 
+            type="submit" 
+            :disabled="sending"
+            class="px-8 py-3 rounded-full bg-primary text-background text-sm font-display small-caps tracking-wide hover:opacity-85 transition font-semibold cursor-pointer disabled:opacity-50"
+          >
+            {{ sending ? 'Enviando...' : 'Enviar Mensagem' }}
+          </button>
+        </div>
+        <p v-if="statusMsg" class="text-xs text-success h-4 text-right font-medium">{{ statusMsg }}</p>
+      </form>
+    </div>
   </section>
 </template>
 
+<style scoped>
+.icon-email {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  -webkit-mask-image: url('~/assets/icons/email.svg');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+</style>
+
 <script setup lang="ts">
 import { ref } from 'vue'
+import { usePortfolioApi } from '~/composables/usePortfolioApi'
+
+const { user, sendContactMessage } = usePortfolioApi()
 
 const name = ref('')
 const email = ref('')
+const subject = ref('')
 const message = ref('')
 const sending = ref(false)
 const statusMsg = ref('')
 
 async function handleSubmit() {
+  if (!user.value || !user.value.id) {
+    statusMsg.value = 'Erro: Usuário não carregado.'
+    return
+  }
+  
   sending.value = true
   statusMsg.value = 'Enviando sua mensagem...'
   
-  // Simulação / Integração com backend
-  setTimeout(() => {
-    sending.value = false
+  try {
+    await sendContactMessage({
+      user_id: user.value.id,
+      name: name.value,
+      email: email.value,
+      subject: subject.value,
+      message: message.value
+    })
+    
     statusMsg.value = '✓ Mensagem enviada com sucesso!'
     name.value = ''
     email.value = ''
+    subject.value = ''
     message.value = ''
+  } catch (error) {
+    console.error('Erro ao enviar mensagem:', error)
+    statusMsg.value = '❌ Ocorreu um erro ao enviar.'
+  } finally {
+    sending.value = false
     setTimeout(() => {
       statusMsg.value = ''
     }, 4000)
-  }, 1000)
+  }
 }
 </script>

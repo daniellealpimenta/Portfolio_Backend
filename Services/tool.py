@@ -20,6 +20,13 @@ class ToolService:
             raise HTTPException(status_code=404, detail="Ferramenta não encontrada")
         return tool
 
+    def get_tools_by_user_id(self, user_id: UUID):
+        from Repositories.user import UserRepository
+        user_repo = UserRepository(self.repository.db)
+        if not user_repo.get_by_id(user_id):
+            raise HTTPException(status_code=404, detail="Usuário não encontrado")
+        return self.repository.get_by_user_id(user_id)
+
     def update_tool(self, tool_id: UUID, tool_data: ToolUpdate):
         updated = self.repository.update(tool_id, tool_data)
         if not updated:
