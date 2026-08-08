@@ -39,6 +39,7 @@
   --color-text: #1B233C;
   --color-muted: #4F566A;
   --color-disabled: #8B909D;
+  --color-primary: #2054C5; /* contraste corrigido (era #9DB9F4, herdado do dark: ~2:1 contra branco) */
 }
 
 /* 2. Forest */
@@ -66,7 +67,7 @@ body.light[data-theme="forest"] {
   --color-border: #D9D8D0;
   --color-text: #1E2A26;
   --color-muted: #59655E;
-  --color-primary: #6DAE8D;
+  --color-primary: #2D7652; /* contraste corrigido (era #6DAE8D: ~2.6:1 contra branco) */
 }
 
 /* 3. Burgundy */
@@ -94,7 +95,7 @@ body.light[data-theme="burgundy"] {
   --color-border: #DDD0CE;
   --color-text: #32222A;
   --color-muted: #72646A;
-  --color-primary: #C289A2;
+  --color-primary: #91305A; /* contraste corrigido (era #C289A2: ~2.8:1 contra branco) */
 }
 
 /* 4. Amber */
@@ -122,7 +123,7 @@ body.light[data-theme="amber"] {
   --color-border: #DDD2BC;
   --color-text: #31271C;
   --color-muted: #74695C;
-  --color-primary: #D5A94D;
+  --color-primary: #8B681D; /* contraste corrigido (era #D5A94D: ~2.2:1 contra branco) */
 }
 
 /* 5. Ocean */
@@ -150,7 +151,7 @@ body.light[data-theme="ocean"] {
   --color-border: #D5DEE8;
   --color-text: #1A2B44;
   --color-muted: #58657A;
-  --color-primary: #6D98E6;
+  --color-primary: #1F4DA3; /* contraste corrigido (era #6D98E6: ~2.9:1 contra branco) */
 }
 
 /* 6. Slate */
@@ -178,7 +179,7 @@ body.light[data-theme="slate"] {
   --color-border: #D7D8D4;
   --color-text: #202734;
   --color-muted: #5F6774;
-  --color-primary: #7A97C8;
+  --color-primary: #35558D; /* contraste corrigido (era #7A97C8: ~3:1 contra branco) */
 }
 
 html {
@@ -198,9 +199,27 @@ html {
 body {
   background-color: var(--color-background);
   color: var(--color-text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative;
 }
+
+/* -------------------------------------------------------------------------
+   Tipografia — escala semântica (Plus Jakarta Sans)
+   ------------------------------------------------------------------------- */
+.text-label           { font-weight: 400; font-size: theme('fontSize.xxs'); }
+.text-caption          { font-weight: 400; font-size: theme('fontSize.xs'); }
+.text-body             { font-weight: 400; font-size: theme('fontSize.m'); }
+.text-body-italic      { font-weight: 400; font-style: italic; font-size: theme('fontSize.m'); }
+.text-button           { font-weight: 500; font-size: theme('fontSize.l'); }
+.text-tip              { font-weight: 400; font-style: italic; font-size: theme('fontSize.l'); }
+.text-subtitle         { font-weight: 600; font-size: theme('fontSize.m'); }
+.text-subtitle-italic  { font-weight: 400; font-style: italic; font-size: theme('fontSize.m'); }
+.text-h3               { font-weight: 500; font-size: theme('fontSize.xl'); }
+.text-h2               { font-weight: 600; font-size: theme('fontSize.xxl'); }
+.text-h1               { font-weight: 700; font-size: theme('fontSize.xxxl'); }
+/* backfill: classe já referenciada em templates sem estilo próprio — tratada como Caption */
+.text-meta             { font-weight: 400; font-size: theme('fontSize.xs'); opacity: 0.75; }
 
 .small-caps {
   font-variant: small-caps;
@@ -219,7 +238,7 @@ body {
   color: var(--color-background);
   padding: 10px 16px;
   border-radius: 0 0 8px 0;
-  font-family: 'Fraunces', serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-variant: small-caps;
   font-weight: 600;
   font-size: 0.8rem;
@@ -288,6 +307,29 @@ body.light .cursor-glow,
 }
 
 /* -------------------------------------------------------------------------
+   3b. Avatar interativo — olho/íris
+   ------------------------------------------------------------------------- */
+.eye-shape {
+  fill: #FFFFFF;
+  stroke: none;
+}
+
+.iris-shape {
+  fill: #000000;
+  stroke: #000000;
+}
+
+body.light .eye-shape {
+  fill: none;
+  stroke: currentColor;
+}
+
+body.light .iris-shape {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* -------------------------------------------------------------------------
    4. Botões magnéticos
    ------------------------------------------------------------------------- */
 [data-magnetic] {
@@ -302,7 +344,7 @@ body.light .cursor-glow,
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
-  font-family: 'Fraunces', serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-variant: small-caps;
   letter-spacing: 0.08em;
   font-size: 0.75rem;
@@ -406,7 +448,7 @@ body.light .cursor-glow,
   position: absolute;
   top: 14px;
   left: 14px;
-  font-family: 'Fraunces', serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-variant: small-caps;
   font-size: 0.7rem;
   padding: 4px 12px;
@@ -429,7 +471,7 @@ body.light .cursor-glow,
 }
 
 .project-spotlight__stack span {
-  font-family: 'Fraunces', serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 0.7rem;
   font-variant: small-caps;
   letter-spacing: 0.03em;

@@ -1,14 +1,16 @@
 <template>
   <main class="max-w-6xl mx-auto px-6 pb-24" ref="containerRef">
-    <h1 ref="titleRef" class="font-display text-3xl small-caps text-paper mb-2 font-semibold">Projetos em Destaque</h1>
-    <p ref="subRef" class="ink-muted mb-8 max-w-lg leading-relaxed">
-      Projetos-âncora desenvolvidos com alto nível de engenharia, arquitetura e atenção ao detalhe.
-    </p>
+    <div v-if="hasSpotlightProjects">
+      <h1 ref="titleRef" class="font-display text-3xl small-caps text-paper mb-2 font-semibold">Projetos em Destaque</h1>
+      <p ref="subRef" class="ink-muted mb-8 max-w-lg leading-relaxed">
+        Projetos-âncora desenvolvidos com alto nível de engenharia, arquitetura e atenção ao detalhe.
+      </p>
 
-    <!-- SPOTLIGHT PROJECTS -->
-    <section class="mb-16">
-      <ProjectSpotlight />
-    </section>
+      <!-- SPOTLIGHT PROJECTS -->
+      <section class="mb-16">
+        <ProjectSpotlight />
+      </section>
+    </div>
 
     <div class="border-t ink-border pt-12 mb-8">
       <h2 class="font-display text-2xl small-caps text-paper font-semibold mb-2">Outros Trabalhos</h2>
@@ -34,7 +36,7 @@
             v-for="project in filteredProjects" 
             :key="project.id" 
             :project="project"
-            @click="router.push(`/${route.params.user_id}/project-${project.id}`.replace('//', '/'))"
+            @click="openProject(project.id)"
           />
         </div>
         <p v-if="filteredProjects.length === 0" class="text-sm ink-muted col-span-full py-8 text-center">
@@ -55,6 +57,10 @@ import ProjectSpotlight from '~/components/ProjectSpotlight.vue'
 const { projects, loadData } = usePortfolioApi()
 const router = useRouter()
 const route = useRoute()
+
+const hasSpotlightProjects = computed(() => {
+  return projects.value.some(p => p.likes > 0)
+})
 
 const activeFilter = ref('all')
 
@@ -89,6 +95,10 @@ async function setFilter(filterId: string) {
       { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', stagger: 0.05 }
     )
   }
+}
+
+function openProject(projectId: string | number) {
+  window.open(`/${route.params.user_id}/projects/${projectId}`.replace('//', '/'), '_blank')
 }
 
 onMounted(() => {

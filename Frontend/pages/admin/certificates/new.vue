@@ -20,13 +20,23 @@
       </div>
   
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">URL do Certificado </label>
-        <input v-model="form.url" type="url"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Carga Horária (horas) *</label>
+        <input v-model.number="form.workload" type="number" required min="1" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
   
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Data </label>
-        <input v-model="form.date" type="date"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">URL do Certificado *</label>
+        <input v-model="form.digital_certificate_url" type="url" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+      </div>
+  
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Data de Emissão *</label>
+        <input v-model="form.issue_date" type="date" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+      </div>
+  
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Descrição</label>
+        <textarea v-model="form.description" rows="3" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors"></textarea>
       </div>
   
       
@@ -59,8 +69,10 @@ const { adminUserId } = useAuth()
 const form = ref({
   name_course: '',
   plataform: '',
-  url: '',
-  date: ''
+  workload: 0,
+  digital_certificate_url: '',
+  issue_date: '',
+  description: ''
 })
 
 const saving = ref(false)

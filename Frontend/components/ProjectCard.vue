@@ -20,7 +20,16 @@
       <div class="flex items-center justify-between text-xs text-muted">
         <span>{{ project.year }}</span>
         <span class="flex items-center gap-1 cursor-pointer hover:text-primary transition-colors" @click.stop="toggleLike">
-          <span class="icon-coracao" :class="project.liked ? 'bg-primary' : 'bg-muted'"></span>
+          <svg 
+            width="14" height="14" viewBox="0 0 24 24" 
+            :fill="project.liked ? 'currentColor' : 'none'" 
+            stroke="currentColor" stroke-width="2" 
+            stroke-linecap="round" stroke-linejoin="round"
+            class="transition-colors"
+            :class="project.liked ? 'text-primary' : ''"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
           {{ project.likes }}
         </span>
       </div>
@@ -30,31 +39,39 @@
 </template>
 
 <style scoped>
-.icon-coracao {
-  display: inline-block;
-  width: 0.875rem;
-  height: 0.875rem;
-  -webkit-mask-image: url('~/assets/icons/coracao.svg');
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
+/* Removed old heart icon mask */
 </style>
 
 <script setup lang="ts">
-import type { Project } from '~/composables/usePortfolioApi'
+import { usePortfolioApi, type Project } from '~/composables/usePortfolioApi'
 
 const props = defineProps<{
   project: Project
 }>()
 
-function toggleLike() {
-  if ((props.project as any).liked) {
-    props.project.likes--
-    ;(props.project as any).liked = false
+const { likeProject } = usePortfolioApi()
+
+async function toggleLike() {
+  const p = props.project as any
+  if (p.liked) {
+    p.likes--
+    p.liked = false
   } else {
-    props.project.likes++
-    ;(props.project as any).liked = true
+    p.likes++
+    p.liked = true
+  }
+  
+  try {
+    await likeProject(p.id, p.likes)
+  } catch (e) {
+    console.error('Failed to update likes', e)
+    if (p.liked) {
+      p.likes--
+      p.liked = false
+    } else {
+      p.likes++
+      p.liked = true
+    }
   }
 }
 

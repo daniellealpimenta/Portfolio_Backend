@@ -18,8 +18,23 @@
         <input v-model="form.plataform" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Descrição </label>
-        <input v-model="form.description" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Carga Horária (horas) *</label>
+        <input v-model.number="form.workload" type="number" required min="1" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+      </div>
+  
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">URL do Certificado *</label>
+        <input v-model="form.digital_certificate_url" type="url" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+      </div>
+  
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Data de Emissão *</label>
+        <input v-model="form.issue_date" type="date" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+      </div>
+  
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Descrição</label>
+        <textarea v-model="form.description" rows="3" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors"></textarea>
       </div>
       
       <div v-if="errorMsg" class="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
@@ -54,6 +69,9 @@ const { adminUserId } = useAuth()
 const form = ref({
   name_course: '',
   plataform: '',
+  workload: 0,
+  digital_certificate_url: '',
+  issue_date: '',
   description: ''
 })
 
@@ -74,6 +92,9 @@ function syncData() {
   if (item) {
       form.value.name_course = item.title || ''
       form.value.plataform = item.issuer || ''
+      form.value.workload = item.workload || 0
+      form.value.digital_certificate_url = item.digital_certificate_url || ''
+      form.value.issue_date = item.issue_date || ''
       form.value.description = item.description || ''
   }
 }

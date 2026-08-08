@@ -126,14 +126,20 @@
   <section class="max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-8 reveal-section" data-section="Ferramentas">
     <div class="bg-navypanel rounded-3xl p-6 border ink-border flex flex-col justify-between">
       <div>
-        <h3 class="font-display small-caps text-lg mb-5 text-paper font-semibold">🧰 Ferramentas</h3>
+        <h3 class="font-display small-caps text-lg mb-5 text-paper font-semibold flex items-center gap-2">
+          <img src="assets/icons/ferramentas.svg" alt="Ferramentas" class="w-6 h-6 object-contain" />
+          Ferramentas
+        </h3>
         <div class="grid grid-cols-3 gap-3" id="tools-grid-preview"></div>
       </div>
       <button id="tools-more" class="mt-6 self-start px-4 py-2 rounded-full bg-periwinkle text-navy text-xs font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">Ver Mais</button>
     </div>
     <div class="bg-navypanel rounded-3xl p-6 border ink-border flex flex-col justify-between">
       <div>
-        <h3 class="font-display small-caps text-lg mb-5 text-paper font-semibold">⚙️ Habilidades</h3>
+        <h3 class="font-display small-caps text-lg mb-5 text-paper font-semibold flex items-center gap-2">
+          <img src="assets/icons/habilidades.svg" alt="Habilidades" class="w-6 h-6 object-contain" />
+          Habilidades
+        </h3>
         <div class="grid grid-cols-3 gap-3" id="skills-grid-preview"></div>
       </div>
       <button id="skills-more" class="mt-6 self-start px-4 py-2 rounded-full bg-periwinkle text-navy text-xs font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">Ver Mais</button>
@@ -166,13 +172,22 @@
     <h2 class="font-display text-3xl small-caps tracking-widest text-paper font-semibold">Hire Me</h2>
     <p class="ink-muted mt-2 text-sm">Entre em contato comigo</p>
     <a href="#contact" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 rounded-full border ink-border text-sm font-display small-caps tracking-wide text-paper hover:bg-periwinkle hover:text-navy hover:border-periwinkle transition">
-      💬 Converse Comigo
+      <img src="assets/icons/balao de conversa.svg" alt="Contato" class="w-5 h-5 object-contain" />
+      Converse Comigo
     </a>
     <div class="flex justify-center gap-5 mt-10 ink-muted text-lg">
-      <a href="#" aria-label="Instagram" class="hover:text-paper transition">📷</a>
-      <a href="#" aria-label="GitHub" class="hover:text-paper transition">🐙</a>
-      <a href="#" aria-label="LinkedIn" class="hover:text-paper transition">💼</a>
-      <a href="#" aria-label="Medium" class="hover:text-paper transition">✍️</a>
+      <a href="#" aria-label="Instagram" class="hover:text-paper transition">
+        <img src="assets/icons/instagram-logo.png" alt="Instagram" class="w-6 h-6 object-contain opacity-70 hover:opacity-100 transition" />
+      </a>
+      <a href="#" aria-label="GitHub" class="hover:text-paper transition">
+        <img src="assets/icons/github-logo.png" alt="GitHub" class="w-6 h-6 object-contain opacity-70 hover:opacity-100 transition" />
+      </a>
+      <a href="#" aria-label="LinkedIn" class="hover:text-paper transition">
+        <img src="assets/icons/linkedin-logo.png" alt="LinkedIn" class="w-6 h-6 object-contain opacity-70 hover:opacity-100 transition" />
+      </a>
+      <a href="#" aria-label="Medium" class="hover:text-paper transition">
+        <img src="assets/icons/medium-logo.png" alt="Medium" class="w-6 h-6 object-contain opacity-70 hover:opacity-100 transition" />
+      </a>
     </div>
   </footer>
 </main>
@@ -181,7 +196,7 @@
 <div id="tools-modal" class="fixed inset-0 z-50 hidden items-center justify-center backdrop-blur bg-black/50 p-4">
   <div class="bg-navypanel rounded-3xl w-full max-w-3xl max-h-[80vh] overflow-y-auto modal-scroll p-6 border ink-border" id="tools-modal-panel">
     <div class="flex items-center justify-between mb-5">
-      <h3 class="font-display small-caps text-lg text-paper font-semibold">🧰 Ferramentas</h3>
+      <h3 class="font-display small-caps text-lg text-paper font-semibold">Ferramentas</h3>
       <button class="modal-close text-xl leading-none text-paper cursor-pointer p-1" data-target="tools-modal" aria-label="Fechar">✕</button>
     </div>
     <div class="grid grid-cols-3 sm:grid-cols-4 gap-3" id="tools-grid-full"></div>
@@ -191,7 +206,7 @@
 <div id="skills-modal" class="fixed inset-0 z-50 hidden items-center justify-center backdrop-blur bg-black/50 p-4">
   <div class="bg-navypanel rounded-3xl w-full max-w-2xl max-h-[80vh] overflow-y-auto modal-scroll p-6 border ink-border" id="skills-modal-panel">
     <div class="flex items-center justify-between mb-5">
-      <h3 class="font-display small-caps text-lg text-paper font-semibold">⚙️ Habilidades</h3>
+      <h3 class="font-display small-caps text-lg text-paper font-semibold">Habilidades</h3>
       <button class="modal-close text-xl leading-none text-paper cursor-pointer p-1" data-target="skills-modal" aria-label="Fechar">✕</button>
     </div>
     <div class="space-y-5" id="skills-list-full"></div>

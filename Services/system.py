@@ -36,7 +36,8 @@ class SystemService:
                     "date": str(p.date) if p.date else None,
                     "likes": p.likes,
                     "github_url": p.github_url,
-                    "test_url": p.test_url
+                    "test_url": p.test_url,
+                    "description": p.description
                 } for p in projects
             ],
             "skills": [
@@ -88,14 +89,33 @@ class SystemService:
             if 'projects' in data:
                 self.db.query(Project).filter(Project.user_id == user_id).delete()
                 for p in data['projects']:
+                    cat_val = p.get('category') or p.get('cat', 'FrontEnd')
+                    # Normalize category string to match Enum
+                    cat_val_lower = cat_val.lower()
+                    if 'mobile' in cat_val_lower:
+                        valid_cat = 'Mobile'
+                    elif 'front' in cat_val_lower:
+                        valid_cat = 'FrontEnd'
+                    elif 'back' in cat_val_lower:
+                        valid_cat = 'BackEnd'
+                    elif 'full' in cat_val_lower:
+                        valid_cat = 'FullStack'
+                    elif 'data' in cat_val_lower:
+                        valid_cat = 'DataScience'
+                    elif 'game' in cat_val_lower:
+                        valid_cat = 'GameDev'
+                    else:
+                        valid_cat = 'Other'
+                        
                     new_p = Project(
                         user_id=user_id,
                         name=p.get('name') or p.get('title', ''),
-                        category=p.get('category') or p.get('cat', 'FrontEnd'),
+                        category=valid_cat,
                         date=date.fromisoformat(p.get('date')) if p.get('date') else date.today(),
                         likes=p.get('likes', 0),
                         github_url=p.get('github_url') if p.get('github_url') else None,
-                        test_url=p.get('test_url') if p.get('test_url') else None
+                        test_url=p.get('test_url') if p.get('test_url') else None,
+                        description=p.get('description')
                     )
                     self.db.add(new_p)
             

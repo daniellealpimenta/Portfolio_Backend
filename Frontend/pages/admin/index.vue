@@ -106,7 +106,7 @@
         </p>
       </NuxtLink>
 
-      <!-- Depoimentos -->
+      <!-- Recomendações -->
       <NuxtLink to="/admin/recommendations" class="bg-surface border border-border rounded-2xl p-6 hover:-translate-y-1 transition-transform group">
         <div class="flex items-start justify-between mb-4">
           <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center">
@@ -114,10 +114,10 @@
           </div>
           <span class="text-meta text-xs text-muted group-hover:text-pink-400 transition-colors">Gerenciar &rarr;</span>
         </div>
-        <h3 class="text-h2 text-text text-xl mb-1">Depoimentos</h3>
+        <h3 class="text-h2 text-text text-xl mb-1">Recomendações</h3>
         <p class="text-body text-muted text-sm">
           <span v-if="loading" class="animate-pulse">...</span>
-          <span v-else>{{ testimonials.length }} depoimentos</span>
+          <span v-else>{{ testimonials.length }} recomendações</span>
         </p>
       </NuxtLink>
     </div>

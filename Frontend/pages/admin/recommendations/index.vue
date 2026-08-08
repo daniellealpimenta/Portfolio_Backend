@@ -1,13 +1,9 @@
 <template>
   <div class="space-y-6 max-w-5xl">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-h1 mb-1">Depoimentos</h1>
-        <p class="text-body text-muted text-sm">Gerencie depoimentos.</p>
-      </div>
-      <NuxtLink to="/admin/recommendations/new" class="btn-cta bg-primary text-background px-4 py-2 rounded-xl text-sm flex items-center gap-2 hover:opacity-90 transition-opacity">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Novo(a)
+    <div class="mb-8 flex items-center justify-between">
+      <h1 class="text-h2 m-0 text-text">Recomendações</h1>
+      <NuxtLink to="/admin/recommendations/new" class="bg-primary text-background px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+        + Adicionar
       </NuxtLink>
     </div>
 

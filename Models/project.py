@@ -23,6 +23,7 @@ class Project(BaseORMModel):
     category: Mapped[Category] = mapped_column(nullable=False)
     likes: Mapped[int] = mapped_column(default=0, nullable=False)
     date: Mapped[Date] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(nullable=True)
 
     # Relationship
     user: Mapped["User"] = relationship("User", back_populates="projects")

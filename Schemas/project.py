@@ -20,6 +20,7 @@ class ProjectBase(BaseModel):
     test_url: Optional[str] = Field(min_length=5, max_length=255, example="https://vercel.com/username/todo-list-app", default=None)
     category: Category = Field(example="FullStack")
     date: Date = Field(example="2023-08-15")
+    description: Optional[str] = Field(None, example="Projeto de automação financeira...")
 
 class ProjectCreate(ProjectBase):
     user_id: UUID  
@@ -30,6 +31,8 @@ class ProjectUpdate(BaseModel):
     test_url: Optional[str] = None
     category: Optional[Category] = None
     date: Optional[Date] = None
+    description: Optional[str] = None
+    likes: Optional[int] = None
 
 class ProjectResponse(ProjectBase):
     id: UUID

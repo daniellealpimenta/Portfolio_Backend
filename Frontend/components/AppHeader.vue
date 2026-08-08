@@ -1,7 +1,7 @@
 <template>
   <header ref="headerRef" class="force-dark fixed top-0 inset-x-0 z-40 bg-background backdrop-blur border-b border-border">
     <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-      <NuxtLink :to="userPrefix" class="flex items-center gap-2 text-meta text-base text-text" id="logo">
+      <NuxtLink :to="{ path: userPrefix, hash: '#hire-me' }" class="flex items-center gap-2 text-meta text-base text-text hover:text-primary transition-colors" id="logo">
         <svg class="logo-bubble" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
           <path d="M12 3C6.9 3 3 6.4 3 10.6c0 2.4 1.3 4.6 3.4 6.1-.1 1-.5 2.2-1.3 3.3 1.6-.3 3-1 4.1-1.8 .9.2 1.8.4 2.8.4 5.1 0 9-3.4 9-7.6S17.1 3 12 3Z"/>
         </svg>

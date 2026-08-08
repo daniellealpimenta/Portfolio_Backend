@@ -13,21 +13,30 @@
         <label class="block text-meta text-xs text-muted mb-2">Nome do Autor *</label>
         <input v-model="form.name_recommender" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
+  
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Depoimento *</label>
-        <input v-model="form.description" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Experiência Relacionada *</label>
+        <select v-model="form.experience_id" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors appearance-none">
+          <option value="" disabled>Selecione uma experiência</option>
+          <option v-for="exp in experiences" :key="exp.id" :value="exp.id">
+            {{ exp.title }}
+          </option>
+        </select>
       </div>
+
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Data (YYYY-MM-DD) </label>
-        <input v-model="form.date" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">URL do LinkedIn</label>
+        <input v-model="form.linkedin_recommender_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors" placeholder="https://linkedin.com/in/...">
       </div>
+
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">LinkedIn do Autor </label>
-        <input v-model="form.linkedin_recommender_url" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Data da Recomendação</label>
+        <input v-model="form.date" type="date" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
+  
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">ID da Experiência vinculada </label>
-        <input v-model="form.experience_id" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Descrição *</label>
+        <textarea v-model="form.description" rows="4" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors"></textarea>
       </div>
       
       <div v-if="errorMsg" class="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
@@ -56,7 +65,7 @@ const router = useRouter()
 const route = useRoute()
 const id = route.params.id as string
 
-const { recommendations, updateRecommendation, loadData } = usePortfolioApi()
+const { testimonials, updateRecommendation, experiences, loadData } = usePortfolioApi()
 const { adminUserId } = useAuth()
 
 const form = ref({
@@ -71,16 +80,16 @@ const saving = ref(false)
 const errorMsg = ref('')
 
 onMounted(async () => {
-  if (recommendations.value.length === 0) {
-    await loadData()
+  if (testimonials.value.length === 0 || experiences.value.length === 0) {
+    await loadData(adminUserId.value || '')
   }
   syncData()
 })
 
-watch(recommendations, () => syncData())
+watch(testimonials, () => syncData())
 
 function syncData() {
-  const item = recommendations.value.find((x: any) => x.id === id || x.id == id)
+  const item = testimonials.value.find((x: any) => x.id === id || x.id == id)
   if (item) {
       form.value.name_recommender = item.name || ''
       form.value.description = item.quote || ''

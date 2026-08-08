@@ -172,23 +172,23 @@
         >
           <!-- Left Eye Group -->
           <g id="left-eye" transform="translate(245, 255) scale(1.15)">
-            <path d="M68.9443 6.66774C55.4443 0.667758 23.3443 -3.43209 2.94434 28.1678C7.44434 35.6679 55.4443 52.6678 84.9443 20.1678C82.7777 17.0012 76.5443 9.86778 68.9443 6.66774Z" stroke="currentColor" stroke-width="5"/>
-            <g id="left-iris" :style="{ 
-              transform: `translate(${currentIrisL.x + 44 - 17}px, ${currentIrisL.y + 21 - 17}px) scale(0.75)`,
+            <path class="eye-shape" d="M68.9443 6.66774C55.4443 0.667758 23.3443 -3.43209 2.94434 28.1678C7.44434 35.6679 55.4443 52.6678 84.9443 20.1678C82.7777 17.0012 76.5443 9.86778 68.9443 6.66774Z" stroke="currentColor" stroke-width="5"/>
+            <g id="left-iris" :style="{
+              transform: `translate(${currentIrisL.x + 44 - 17}px, ${currentIrisL.y + 21 - 17}px) scale(0.95)`,
               transformOrigin: '17px 17px'
             }">
-              <path d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" fill="currentColor" stroke="currentColor" stroke-width="4"/>
+              <path class="iris-shape" d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" stroke="currentColor" stroke-width="4"/>
             </g>
           </g>
 
           <!-- Right Eye Group -->
           <g id="right-eye" transform="translate(420, 250) scale(1.15) rotate(6)">
-            <path d="M68.3192 8.52892C54.7374 -0.346415 16.5071 -3.47889 2.92529 28.3679C9.96772 36.199 61.3774 43.7169 85.9253 23.6691C83.9132 19.4925 75.8647 12.1834 68.3192 8.52892Z" stroke="currentColor" stroke-width="5"/>
-            <g id="right-iris" :style="{ 
-              transform: `translate(${currentIrisR.x + 45 - 17}px, ${currentIrisR.y + 20 - 17}px) scale(0.75)`,
+            <path class="eye-shape" d="M68.3192 8.52892C54.7374 -0.346415 16.5071 -3.47889 2.92529 28.3679C9.96772 36.199 61.3774 43.7169 85.9253 23.6691C83.9132 19.4925 75.8647 12.1834 68.3192 8.52892Z" stroke="currentColor" stroke-width="5"/>
+            <g id="right-iris" :style="{
+              transform: `translate(${currentIrisR.x + 45 - 17}px, ${currentIrisR.y + 20 - 17}px) scale(0.95)`,
               transformOrigin: '17px 17px'
             }">
-              <path d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" fill="currentColor" stroke="currentColor" stroke-width="4"/>
+              <path class="iris-shape" d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" stroke="currentColor" stroke-width="4"/>
             </g>
           </g>
         </g>

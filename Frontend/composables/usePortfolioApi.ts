@@ -37,6 +37,10 @@ export interface Testimonial {
   id: string | number
   name: string
   quote: string
+  experience_id?: string | number
+  linkedin_recommender_url?: string
+  date?: string
+  description?: string
 }
 
 export interface User {
@@ -128,11 +132,27 @@ export function usePortfolioApi() {
         }
 
         if (certRes.status === 'fulfilled' && Array.isArray(certRes.value)) {
-          certificates.value = certRes.value.map(c => ({ id: c.id, title: c.name_course || c.name || c.title, issuer: c.plataform || c.institution || c.issuer }))
+          certificates.value = certRes.value.map(c => ({ 
+            id: c.id, 
+            title: c.name_course || c.name || c.title, 
+            issuer: c.plataform || c.institution || c.issuer,
+            workload: c.workload || 0,
+            issue_date: c.issue_date || '',
+            digital_certificate_url: c.digital_certificate_url || '',
+            description: c.description || ''
+          }))
         }
 
         if (testRes.status === 'fulfilled' && Array.isArray(testRes.value)) {
-          testimonials.value = testRes.value.map(r => ({ id: r.id, name: r.name_recommender || r.author || r.name, quote: r.description || r.content || r.quote }))
+          testimonials.value = testRes.value.map(r => ({ 
+            id: r.id, 
+            name: r.name_recommender || r.author || r.name, 
+            quote: r.description || r.content || r.quote,
+            description: r.description || r.content || r.quote,
+            experience_id: r.experience_id || '',
+            linkedin_recommender_url: r.linkedin_recommender_url || '',
+            date: r.date || ''
+          }))
         }
       }
     } catch (e) {
@@ -161,6 +181,10 @@ export function usePortfolioApi() {
     const res = await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'PATCH', body: data })
     if (user.value) await loadData(user.value.id)
     return res
+  }
+  async function likeProject(id: string, newLikes: number) {
+    // Only patches the likes without triggering a full loadData reload
+    return await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'PATCH', body: { likes: newLikes } })
   }
   async function deleteProject(id: string) {
     await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'DELETE' })
@@ -287,6 +311,7 @@ export function usePortfolioApi() {
     updateUser,
     createProject,
     updateProject,
+    likeProject,
     deleteProject,
     getProjectImages,
     createProjectImage,

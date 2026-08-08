@@ -1,0 +1,247 @@
+{
+    "projects": [
+        {
+            "name": "AgroBot",
+            "github_url": null,
+            "test_url": null,
+            "category": "Mobile (iOS)",
+            "date": "2026-03-01",
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "DioramaVirtual (Challenge15)",
+            "github_url": null,
+            "test_url": null,
+            "category": "Mobile (iOS)",
+            "date": "2025-09-01",
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "Refatoração de Sistema de Manutenção (Angular)",
+            "github_url": null,
+            "test_url": null,
+            "category": "FullStack",
+            "date": "2024-09-01",
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "Hire Me - Portfólio Pessoal",
+            "github_url": null,
+            "test_url": null,
+            "category": "Frontend",
+            "date": "2026-07-01",
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "Croak: Make The Magic",
+            "github_url": null,
+            "test_url": "https://apps.apple.com/",
+            "category": "Mobile (iOS)",
+            "date": "2025-06-01",
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        }
+    ],
+    "project-images": [
+        {
+            "image_path": "",
+            "description": "",
+            "project_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        }
+    ],
+    "skills": [
+        {
+            "name": "Desenvolvimento iOS",
+            "description": "Construção de aplicativos iOS end-to-end, do levantamento de requisitos à publicação na App Store, com foco em performance e experiência do usuário.",
+            "icon_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "Desenvolvimento Fullstack Web",
+            "description": "Construção de aplicações web completas, do backend ao banco de dados, incluindo integração e consumo de APIs REST.",
+            "icon_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "Backend & Automação",
+            "description": "Desenvolvimento de APIs, automação de processos e integração de serviços com foco em eficiência operacional.",
+            "icon_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "Modelagem de Dados & Arquitetura",
+            "description": "Modelagem de dados, arquitetura de software e aplicação de Design Patterns e POO em soluções escaláveis.",
+            "icon_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "Inteligência Artificial Embarcada",
+            "description": "Integração de modelos CoreML/CreateML em aplicações iOS para funcionalidades de IA embarcada.",
+            "icon_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "name": "UI/UX e Prototipação",
+            "description": "Design de interfaces, prototipação e organização de fluxos de navegação no Figma.",
+            "icon_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        }
+    ],
+    "tools": [
+        {
+            "name": "Swift",
+            "icon_url": null
+        },
+        {
+            "name": "SwiftUI",
+            "icon_url": null
+        },
+        {
+            "name": "UIKit",
+            "icon_url": null
+        },
+        {
+            "name": "CoreData",
+            "icon_url": null
+        },
+        {
+            "name": "CloudKit",
+            "icon_url": null
+        },
+        {
+            "name": "CoreML",
+            "icon_url": null
+        },
+        {
+            "name": "CreateML",
+            "icon_url": null
+        },
+        {
+            "name": "Combine",
+            "icon_url": null
+        },
+        {
+            "name": "XCTest",
+            "icon_url": null
+        },
+        {
+            "name": "Python",
+            "icon_url": null
+        },
+        {
+            "name": "FastAPI",
+            "icon_url": null
+        },
+        {
+            "name": "Node.js",
+            "icon_url": null
+        },
+        {
+            "name": "PHP",
+            "icon_url": null
+        },
+        {
+            "name": "Laravel",
+            "icon_url": null
+        },
+        {
+            "name": "JavaScript",
+            "icon_url": null
+        },
+        {
+            "name": "TypeScript",
+            "icon_url": null
+        },
+        {
+            "name": "React",
+            "icon_url": null
+        },
+        {
+            "name": "Vue.js",
+            "icon_url": null
+        },
+        {
+            "name": "Angular",
+            "icon_url": null
+        },
+        {
+            "name": "HTML",
+            "icon_url": null
+        },
+        {
+            "name": "CSS",
+            "icon_url": null
+        },
+        {
+            "name": "MySQL",
+            "icon_url": null
+        },
+        {
+            "name": "MongoDB",
+            "icon_url": null
+        },
+        {
+            "name": "Git",
+            "icon_url": null
+        },
+        {
+            "name": "GitHub",
+            "icon_url": null
+        },
+        {
+            "name": "Docker",
+            "icon_url": null
+        },
+        {
+            "name": "Figma",
+            "icon_url": null
+        },
+        {
+            "name": "Java",
+            "icon_url": null
+        },
+        {
+            "name": "C",
+            "icon_url": null
+        }
+    ],
+    "experiences": [
+        {
+            "position": "Técnico de Infraestrutura de TI (Data Center)",
+            "company": "Banco Sicoob (CCS)",
+            "description": "Desenvolvimento de automações e serviços para facilitar o acesso e a visibilidade de dados da infraestrutura do Data Center. Criação de aplicações com Python, FastAPI, Node.js e Angular para otimizar processos internos, aumentar a eficiência operacional e fornecer insights estratégicos. Integração de sistemas e suporte à operação de TI com foco em alta disponibilidade, performance e políticas de segurança da informação e cibernética.",
+            "start_date": "2026-06-01",
+            "exit_date": null,
+            "image_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "position": "Desenvolvedor iOS",
+            "company": "Apple Developer Academy",
+            "description": "Condução completa do ciclo de desenvolvimento de aplicações iOS, do levantamento de requisitos à publicação na App Store, seguindo boas práticas e diretrizes do ecossistema Apple. Definição de arquitetura, modelagem de dados e integração de funcionalidades de IA embarcada. Aplicativos publicados na App Store com downloads em mais de 7 países; o app \"Croak: Make The Magic\" alcançou Top 19 na categoria Jogos Casuais.",
+            "start_date": "2025-02-01",
+            "exit_date": null,
+            "image_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "position": "Estagiário de Desenvolvimento Fullstack",
+            "company": "Senac DF",
+            "description": "Evolução e modernização de sistemas institucionais, refatoração de módulos críticos com foco em performance, usabilidade e segurança. Desenvolvimento de soluções internas completas, do backend ao banco de dados e mensageria, aumentando o controle de ativos e eliminando custos com plataformas externas.",
+            "start_date": "2024-07-01",
+            "exit_date": "2025-02-01",
+            "image_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        },
+        {
+            "position": "Desenvolvedor",
+            "company": "FineInk",
+            "description": "Levantamento de requisitos e modelagem de regras de negócio para uma solução interna. Desenvolvimento de sistema de automação de orçamentos e padronização do fluxo de atendimento, reduzindo o tempo de resposta aos clientes.",
+            "start_date": "2023-04-01",
+            "exit_date": "2024-03-01",
+            "image_url": null,
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        }
+    ],
+    "certificates": [],
+    "recommendations": []
+}

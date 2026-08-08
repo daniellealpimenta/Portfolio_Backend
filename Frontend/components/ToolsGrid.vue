@@ -1,7 +1,10 @@
 <template>
   <div class="bg-navypanel rounded-3xl p-6 border ink-border flex flex-col justify-between">
     <div>
-      <h3 class="font-display small-caps text-lg mb-5 text-paper font-semibold">🧰 Ferramentas</h3>
+      <div class="flex items-center gap-2 mb-5">
+        <PhWrench :size="24" weight="fill" class="text-text" />
+        <h3 class="font-display small-caps text-lg text-text font-semibold">Ferramentas</h3>
+      </div>
       <div class="grid grid-cols-3 gap-3">
         <div 
           v-for="tool in previewTools" 
@@ -15,7 +18,7 @@
     <button 
       v-if="tools.length > 6"
       @click="showModal = true" 
-      class="mt-6 self-start px-4 py-2 rounded-full bg-periwinkle text-navy text-xs font-display small-caps tracking-wide hover:opacity-85 transition font-semibold cursor-pointer"
+      class="mt-6 self-start px-5 py-2.5 rounded-full bg-primary text-background text-sm font-display small-caps tracking-wide hover:opacity-85 transition font-semibold cursor-pointer"
     >
       Ver Mais
     </button>
@@ -25,24 +28,27 @@
       <div 
         v-if="showModal" 
         ref="modalRef" 
-        class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur bg-black/50 p-4"
+        class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur bg-black/60 p-4"
         @click.self="closeModal"
       >
         <div 
           ref="panelRef" 
-          class="bg-navypanel rounded-3xl w-full max-w-3xl max-h-[80vh] overflow-y-auto modal-scroll p-6 border ink-border"
+          class="bg-background rounded-3xl w-full max-w-3xl max-h-[80vh] overflow-y-auto modal-scroll p-6 border border-border shadow-2xl"
         >
           <div class="flex items-center justify-between mb-5">
-            <h3 class="font-display small-caps text-lg text-paper font-semibold">🧰 Ferramentas</h3>
+            <div class="flex items-center gap-2">
+              <PhWrench :size="24" weight="fill" class="text-text" />
+              <h3 class="font-display small-caps text-lg text-text font-semibold">Ferramentas</h3>
+            </div>
             <button @click="closeModal" class="text-xl leading-none text-paper cursor-pointer p-1" aria-label="Fechar">✕</button>
           </div>
           <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
             <div 
               v-for="tool in tools" 
               :key="tool.id" 
-              class="icon-tile rounded-xl bg-navy p-3 border ink-border flex flex-col items-center justify-center text-center gap-1.5"
+              class="icon-tile rounded-xl bg-surface p-3 border border-border flex flex-col items-center justify-center text-center gap-1.5"
             >
-              <span class="text-xs font-display small-caps text-paper font-medium">{{ tool.name }}</span>
+              <span class="text-xs font-display small-caps text-text font-medium">{{ tool.name }}</span>
             </div>
           </div>
         </div>
@@ -53,6 +59,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
+import { PhWrench } from '@phosphor-icons/vue'
 import { gsap } from 'gsap'
 import type { Tool } from '~/composables/usePortfolioApi'
 

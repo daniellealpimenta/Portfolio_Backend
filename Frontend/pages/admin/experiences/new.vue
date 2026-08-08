@@ -11,7 +11,7 @@
       
       <div>
         <label class="block text-meta text-xs text-muted mb-2">Cargo / Título *</label>
-        <input v-model="form.role" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <input v-model="form.position" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
   
       <div>
@@ -26,15 +26,18 @@
   
       <div>
         <label class="block text-meta text-xs text-muted mb-2">Data de Fim </label>
-        <input v-model="form.end_date" type="date"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <input v-model="form.exit_date" type="date"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
   
       <div>
         <label class="block text-meta text-xs text-muted mb-2">Descrição </label>
-        <input v-model="form.description" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <textarea v-model="form.description" rows="3" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors"></textarea>
       </div>
   
-      
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">URL da Imagem</label>
+        <input v-model="form.image_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors" placeholder="https://...">
+      </div>
       <div v-if="errorMsg" class="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
         {{ errorMsg }}
       </div>
@@ -62,11 +65,12 @@ const { createExperience } = usePortfolioApi()
 const { adminUserId } = useAuth()
 
 const form = ref({
-  role: '',
+  position: '',
   company: '',
   start_date: '',
-  end_date: '',
-  description: ''
+  exit_date: '',
+  description: '',
+  image_url: ''
 })
 
 const saving = ref(false)

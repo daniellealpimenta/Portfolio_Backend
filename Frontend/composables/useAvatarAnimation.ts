@@ -1,5 +1,5 @@
 import { ref, onMounted, onUnmounted, reactive } from 'vue'
-import type { Point, Transform } from './avatarTypes'
+import type { Point, Transform } from './types'
 
 export function useAvatarAnimation() {
   const containerRef = ref<HTMLElement | null>(null)

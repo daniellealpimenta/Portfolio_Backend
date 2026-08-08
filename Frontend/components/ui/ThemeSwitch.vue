@@ -15,20 +15,20 @@
         class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow-lg ring-0 transition duration-200 ease-in-out flex items-center justify-center"
         :class="currentMode === 'light' ? 'translate-x-5 bg-text' : 'translate-x-0 bg-primary'"
       >
-        <Moon v-if="currentMode !== 'light'" class="w-3 h-3 text-background" />
-        <Sun v-else class="w-3 h-3 text-background" />
+        <PhMoon weight="fill" v-if="currentMode !== 'light'" class="w-3 h-3 text-background" />
+        <PhSun weight="fill" v-else class="w-3 h-3 text-background" />
       </span>
     </button>
     <label htmlFor="icon-label" class="cursor-pointer" @click="toggleMode">
       <span class="sr-only">Toggle switch</span>
-      <Moon v-if="currentMode !== 'light'" class="w-4 h-4 text-muted hover:text-text transition" aria-hidden="true" />
-      <Sun v-else class="w-4 h-4 text-primary hover:text-text transition" aria-hidden="true" />
+      <PhMoon weight="fill" v-if="currentMode !== 'light'" class="w-4 h-4 text-muted hover:text-text transition" aria-hidden="true" />
+      <PhSun weight="fill" v-else class="w-4 h-4 text-primary hover:text-text transition" aria-hidden="true" />
     </label>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Sun, Moon } from 'lucide-vue-next'
+import { PhSun, PhMoon } from '@phosphor-icons/vue'
 import { useTheme } from '~/composables/useTheme'
 
 const { currentMode, toggleMode } = useTheme()

@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="w-full min-h-[600px] h-[75vh] flex flex-col items-center justify-center bg-navy rounded-3xl border ink-border overflow-hidden relative"
+    class="w-full min-h-[700px] h-[80vh] flex flex-col items-center justify-center bg-transparent overflow-hidden relative"
     @click="handleContainerClick"
   >
     <div class="relative w-full max-w-4xl h-full flex items-center justify-center">
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Orbit Ring -->
-        <div class="absolute w-96 h-96 rounded-full border border-paper/10"></div>
+        <div class="absolute w-[32rem] h-[32rem] rounded-full border-2 border-dashed border-border/40"></div>
 
         <!-- Timeline Orbit Nodes -->
         <div
@@ -56,7 +56,7 @@
                 : 'bg-navypanel text-paper border-paper/40'
             ]"
           >
-            <component :is="item.icon" :size="16" />
+            <component :is="item.icon" :size="16" weight="fill" />
           </div>
 
           <!-- Node Title -->
@@ -92,7 +92,7 @@
             <div class="mt-4 pt-3 border-t border-paper/10">
               <div class="flex justify-between items-center text-xs mb-1">
                 <span class="flex items-center gap-1 text-mist">
-                  <Zap :size="10" /> Nível de Domínio
+                  <PhLightning :size="10" weight="fill" /> Nível de Domínio
                 </span>
                 <span class="font-mono text-periwinkle">{{ item.energy }}%</span>
               </div>
@@ -107,7 +107,7 @@
             <!-- Connected Nodes -->
             <div v-if="item.relatedIds.length > 0" class="mt-4 pt-3 border-t border-paper/10">
               <div class="flex items-center mb-2 gap-1 text-mist text-[11px]">
-                <Link :size="10" />
+                <PhLink :size="10" weight="fill" />
                 <span class="uppercase tracking-wider font-medium">Nós Conectados</span>
               </div>
               <div class="flex flex-wrap gap-1">
@@ -118,7 +118,7 @@
                   class="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded border border-paper/20 bg-navy/50 hover:bg-periwinkle hover:text-navy transition-all font-display small-caps"
                 >
                   {{ getRelatedItemTitle(relId) }}
-                  <ArrowRight :size="8" />
+                  <PhArrowRight :size="8" weight="fill" />
                 </button>
               </div>
             </div>
@@ -131,7 +131,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, type Component } from 'vue'
-import { ArrowRight, Link, Zap } from 'lucide-vue-next'
+import { PhArrowRight, PhLink, PhLightning } from '@phosphor-icons/vue'
 
 export interface TimelineItem {
   id: number
@@ -239,7 +239,7 @@ function centerViewOnNode(nodeId: number) {
 
 function calculateNodePosition(index: number, total: number) {
   const angle = ((index / total) * 360 + rotationAngle.value) % 360
-  const radius = 200
+  const radius = 256 // Increased from 200 to match larger ring
   const radian = (angle * Math.PI) / 180
 
   const x = radius * Math.cos(radian) + centerOffset.value.x

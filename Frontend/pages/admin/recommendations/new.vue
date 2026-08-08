@@ -4,7 +4,7 @@
       <NuxtLink to="/admin/recommendations" class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center text-muted hover:text-text hover:bg-background transition-colors">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       </NuxtLink>
-      <h1 class="text-h2 m-0 text-text">Novo(a) Depoimentos</h1>
+      <h1 class="text-h2 m-0 text-text">Nova Recomendação</h1>
     </div>
 
     <form @submit.prevent="handleSubmit" class="bg-surface border border-border rounded-2xl p-6 space-y-6">
@@ -15,13 +15,28 @@
       </div>
   
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Empresa </label>
-        <input v-model="form.company" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Experiência Relacionada *</label>
+        <select v-model="form.experience_id" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors appearance-none">
+          <option value="" disabled>Selecione uma experiência</option>
+          <option v-for="exp in experiences" :key="exp.id" :value="exp.id">
+            {{ exp.title }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">URL do LinkedIn</label>
+        <input v-model="form.linkedin_recommender_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors" placeholder="https://linkedin.com/in/...">
+      </div>
+
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Data da Recomendação</label>
+        <input v-model="form.date" type="date" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
   
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Depoimento *</label>
-        <input v-model="form.description" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Descrição *</label>
+        <textarea v-model="form.description" rows="4" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors"></textarea>
       </div>
   
       
@@ -40,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { definePageMeta, useRouter } from '#imports'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
 import { useAuth } from '~/composables/useAuth'
@@ -48,12 +63,20 @@ import { useAuth } from '~/composables/useAuth'
 definePageMeta({ layout: 'admin', middleware: 'auth' })
 
 const router = useRouter()
-const { createRecommendation } = usePortfolioApi()
+const { createRecommendation, experiences, loadData } = usePortfolioApi()
 const { adminUserId } = useAuth()
+
+onMounted(async () => {
+  if (experiences.value.length === 0 && adminUserId.value) {
+    await loadData(adminUserId.value)
+  }
+})
 
 const form = ref({
   name_recommender: '',
-  company: '',
+  experience_id: '',
+  linkedin_recommender_url: '',
+  date: '',
   description: ''
 })
 

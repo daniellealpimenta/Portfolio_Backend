@@ -5,7 +5,7 @@
       class="p-1.5 text-muted hover:text-text transition-colors rounded-full hover:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
       aria-label="Selecionar Tema"
     >
-      <Settings class="w-4 h-4" />
+      <PhGear weight="fill" class="w-4 h-4" />
     </button>
 
     <div
@@ -29,7 +29,7 @@
           ></span>
           {{ theme.name }}
         </span>
-        <Check v-if="currentTheme === theme.id" class="w-4 h-4" />
+        <PhCheck v-if="currentTheme === theme.id" weight="fill" class="w-4 h-4" />
       </button>
     </div>
   </div>
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { Settings, Check } from 'lucide-vue-next'
+import { PhGear, PhCheck } from '@phosphor-icons/vue'
 import { useTheme, type ThemeName } from '~/composables/useTheme'
 
 const { currentTheme, setTheme } = useTheme()

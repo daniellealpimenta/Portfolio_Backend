@@ -57,7 +57,7 @@
           :glow-color="getGlowColor(index)"
           custom-size
           class="cursor-pointer transition-transform hover:-translate-y-1"
-          @click="selectedProject = project"
+          @click="openProject(project.id)"
         >
           <div class="flex flex-col justify-between h-full p-2">
             <div>
@@ -74,7 +74,16 @@
               <div class="flex items-center justify-between text-xs text-muted">
                 <span>{{ project.year }}</span>
                 <span class="flex items-center gap-1 cursor-pointer hover:text-primary transition-colors" @click.stop="toggleLike(project)">
-                  <span class="icon-coracao" :class="project.liked ? 'bg-primary' : 'bg-currentColor'"></span>
+                  <svg 
+                    width="14" height="14" viewBox="0 0 24 24" 
+                    :fill="project.liked ? 'currentColor' : 'none'" 
+                    stroke="currentColor" stroke-width="2" 
+                    stroke-linecap="round" stroke-linejoin="round"
+                    class="transition-colors"
+                    :class="project.liked ? 'text-primary' : ''"
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
                   {{ project.likes }}
                 </span>
               </div>
@@ -104,8 +113,8 @@
       ref="testimonialsSectionRef" 
       class="max-w-4xl mx-auto px-6 pb-24 space-y-14"
     >
-      <h2 class="font-display text-2xl small-caps text-text font-semibold text-center mb-8">Depoimentos</h2>
-      <TestimonialList :testimonials="testimonials" />
+      <h2 class="font-display text-2xl small-caps text-text font-semibold text-center mb-8">Recomendações</h2>
+      <RecommendationList :recommendations="testimonials" />
     </section>
 
     <!-- CONTACT SECTION -->
@@ -113,21 +122,25 @@
       <ContactForm />
     </section>
 
-    <!-- PROJECT MODAL -->
-    <ProjectModal 
-      :project="selectedProject" 
-      :is-open="!!selectedProject" 
-      @close="selectedProject = null" 
-    />
+    <!-- HIRE ME SECTION -->
+    <section id="hire-me" class="max-w-4xl mx-auto px-6 pb-24 text-center mt-20">
+      <h2 class="font-display text-6xl md:text-7xl small-caps tracking-widest text-text font-bold mb-6">Hire Me</h2>
+      <p class="text-muted text-xl md:text-2xl mb-12">Tem uma ideia em mente? Entre em contato comigo.</p>
+      <a :href="whatsappLink" :target="whatsappLink.startsWith('http') ? '_blank' : undefined" :rel="whatsappLink.startsWith('http') ? 'noopener noreferrer' : undefined" class="inline-flex items-center gap-3 px-10 py-5 rounded-full border border-border text-lg md:text-xl font-display small-caps tracking-wide text-text hover:bg-primary hover:text-background hover:border-primary transition shadow-xl hover:shadow-2xl hover:-translate-y-1 bg-surface">
+        <span class="icon-whatsapp"></span>
+        Converse Comigo
+      </a>
+    </section>
   </div>
 </template>
 
 <style scoped>
-.icon-coracao {
+.icon-whatsapp {
   display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  -webkit-mask-image: url('~/assets/icons/coracao.svg');
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: currentColor;
+  -webkit-mask-image: url('~/assets/icons/whatsapp-logo.svg');
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -143,7 +156,7 @@ import InteractiveAvatar from '~/components/ui/InteractiveAvatar.vue'
 import HeroBackground from '~/components/ui/HeroBackground.vue'
 
 const route = useRoute()
-const { user, projects, tools, skills, testimonials, loadData } = usePortfolioApi()
+const { user, projects, tools, skills, testimonials, loadData, likeProject } = usePortfolioApi()
 
 const selectedProject = ref<Project | null>(null)
 const featuredProjects = computed(() => projects.value.slice(0, 3))
@@ -153,7 +166,7 @@ function getGlowColor(index: number): 'blue' | 'purple' | 'green' {
   return colors[index % colors.length]
 }
 
-function toggleLike(project: any) {
+async function toggleLike(project: any) {
   if (project.liked) {
     project.likes--
     project.liked = false
@@ -161,7 +174,35 @@ function toggleLike(project: any) {
     project.likes++
     project.liked = true
   }
+  
+  try {
+    await likeProject(project.id as string, project.likes)
+  } catch (e) {
+    console.error('Failed to update likes', e)
+    // Revert optimistic update on failure
+    if (project.liked) {
+      project.likes--
+      project.liked = false
+    } else {
+      project.likes++
+      project.liked = true
+    }
+  }
 }
+
+function openProject(projectId: string | number) {
+  navigateTo(`/${route.params.user_id}/projects/${projectId}`.replace('//', '/'))
+}
+
+const whatsappLink = computed(() => {
+  if (!user.value || !user.value.cellphone_number) {
+    return '/#contact'
+  }
+  const cleanPhone = user.value.cellphone_number.replace(/\D/g, '')
+  const firstName = user.value.name ? user.value.name.split(' ')[0] : 'Daniel'
+  const message = encodeURIComponent(`Olá ${firstName}, vi o seu portfólio e gostaria de conversar sobre um projeto ou oportunidade!`)
+  return `https://wa.me/${cleanPhone}?text=${message}`
+})
 
 const containerRef = ref<HTMLElement | null>(null)
 const heroAvatarRef = ref<HTMLElement | null>(null)

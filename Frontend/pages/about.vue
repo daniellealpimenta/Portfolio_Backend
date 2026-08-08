@@ -8,7 +8,9 @@
           <img v-if="user?.avatar_url" :src="user.avatar_url" alt="Avatar" class="w-full h-full object-cover" />
           <svg v-else width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#8FA0C4" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/></svg>
         </div>
-        <button @click="handleDownload" data-magnetic class="text-meta text-xs px-4 py-2 rounded-full border border-border text-muted hover:text-text transition">⬇ Currículo PDF</button>
+        <button @click="handleDownload" data-magnetic class="text-meta text-xs px-4 py-2 rounded-full border border-border text-muted hover:text-text transition inline-flex items-center gap-1.5">
+          <PhArrowLineDown :size="14" /> Currículo PDF
+        </button>
       </div>
       <div ref="aboutInfoRef">
         <h1 class="text-h1 mb-3">{{ user?.name || 'Daniel' }}</h1>
@@ -39,7 +41,7 @@
     <!-- CERTIFICATES SECTION -->
     <section ref="certSectionRef" class="mb-20">
       <div class="flex items-center gap-2 mb-8">
-        <span class="icon-certificado text-text"></span>
+        <PhGraduationCap :size="28" weight="fill" class="text-text" />
         <h2 class="font-display text-2xl small-caps text-text font-semibold">Certificados & Cursos</h2>
       </div>
       <CertificateList :certificates="certificates" />
@@ -50,7 +52,7 @@
       <!-- VALORES -->
       <div>
         <div class="flex items-center gap-2 mb-6">
-          <span class="icon-valores text-text"></span>
+          <PhSeal :size="28" weight="fill" class="text-text" />
           <h2 class="font-display text-2xl small-caps text-text font-semibold">Valores e Hobbies</h2>
         </div>
         <p class="text-body text-muted leading-relaxed">
@@ -61,7 +63,7 @@
       <!-- POR QUE ME CONTRATAR -->
       <div>
         <div class="flex items-center gap-2 mb-6">
-          <span class="icon-contratar text-text"></span>
+          <PhMagnifyingGlass :size="28" class="text-text" />
           <h2 class="font-display text-2xl small-caps text-text font-semibold">Por que me contratar?</h2>
         </div>
         <p class="text-body text-muted leading-relaxed mb-4">
@@ -76,43 +78,10 @@
   </main>
 </template>
 
-<style scoped>
-.icon-certificado {
-  display: inline-block;
-  width: 1.75rem;
-  height: 1.75rem;
-  background-color: currentColor;
-  -webkit-mask-image: url('~/assets/icons/certificado.svg');
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
-.icon-valores {
-  display: inline-block;
-  width: 1.75rem;
-  height: 1.75rem;
-  background-color: currentColor;
-  -webkit-mask-image: url('~/assets/icons/valores.svg');
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
-.icon-contratar {
-  display: inline-block;
-  width: 1.75rem;
-  height: 1.75rem;
-  background-color: currentColor;
-  -webkit-mask-image: url('~/assets/icons/lupa.svg');
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
-</style>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
-import { Calendar, Code, FileText, User, Clock } from 'lucide-vue-next'
+import { PhCalendar, PhCode, PhFileText, PhUser, PhClock, PhGraduationCap, PhSeal, PhMagnifyingGlass, PhArrowLineDown } from '@phosphor-icons/vue'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
 import RadialOrbitalTimeline, { type TimelineItem } from '~/components/ui/RadialOrbitalTimeline.vue'
 import { useLanguage } from '~/composables/useLanguage'
@@ -148,7 +117,7 @@ const orbitalData: TimelineItem[] = [
     date: "2026",
     content: "Desenvolvimento do AgroBot, projeto final do curso de Engenharia de Software em Swift.",
     category: "Engenharia",
-    icon: Calendar,
+    icon: PhCalendar,
     relatedIds: [2, 3],
     status: "in-progress",
     energy: 100,
@@ -159,7 +128,7 @@ const orbitalData: TimelineItem[] = [
     date: "2025-2026",
     content: "Construção de aplicativos iOS nativos com Swift, SwiftUI e SwiftData na Apple Developer Academy.",
     category: "Mobile",
-    icon: Code,
+    icon: PhCode,
     relatedIds: [1, 4],
     status: "completed",
     energy: 95,
@@ -170,7 +139,7 @@ const orbitalData: TimelineItem[] = [
     date: "2024-2025",
     content: "Reconstrução de sistemas em Angular, APIs FastAPI/Node.js e automação de processos.",
     category: "Backend",
-    icon: FileText,
+    icon: PhFileText,
     relatedIds: [1, 5],
     status: "completed",
     energy: 90,
@@ -181,7 +150,7 @@ const orbitalData: TimelineItem[] = [
     date: "2024",
     content: "Design de interfaces no Figma com foco em experiência do usuário e usabilidade.",
     category: "Design",
-    icon: User,
+    icon: PhUser,
     relatedIds: [2],
     status: "completed",
     energy: 85,
@@ -192,7 +161,7 @@ const orbitalData: TimelineItem[] = [
     date: "2023-Presente",
     content: "Formação acadêmica unindo engenharia de sistemas, bancos de dados e governança de TI.",
     category: "Acadêmico",
-    icon: Clock,
+    icon: PhClock,
     relatedIds: [3],
     status: "completed",
     energy: 80,

@@ -8,18 +8,29 @@
     </div>
 
     <form @submit.prevent="handleSubmit" class="bg-surface border border-border rounded-2xl p-6 space-y-6">
-      
       <div>
         <label class="block text-meta text-xs text-muted mb-2">Cargo / Título *</label>
-        <input v-model="form.role" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <input v-model="form.position" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Descrição </label>
-        <input v-model="form.description" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Empresa *</label>
+        <input v-model="form.company" type="text" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Imagem URL </label>
-        <input v-model="form.image_url" type="text"  class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Data de Início *</label>
+        <input v-model="form.start_date" type="date" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+      </div>
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Data de Saída</label>
+        <input v-model="form.exit_date" type="date" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
+      </div>
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">Descrição *</label>
+        <textarea v-model="form.description" rows="3" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors"></textarea>
+      </div>
+      <div>
+        <label class="block text-meta text-xs text-muted mb-2">URL da Imagem</label>
+        <input v-model="form.image_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors" placeholder="https://...">
       </div>
       
       <div v-if="errorMsg" class="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
@@ -52,9 +63,12 @@ const { experiences, updateExperience, loadData } = usePortfolioApi()
 const { adminUserId } = useAuth()
 
 const form = ref({
-  role: '',
+  position: '',
+  company: '',
   description: '',
-  image_url: ''
+  image_url: '',
+  start_date: '',
+  exit_date: ''
 })
 
 const saving = ref(false)
@@ -72,9 +86,12 @@ watch(experiences, () => syncData())
 function syncData() {
   const item = experiences.value.find((x: any) => x.id === id || x.id == id)
   if (item) {
-      form.value.role = item.title || ''
-      form.value.description = item.desc || ''
+      form.value.position = item.title || item.position || ''
+      form.value.company = item.company || ''
+      form.value.description = item.desc || item.description || ''
       form.value.image_url = item.image_url || ''
+      form.value.start_date = item.start_date || ''
+      form.value.exit_date = item.exit_date || ''
   }
 }
 

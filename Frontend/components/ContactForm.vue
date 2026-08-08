@@ -2,7 +2,7 @@
   <section id="contact" class="max-w-4xl mx-auto px-6 pb-24">
     <div class="flex flex-col md:flex-row items-center md:items-stretch gap-10 justify-center">
       <div class="w-40 h-40 md:w-64 md:h-auto flex items-center justify-center shrink-0">
-        <span class="icon-email text-text"></span>
+        <PhEnvelope size="100%" weight="fill" class="text-text" />
       </div>
       <form @submit.prevent="handleSubmit" class="space-y-4 w-full max-w-lg">
         <input 
@@ -48,21 +48,9 @@
   </section>
 </template>
 
-<style scoped>
-.icon-email {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  background-color: currentColor;
-  -webkit-mask-image: url('~/assets/icons/email.svg');
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-}
-</style>
-
 <script setup lang="ts">
 import { ref } from 'vue'
+import { PhEnvelope } from '@phosphor-icons/vue'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
 
 const { user, sendContactMessage } = usePortfolioApi()
