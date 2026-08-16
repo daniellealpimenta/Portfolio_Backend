@@ -10,9 +10,9 @@
 
       <nav class="hidden md:flex items-center gap-8 text-meta text-sm">
         <NuxtLink :to="userPrefix" exact-active-class="underline underline-offset-4 decoration-primary text-text font-semibold" class="text-muted hover:text-text transition">Home</NuxtLink>
-        <NuxtLink :to="`${userPrefix}/about`.replace('//', '/')" active-class="text-text font-semibold" class="text-muted hover:text-text transition">About</NuxtLink>
+        <NuxtLink :to="`${userPrefix}/about`.replace('//', '/')" active-class="underline underline-offset-4 decoration-primary text-text font-semibold" class="text-muted hover:text-text transition">About</NuxtLink>
         <NuxtLink :to="`${userPrefix}/work`.replace('//', '/')" active-class="underline underline-offset-4 decoration-primary text-text font-semibold" class="text-muted hover:text-text transition">Work</NuxtLink>
-        <NuxtLink :to="`${userPrefix}/resume`.replace('//', '/')" active-class="text-text font-semibold" class="text-muted hover:text-text transition">Resume</NuxtLink>
+        <NuxtLink :to="`${userPrefix}/resume`.replace('//', '/')" active-class="underline underline-offset-4 decoration-primary text-text font-semibold" class="text-muted hover:text-text transition">Resume</NuxtLink>
       </nav>
 
       <div class="flex items-center gap-4">
@@ -26,7 +26,12 @@
           <span :class="lang === 'en' ? 'underline underline-offset-4 decoration-primary text-text' : 'text-muted'">En</span>
         </button>
 
-        <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-text p-1 focus:outline-none ml-2" aria-label="Abrir menu">
+        <button
+          @click="mobileMenuOpen = !mobileMenuOpen"
+          class="md:hidden text-text p-1 ml-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          :aria-label="mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'"
+          :aria-expanded="mobileMenuOpen"
+        >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>

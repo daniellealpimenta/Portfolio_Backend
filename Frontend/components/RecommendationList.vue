@@ -1,7 +1,7 @@
 <template>
-  <div class="space-y-16 mt-12">
-    <div 
-      v-for="item in recommendations" 
+  <div ref="listRef" class="space-y-16 mt-12">
+    <div
+      v-for="item in recommendations"
       :key="item.id" 
       class="relative bg-surface rounded-3xl p-8 md:p-12 shadow-xl"
     >
@@ -37,9 +37,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import type { Testimonial } from '~/composables/usePortfolioApi'
 
-defineProps<{
+const props = defineProps<{
   recommendations: Testimonial[]
 }>()
+
+const listRef = ref<HTMLElement | null>(null)
+useScrollStagger(listRef, computed(() => props.recommendations.length), { y: 30, duration: 0.6, stagger: 0.15 })
 </script>

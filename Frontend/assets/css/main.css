@@ -12,14 +12,14 @@
 :root, [data-theme="refined"] {
   --dark-background: #0B1120;
   --dark-surface: #151F3A;
-  --dark-border: #2B3B63;
+  --dark-border: #4D6AB1;
   --dark-text: #F8F8FC;
   --dark-muted: #B4C2E6;
 
   --color-background: #0B1120;
   --color-surface: #151F3A;
   --color-surface-hover: #1D294A;
-  --color-border: #2B3B63;
+  --color-border: #4D6AB1;
   --color-divider: #394A78;
   --color-text: #F8F8FC;
   --color-muted: #B4C2E6;
@@ -34,7 +34,7 @@
   --color-background: #F7F4ED;
   --color-surface: #FFFFFF;
   --color-surface-hover: #EEE9DF;
-  --color-border: #D7D0C2;
+  --color-border: #A29272;
   --color-divider: #C7BEAE;
   --color-text: #1B233C;
   --color-muted: #4F566A;
@@ -46,13 +46,13 @@
 [data-theme="forest"] {
   --dark-background: #0C1512;
   --dark-surface: #16211C;
-  --dark-border: #284137;
+  --dark-border: #477462;
   --dark-text: #F3F7F5;
   --dark-muted: #A3B7AE;
 
   --color-background: #0C1512;
   --color-surface: #16211C;
-  --color-border: #284137;
+  --color-border: #477462;
   --color-text: #F3F7F5;
   --color-muted: #A3B7AE;
   --color-primary: #8CCFB3;
@@ -64,7 +64,7 @@
 body.light[data-theme="forest"] {
   --color-background: #F7F6F1;
   --color-surface: #FFFFFF;
-  --color-border: #D9D8D0;
+  --color-border: #97947E;
   --color-text: #1E2A26;
   --color-muted: #59655E;
   --color-primary: #2D7652; /* contraste corrigido (era #6DAE8D: ~2.6:1 contra branco) */
@@ -74,13 +74,13 @@ body.light[data-theme="forest"] {
 [data-theme="burgundy"] {
   --dark-background: #180F16;
   --dark-surface: #261722;
-  --dark-border: #46303F;
+  --dark-border: #865C78;
   --dark-text: #FBF7F9;
   --dark-muted: #C6B2BC;
 
   --color-background: #180F16;
   --color-surface: #261722;
-  --color-border: #46303F;
+  --color-border: #865C78;
   --color-text: #FBF7F9;
   --color-muted: #C6B2BC;
   --color-primary: #D4A2B8;
@@ -92,7 +92,7 @@ body.light[data-theme="forest"] {
 body.light[data-theme="burgundy"] {
   --color-background: #F8F3F2;
   --color-surface: #FFFFFF;
-  --color-border: #DDD0CE;
+  --color-border: #AB8B86;
   --color-text: #32222A;
   --color-muted: #72646A;
   --color-primary: #91305A; /* contraste corrigido (era #C289A2: ~2.8:1 contra branco) */
@@ -102,13 +102,13 @@ body.light[data-theme="burgundy"] {
 [data-theme="amber"] {
   --dark-background: #16120B;
   --dark-surface: #241D14;
-  --dark-border: #453626;
+  --dark-border: #806447;
   --dark-text: #FBFAF8;
   --dark-muted: #C3B89D;
 
   --color-background: #16120B;
   --color-surface: #241D14;
-  --color-border: #453626;
+  --color-border: #806447;
   --color-text: #FBFAF8;
   --color-muted: #C3B89D;
   --color-primary: #E2C37B;
@@ -120,7 +120,7 @@ body.light[data-theme="burgundy"] {
 body.light[data-theme="amber"] {
   --color-background: #FAF6ED;
   --color-surface: #FFFFFF;
-  --color-border: #DDD2BC;
+  --color-border: #AB905A;
   --color-text: #31271C;
   --color-muted: #74695C;
   --color-primary: #8B681D; /* contraste corrigido (era #D5A94D: ~2.2:1 contra branco) */
@@ -130,13 +130,13 @@ body.light[data-theme="amber"] {
 [data-theme="ocean"] {
   --dark-background: #09131F;
   --dark-surface: #132335;
-  --dark-border: #284563;
+  --dark-border: #4170A1;
   --dark-text: #F8FAFC;
   --dark-muted: #A8BDD8;
 
   --color-background: #09131F;
   --color-surface: #132335;
-  --color-border: #284563;
+  --color-border: #4170A1;
   --color-text: #F8FAFC;
   --color-muted: #A8BDD8;
   --color-primary: #92B9F8;
@@ -148,7 +148,7 @@ body.light[data-theme="amber"] {
 body.light[data-theme="ocean"] {
   --color-background: #F4F7FB;
   --color-surface: #FFFFFF;
-  --color-border: #D5DEE8;
+  --color-border: #7996B5;
   --color-text: #1A2B44;
   --color-muted: #58657A;
   --color-primary: #1F4DA3; /* contraste corrigido (era #6D98E6: ~2.9:1 contra branco) */
@@ -158,13 +158,13 @@ body.light[data-theme="ocean"] {
 [data-theme="slate"] {
   --dark-background: #11151D;
   --dark-surface: #1B2431;
-  --dark-border: #334153;
+  --dark-border: #58708F;
   --dark-text: #F7F8FA;
   --dark-muted: #AAB4C6;
 
   --color-background: #11151D;
   --color-surface: #1B2431;
-  --color-border: #334153;
+  --color-border: #58708F;
   --color-text: #F7F8FA;
   --color-muted: #AAB4C6;
   --color-primary: #A7BEE5;
@@ -176,7 +176,7 @@ body.light[data-theme="ocean"] {
 body.light[data-theme="slate"] {
   --color-background: #F6F6F4;
   --color-surface: #FFFFFF;
-  --color-border: #D7D8D4;
+  --color-border: #919489;
   --color-text: #202734;
   --color-muted: #5F6774;
   --color-primary: #35558D; /* contraste corrigido (era #7A97C8: ~3:1 contra branco) */
@@ -206,20 +206,26 @@ body {
 
 /* -------------------------------------------------------------------------
    Tipografia — escala semântica (Plus Jakarta Sans)
+   Em @layer components: garante que utilitários Tailwind (ex: text-xl,
+   text-sm) combinados na mesma tag continuem podendo sobrescrever o
+   tamanho padrão dessas classes, em vez de sempre vencerem por ordem
+   de declaração no CSS.
    ------------------------------------------------------------------------- */
-.text-label           { font-weight: 400; font-size: theme('fontSize.xxs'); }
-.text-caption          { font-weight: 400; font-size: theme('fontSize.xs'); }
-.text-body             { font-weight: 400; font-size: theme('fontSize.m'); }
-.text-body-italic      { font-weight: 400; font-style: italic; font-size: theme('fontSize.m'); }
-.text-button           { font-weight: 500; font-size: theme('fontSize.l'); }
-.text-tip              { font-weight: 400; font-style: italic; font-size: theme('fontSize.l'); }
-.text-subtitle         { font-weight: 600; font-size: theme('fontSize.m'); }
-.text-subtitle-italic  { font-weight: 400; font-style: italic; font-size: theme('fontSize.m'); }
-.text-h3               { font-weight: 500; font-size: theme('fontSize.xl'); }
-.text-h2               { font-weight: 600; font-size: theme('fontSize.xxl'); }
-.text-h1               { font-weight: 700; font-size: theme('fontSize.xxxl'); }
-/* backfill: classe já referenciada em templates sem estilo próprio — tratada como Caption */
-.text-meta             { font-weight: 400; font-size: theme('fontSize.xs'); opacity: 0.75; }
+@layer components {
+  .text-label           { font-weight: 400; font-size: theme('fontSize.xxs'); }
+  .text-caption          { font-weight: 400; font-size: theme('fontSize.xs'); }
+  .text-body             { font-weight: 400; font-size: theme('fontSize.m'); }
+  .text-body-italic      { font-weight: 400; font-style: italic; font-size: theme('fontSize.m'); }
+  .text-button           { font-weight: 500; font-size: theme('fontSize.l'); }
+  .text-tip              { font-weight: 400; font-style: italic; font-size: theme('fontSize.l'); }
+  .text-subtitle         { font-weight: 600; font-size: theme('fontSize.m'); }
+  .text-subtitle-italic  { font-weight: 400; font-style: italic; font-size: theme('fontSize.m'); }
+  .text-h3               { font-weight: 500; font-size: theme('fontSize.xl'); }
+  .text-h2               { font-weight: 600; font-size: theme('fontSize.xxl'); }
+  .text-h1               { font-weight: 700; font-size: theme('fontSize.xxxl'); }
+  /* backfill: classe já referenciada em templates sem estilo próprio — tratada como Caption */
+  .text-meta             { font-weight: 400; font-size: theme('fontSize.xs'); opacity: 0.75; }
+}
 
 .small-caps {
   font-variant: small-caps;
@@ -307,6 +313,21 @@ body.light .cursor-glow,
 }
 
 /* -------------------------------------------------------------------------
+   3c. Cursor blink — efeito de terminal ao lado da tagline do hero
+   ------------------------------------------------------------------------- */
+.cursor-blink::after {
+  content: '_';
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--color-primary);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* -------------------------------------------------------------------------
    3b. Avatar interativo — olho/íris
    ------------------------------------------------------------------------- */
 .eye-shape {
@@ -327,6 +348,11 @@ body.light .eye-shape {
 body.light .iris-shape {
   fill: currentColor;
   stroke: currentColor;
+}
+
+.iris-shape-dizzy {
+  fill: none;
+  stroke: #000000;
 }
 
 /* -------------------------------------------------------------------------
@@ -484,6 +510,15 @@ body.light .iris-shape {
 /* -------------------------------------------------------------------------
    8. Timeline — traço animado
    ------------------------------------------------------------------------- */
+.timeline-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
 #experiences-timeline {
   position: relative;
   border-left: none !important;

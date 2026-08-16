@@ -1,14 +1,14 @@
 <template>
-  <div class="bg-navypanel rounded-3xl p-6 border ink-border flex flex-col justify-between">
+  <div class="bg-surface rounded-3xl p-6 border border-border flex flex-col justify-between">
     <div>
       <div class="flex items-center gap-2 mb-5">
         <PhGear :size="24" weight="fill" class="text-text" />
         <h3 class="font-display small-caps text-lg text-text font-semibold">Habilidades</h3>
       </div>
-      <div class="grid grid-cols-3 gap-3">
-        <div 
-          v-for="skill in previewSkills" 
-          :key="skill.id" 
+      <div ref="gridRef" class="grid grid-cols-3 gap-3">
+        <div
+          v-for="skill in previewSkills"
+          :key="skill.id"
           @click="selectedSkill = skill"
           class="icon-tile rounded-xl bg-surface p-3 border border-border flex flex-col items-center justify-center text-center gap-1.5 cursor-pointer hover:border-primary hover:text-primary transition-colors group"
         >
@@ -96,9 +96,12 @@ const props = defineProps<{
 const showModal = ref(false)
 const modalRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
+const gridRef = ref<HTMLElement | null>(null)
 const selectedSkill = ref<Skill | null>(null)
 
 const previewSkills = computed(() => props.skills.slice(0, 6))
+
+useScrollStagger(gridRef, computed(() => previewSkills.value.length))
 
 watch(showModal, async (val) => {
   if (val) {

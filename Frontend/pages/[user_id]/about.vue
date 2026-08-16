@@ -44,7 +44,7 @@
       <CertificateList :certificates="certificates" />
     </section>
 
-    <section class="mb-24">
+    <section class="mb-24" ref="orbitalSectionRef">
       <div class="flex items-center gap-4 mb-12">
         <PhSeal :size="40" weight="fill" class="text-text shrink-0" title="Valores e Hobbies" />
         <h2 class="font-display text-2xl md:text-3xl font-semibold uppercase tracking-wider text-text">Valores e Hobbies</h2>
@@ -52,7 +52,7 @@
       <RadialOrbitalTimeline :timeline-data="orbitalData" />
     </section>
 
-    <section class="mb-24">
+    <section class="mb-24" ref="hireSectionRef">
       <div class="flex items-center gap-4 mb-8">
         <PhMagnifyingGlass :size="40" class="text-text shrink-0" title="Por que me contratar?" />
         <h2 class="font-display text-2xl md:text-3xl font-semibold uppercase tracking-wider text-text">Por que me contratar?</h2>
@@ -161,6 +161,8 @@ const avatarRef = ref<HTMLElement | null>(null)
 const aboutInfoRef = ref<HTMLElement | null>(null)
 const timelineSectionRef = ref<HTMLElement | null>(null)
 const certSectionRef = ref<HTMLElement | null>(null)
+const orbitalSectionRef = ref<HTMLElement | null>(null)
+const hireSectionRef = ref<HTMLElement | null>(null)
 
 useGsap(containerRef, () => {
   if (avatarRef.value) gsap.fromTo(avatarRef.value, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6 })
@@ -177,6 +179,20 @@ useGsap(containerRef, () => {
     gsap.fromTo(certSectionRef.value, { opacity: 0, y: 30 }, {
       opacity: 1, y: 0, duration: 0.7,
       scrollTrigger: { trigger: certSectionRef.value, start: 'top 85%' }
+    })
+  }
+
+  if (orbitalSectionRef.value) {
+    gsap.fromTo(orbitalSectionRef.value, { opacity: 0, y: 30 }, {
+      opacity: 1, y: 0, duration: 0.7,
+      scrollTrigger: { trigger: orbitalSectionRef.value, start: 'top 85%' }
+    })
+  }
+
+  if (hireSectionRef.value) {
+    gsap.fromTo(hireSectionRef.value, { opacity: 0, y: 30 }, {
+      opacity: 1, y: 0, duration: 0.7,
+      scrollTrigger: { trigger: hireSectionRef.value, start: 'top 85%' }
     })
   }
 })

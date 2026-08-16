@@ -14,10 +14,10 @@
         }"
       >
         <!-- Center Pulsing Core -->
-        <div class="absolute w-16 h-16 rounded-full bg-gradient-to-br from-periwinkle via-lilac to-mint animate-pulse flex items-center justify-center z-10">
-          <div class="absolute w-20 h-20 rounded-full border border-paper/20 animate-ping opacity-70"></div>
-          <div class="absolute w-24 h-24 rounded-full border border-paper/10 animate-ping opacity-50" style="animation-delay: 0.5s"></div>
-          <div class="w-8 h-8 rounded-full bg-paper/80 backdrop-blur-md"></div>
+        <div class="absolute w-16 h-16 rounded-full bg-gradient-to-br from-primary via-secondary to-success animate-pulse flex items-center justify-center z-10">
+          <div class="absolute w-20 h-20 rounded-full border border-text/20 animate-ping opacity-70"></div>
+          <div class="absolute w-24 h-24 rounded-full border border-text/10 animate-ping opacity-50" style="animation-delay: 0.5s"></div>
+          <div class="w-8 h-8 rounded-full bg-text/80 backdrop-blur-md"></div>
         </div>
 
         <!-- Orbit Ring -->
@@ -50,10 +50,10 @@
             class="w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform"
             :class="[
               expandedItems[item.id]
-                ? 'bg-paper text-navy border-paper shadow-lg shadow-periwinkle/30 scale-150'
+                ? 'bg-text text-background border-text shadow-lg shadow-primary/30 scale-150'
                 : isRelatedToActive(item.id)
-                ? 'bg-paper/50 text-navy border-paper animate-pulse'
-                : 'bg-navypanel text-paper border-paper/40'
+                ? 'bg-text/50 text-background border-text animate-pulse'
+                : 'bg-surface text-text border-text/40'
             ]"
           >
             <component :is="item.icon" :size="16" weight="fill" />
@@ -62,7 +62,7 @@
           <!-- Node Title -->
           <div
             class="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wider font-display small-caps transition-all duration-300"
-            :class="expandedItems[item.id] ? 'text-paper scale-125' : 'text-paper/70'"
+            :class="expandedItems[item.id] ? 'text-text scale-125' : 'text-text/70'"
           >
             {{ item.title }}
           </div>
@@ -70,10 +70,10 @@
           <!-- Expanded Node Card Popover -->
           <div
             v-if="expandedItems[item.id]"
-            class="absolute top-20 left-1/2 -translate-x-1/2 w-64 bg-navypanel/95 backdrop-blur-lg border border-paper/30 rounded-2xl p-4 shadow-xl z-50 overflow-visible text-paper"
+            class="absolute top-20 left-1/2 -translate-x-1/2 w-64 bg-surface/95 backdrop-blur-lg border border-text/30 rounded-2xl p-4 shadow-xl z-50 overflow-visible text-text"
             @click.stop
           >
-            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-paper/50"></div>
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-text/50"></div>
             
             <div class="flex justify-between items-center pb-2">
               <span
@@ -82,31 +82,31 @@
               >
                 {{ item.status === 'completed' ? 'CONCLUÍDO' : item.status === 'in-progress' ? 'EM ANDAMENTO' : 'PLANEJADO' }}
               </span>
-              <span class="text-[11px] font-mono text-mist">{{ item.date }}</span>
+              <span class="text-[11px] font-mono text-muted">{{ item.date }}</span>
             </div>
 
-            <h4 class="text-sm font-display small-caps font-semibold mt-1 text-paper">{{ item.title }}</h4>
-            <p class="text-xs text-mist mt-2 leading-relaxed">{{ item.content }}</p>
+            <h4 class="text-sm font-display small-caps font-semibold mt-1 text-text">{{ item.title }}</h4>
+            <p class="text-xs text-muted mt-2 leading-relaxed">{{ item.content }}</p>
 
             <!-- Energy Bar -->
-            <div class="mt-4 pt-3 border-t border-paper/10">
+            <div class="mt-4 pt-3 border-t border-text/10">
               <div class="flex justify-between items-center text-xs mb-1">
-                <span class="flex items-center gap-1 text-mist">
+                <span class="flex items-center gap-1 text-muted">
                   <PhLightning :size="10" weight="fill" /> Nível de Domínio
                 </span>
-                <span class="font-mono text-periwinkle">{{ item.energy }}%</span>
+                <span class="font-mono text-primary">{{ item.energy }}%</span>
               </div>
-              <div class="w-full h-1.5 bg-navyline rounded-full overflow-hidden">
+              <div class="w-full h-1.5 bg-border rounded-full overflow-hidden">
                 <div
-                  class="h-full bg-gradient-to-r from-periwinkle to-mint transition-all duration-500"
+                  class="h-full bg-gradient-to-r from-primary to-success transition-all duration-500"
                   :style="{ width: `${item.energy}%` }"
                 ></div>
               </div>
             </div>
 
             <!-- Connected Nodes -->
-            <div v-if="item.relatedIds.length > 0" class="mt-4 pt-3 border-t border-paper/10">
-              <div class="flex items-center mb-2 gap-1 text-mist text-[11px]">
+            <div v-if="item.relatedIds.length > 0" class="mt-4 pt-3 border-t border-text/10">
+              <div class="flex items-center mb-2 gap-1 text-muted text-[11px]">
                 <PhLink :size="10" weight="fill" />
                 <span class="uppercase tracking-wider font-medium">Nós Conectados</span>
               </div>
@@ -115,7 +115,7 @@
                   v-for="relId in item.relatedIds"
                   :key="relId"
                   @click.stop="toggleItem(relId)"
-                  class="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded border border-paper/20 bg-navy/50 hover:bg-periwinkle hover:text-navy transition-all font-display small-caps"
+                  class="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded border border-text/20 bg-background/50 hover:bg-primary hover:text-background transition-all font-display small-caps"
                 >
                   {{ getRelatedItemTitle(relId) }}
                   <PhArrowRight :size="8" weight="fill" />
@@ -278,10 +278,10 @@ function getRelatedItemTitle(id: number): string {
 
 function getStatusStyles(status: TimelineItem['status']): string {
   switch (status) {
-    case 'completed': return 'bg-mint text-navy'
-    case 'in-progress': return 'bg-periwinkle text-navy'
-    case 'pending': return 'bg-navyline text-paper'
-    default: return 'bg-navyline text-paper'
+    case 'completed': return 'bg-success text-background'
+    case 'in-progress': return 'bg-primary text-background'
+    case 'pending': return 'bg-border text-text'
+    default: return 'bg-border text-text'
   }
 }
 </script>

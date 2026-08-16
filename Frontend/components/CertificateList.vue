@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col gap-12 mt-8 max-w-4xl mx-auto">
-    <div 
-      v-for="(cert, index) in certificates" 
+  <div ref="listRef" class="flex flex-col gap-12 mt-8 max-w-4xl mx-auto">
+    <div
+      v-for="(cert, index) in certificates"
       :key="cert.id" 
       class="flex flex-col md:flex-row items-center gap-6"
       :class="{ 'md:flex-row-reverse': index % 2 !== 0 }"
@@ -40,11 +40,15 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import type { Certificate } from '~/composables/usePortfolioApi'
 
-defineProps<{
+const props = defineProps<{
   certificates: Certificate[]
 }>()
+
+const listRef = ref<HTMLElement | null>(null)
+useScrollStagger(listRef, computed(() => props.certificates.length), { y: 30, duration: 0.6, stagger: 0.12 })
 
 function handleDownload(cert: Certificate) {
   if (cert.digital_certificate_url) {

@@ -1,17 +1,17 @@
 <template>
-  <div class="bg-navypanel rounded-3xl p-6 border ink-border flex flex-col justify-between">
+  <div class="bg-surface rounded-3xl p-6 border border-border flex flex-col justify-between">
     <div>
       <div class="flex items-center gap-2 mb-5">
         <PhWrench :size="24" weight="fill" class="text-text" />
         <h3 class="font-display small-caps text-lg text-text font-semibold">Ferramentas</h3>
       </div>
-      <div class="grid grid-cols-3 gap-3">
-        <div 
-          v-for="tool in previewTools" 
-          :key="tool.id" 
-          class="icon-tile rounded-xl bg-navy p-3 border ink-border flex flex-col items-center justify-center text-center gap-1.5"
+      <div ref="gridRef" class="grid grid-cols-3 gap-3">
+        <div
+          v-for="tool in previewTools"
+          :key="tool.id"
+          class="icon-tile rounded-xl bg-background p-3 border border-border flex flex-col items-center justify-center text-center gap-1.5"
         >
-          <span class="text-xs font-display small-caps text-paper font-medium">{{ tool.name }}</span>
+          <span class="text-xs font-display small-caps text-text font-medium">{{ tool.name }}</span>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
               <PhWrench :size="24" weight="fill" class="text-text" />
               <h3 class="font-display small-caps text-lg text-text font-semibold">Ferramentas</h3>
             </div>
-            <button @click="closeModal" class="text-xl leading-none text-paper cursor-pointer p-1" aria-label="Fechar">✕</button>
+            <button @click="closeModal" class="text-xl leading-none text-text cursor-pointer p-1" aria-label="Fechar">✕</button>
           </div>
           <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
             <div 
@@ -70,8 +70,11 @@ const props = defineProps<{
 const showModal = ref(false)
 const modalRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
+const gridRef = ref<HTMLElement | null>(null)
 
 const previewTools = computed(() => props.tools.slice(0, 6))
+
+useScrollStagger(gridRef, computed(() => previewTools.value.length))
 
 watch(showModal, async (val) => {
   if (val) {

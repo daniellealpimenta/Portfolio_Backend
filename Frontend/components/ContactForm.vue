@@ -10,28 +10,28 @@
           required 
           type="text" 
           placeholder="Nome" 
-          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition" 
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 transition" 
         />
         <input 
           v-model="email" 
           required 
           type="email" 
           placeholder="Seu email" 
-          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition" 
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 transition" 
         />
         <input 
           v-model="subject" 
           required 
           type="text" 
           placeholder="Assunto" 
-          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition" 
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 transition" 
         />
         <textarea 
           v-model="message" 
           required 
           rows="5" 
           placeholder="Mensagem" 
-          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary transition resize-none"
+          class="w-full rounded-lg bg-surface border border-border px-4 py-3 text-sm placeholder:text-muted text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/40 transition resize-none"
         ></textarea>
         <div class="flex justify-end">
           <button 

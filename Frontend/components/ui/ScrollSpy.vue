@@ -6,12 +6,12 @@
       class="group relative flex items-center justify-center cursor-pointer p-2"
       @click="scrollTo(section.id)"
     >
-      <div 
-        class="w-2 h-2 rounded-full transition-all duration-300 bg-paper dark:bg-paper"
-        :class="activeSection === section.id ? 'scale-[1.8] opacity-100 bg-periwinkle dark:bg-periwinkle shadow-[0_0_8px_rgba(143,160,196,0.6)]' : 'opacity-30 hover:opacity-70'"
+      <div
+        class="w-2 h-2 rounded-full transition-all duration-300 bg-text"
+        :class="activeSection === section.id ? 'scale-[1.8] opacity-100 bg-primary shadow-[0_0_8px_rgba(143,160,196,0.6)]' : 'opacity-30 hover:opacity-70'"
       ></div>
-      <span 
-        class="absolute right-6 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-display small-caps text-navy dark:text-paper pointer-events-none px-2 py-1 rounded-md bg-white/10 backdrop-blur-md border border-white/5 shadow-sm"
+      <span
+        class="absolute right-6 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-display small-caps text-text pointer-events-none px-2 py-1 rounded-md bg-white/10 backdrop-blur-md border border-white/5 shadow-sm"
       >
         {{ section.name }}
       </span>

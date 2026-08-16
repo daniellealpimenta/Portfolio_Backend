@@ -8,7 +8,7 @@
       @click="openProject(project.id)"
     >
       <div class="project-spotlight__media">
-        <span class="project-spotlight__tag bg-lilac">{{ project.cat }}</span>
+        <span class="project-spotlight__tag bg-secondary">{{ project.cat }}</span>
         <!-- Default icon placeholder -->
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#8FA0C4" stroke-width="1.2" opacity="0.6">
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
@@ -24,7 +24,7 @@
             {{ project.likes }}
           </span>
         </span>
-        <h3 class="font-display text-3xl small-caps text-paper font-semibold mt-2">{{ project.title }}</h3>
+        <h3 class="font-display text-3xl small-caps text-text font-semibold mt-2">{{ project.title }}</h3>
         <p class="project-spotlight__desc line-clamp-3">
           {{ project.desc }}
         </p>

@@ -15,12 +15,11 @@
       <!-- CONTEÚDO CENTRALIZADO -->
       <div class="relative z-10 max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center gap-12 md:gap-20">
         <div ref="heroAvatarRef" class="relative shrink-0 w-[200px] md:w-[250px] aspect-square flex items-center justify-center mt-12 md:mt-0">
-          <div class="aurora"></div>
           <InteractiveAvatar class="relative z-10 scale-[1.35]" />
         </div>
         <div class="max-w-xl relative z-10">
         <span class="eyebrow hero-kicker">Dev Full Stack &amp; Mobile</span>
-        <h1 ref="heroTitleRef" class="text-hero">
+        <h1 ref="heroTitleRef" class="hero-statement">
           {{ user?.main_phrase || 'Código com propósito' }}<span class="cursor-blink"></span>
         </h1>
         <p ref="heroSubRef" class="mt-5 text-body text-muted whitespace-pre-line">

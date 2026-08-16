@@ -1,7 +1,7 @@
 <template>
   <div 
     ref="containerRef"
-    class="w-full h-full flex items-center justify-center overflow-visible text-navy dark:text-paper"
+    class="w-full h-full flex items-center justify-center overflow-visible text-text"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
@@ -177,7 +177,15 @@
               transform: `translate(${currentIrisL.x + 44 - 17}px, ${currentIrisL.y + 21 - 17}px) scale(0.95)`,
               transformOrigin: '17px 17px'
             }">
-              <path class="iris-shape" d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" stroke="currentColor" stroke-width="4"/>
+              <path class="iris-shape" :style="{ opacity: 1 - dizzyIntensity }" d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" stroke="currentColor" stroke-width="4"/>
+              <g v-if="dizzyIntensity > 0.01" transform="translate(-1.5 -1.5)">
+                <path
+                  class="iris-shape-dizzy"
+                  :style="{ opacity: dizzyIntensity, transform: `rotate(${dizzySpiralRot}deg)`, transformOrigin: '18.5px 18.5px' }"
+                  d="M21.8986 19.7493L21.9516 20.6974L21.8289 21.666L21.5256 22.617L21.0438 23.5113L20.3931 24.3101L19.5907 24.9763L18.6604 25.4768L17.6328 25.7834L16.5436 25.8746L15.4326 25.7365L14.3423 25.3637L13.3162 24.7602L12.3971 23.939L11.6254 22.9225L11.0373 21.7418L10.6633 20.4356L10.5265 19.0491L10.6419 17.6323L11.0148 16.2386L11.6411 14.9222L12.5064 13.7364L13.5867 12.7314L14.8484 11.9522L16.2503 11.4365L17.744 11.2134L19.2759 11.3014L20.7892 11.7079L22.2261 12.4282L23.5296 13.4455L24.6462 14.7309L25.5278 16.2447L26.1336 17.9369L26.4324 19.7493L26.4035 21.6176L26.038 23.4731L25.3397 25.2457L24.3251 26.8666L23.023 28.2707L21.4741 29.3991L19.7293 30.2019L17.8486 30.6401L15.8984 30.6873L13.9497 30.3312L12.0754 29.5745L10.3472 28.4348L8.83328 26.9446L7.59561 25.1505L6.68719 23.1117L6.15003 20.8978L6.01327 18.5869L6.29172 16.2625L6.98503 14.0106L8.07733 11.9166L9.53744 10.0618L11.3198 8.52061L13.3656 7.35739L15.6051 6.62381L17.9597 6.35668L20.3447 6.57626L22.6726 7.28509L24.8559 8.46758L26.8109 10.0902L28.4603 12.1022L29.7368 14.4376L30.5855 17.0167L30.9662 19.7493L30.8553 22.5378L30.247 25.2801L29.1538 27.8744L27.6063 30.2219L25.6529 32.2313L23.3575 33.8219L20.7982 34.927L18.0643 35.4968L15.2532 35.5L12.4669 34.926L9.80849 33.7853L7.37816 32.1094L5.26948 29.9502L3.56581 27.3785L2.33704 24.4815L1.63677 21.36L1.5 18.1247L1.94157 14.8927L2.95523 11.7826L4.51352 8.91095L6.56843 6.38718L9.05286 4.30983L11.8827 2.76261L14.9599 1.81111L18.1754 1.5L21.4136 1.85112L24.556 2.86229L27.4858 4.50696L30.0921 6.73487L32.2744 9.47353L33.9458 12.6305L35.0374 16.0965L35.5 19.7493L35.3072 23.4579"
+                  fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                />
+              </g>
             </g>
           </g>
 
@@ -188,7 +196,15 @@
               transform: `translate(${currentIrisR.x + 45 - 17}px, ${currentIrisR.y + 20 - 17}px) scale(0.95)`,
               transformOrigin: '17px 17px'
             }">
-              <path class="iris-shape" d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" stroke="currentColor" stroke-width="4"/>
+              <path class="iris-shape" :style="{ opacity: 1 - dizzyIntensity }" d="M17 2C25.2843 2 32 8.71573 32 17C32 25.2843 25.2843 32 17 32C8.71573 32 2 25.2843 2 17C2 8.71573 8.71573 2 17 2Z" stroke="currentColor" stroke-width="4"/>
+              <g v-if="dizzyIntensity > 0.01" transform="translate(-1.5 -1.5)">
+                <path
+                  class="iris-shape-dizzy"
+                  :style="{ opacity: dizzyIntensity, transform: `rotate(${-dizzySpiralRot}deg)`, transformOrigin: '18.5px 18.5px' }"
+                  d="M21.8986 19.7493L21.9516 20.6974L21.8289 21.666L21.5256 22.617L21.0438 23.5113L20.3931 24.3101L19.5907 24.9763L18.6604 25.4768L17.6328 25.7834L16.5436 25.8746L15.4326 25.7365L14.3423 25.3637L13.3162 24.7602L12.3971 23.939L11.6254 22.9225L11.0373 21.7418L10.6633 20.4356L10.5265 19.0491L10.6419 17.6323L11.0148 16.2386L11.6411 14.9222L12.5064 13.7364L13.5867 12.7314L14.8484 11.9522L16.2503 11.4365L17.744 11.2134L19.2758 11.3014L20.7892 11.7079L22.2261 12.4282L23.5296 13.4455L24.6462 14.7309L25.5278 16.2447L26.1336 17.9369L26.4324 19.7493L26.4034 21.6176L26.038 23.4731L25.3397 25.2457L24.3251 26.8666L23.023 28.2707L21.4741 29.3991L19.7293 30.2019L17.8486 30.6401L15.8984 30.6873L13.9497 30.3313L12.0754 29.5745L10.3472 28.4348L8.83328 26.9446L7.59561 25.1505L6.68719 23.1117L6.15003 20.8978L6.01327 18.5869L6.29172 16.2625L6.98503 14.0106L8.07733 11.9166L9.53744 10.0618L11.3198 8.52061L13.3656 7.35739L15.6051 6.62381L17.9597 6.35668L20.3447 6.57626L22.6726 7.28509L24.8559 8.46758L26.8109 10.0902L28.4603 12.1022L29.7368 14.4376L30.5855 17.0167L30.9662 19.7493L30.8553 22.5378L30.247 25.2802L29.1538 27.8744L27.6063 30.2219L25.6529 32.2313L23.3575 33.8219L20.7982 34.927L18.0643 35.4968L15.2532 35.5L12.4669 34.926L9.80849 33.7853L7.37816 32.1094L5.26948 29.9502L3.56581 27.3785L2.33704 24.4815L1.63677 21.36L1.5 18.1247L1.94157 14.8927L2.95523 11.7826L4.51352 8.91095L6.56843 6.38718L9.05286 4.30983L11.8827 2.76261L14.9599 1.81111L18.1754 1.5L21.4136 1.85112L24.556 2.86228L27.4858 4.50696L30.0921 6.73487L32.2744 9.47353L33.9458 12.6305L35.0374 16.0965L35.5 19.7493L35.3072 23.4579"
+                  fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                />
+              </g>
             </g>
           </g>
         </g>
@@ -223,6 +239,20 @@
           </g>
         </g>
 
+        <!-- Dizzy Stars (orbitam acima da cabeça quando o avatar fica tonto) -->
+        <g v-if="dizzyIntensity > 0.01" id="dizzy-stars">
+          <g
+            v-for="(star, i) in dizzyStars"
+            :key="i"
+            :style="{
+              transform: `translate(${star.x}px, ${star.y}px) rotate(${star.rot}deg)`,
+              opacity: star.opacity
+            }"
+          >
+            <path d="M0,-9 L0,9 M-9,0 L9,0 M-6,-6 L6,6 M-6,6 L6,-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </g>
+
       </g>
     </svg>
   </div>
@@ -240,6 +270,9 @@ const {
   currentIrisR,
   currentEyebrow,
   currentMouth,
-  currentBlinkScale
+  currentBlinkScale,
+  dizzyIntensity,
+  dizzySpiralRot,
+  dizzyStars
 } = useAvatarAnimation()
 </script>

@@ -8,20 +8,20 @@
     >
       <div 
         ref="panelRef" 
-        class="bg-navy rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto modal-scroll p-8 border ink-border"
+        class="bg-background rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto modal-scroll p-8 border border-border"
       >
         <div class="flex items-center justify-between mb-4">
-          <h3 class="font-display text-2xl small-caps text-paper font-semibold">{{ project?.title }}</h3>
-          <button @click="close" class="text-xl leading-none text-paper cursor-pointer p-1" aria-label="Fechar">✕</button>
+          <h3 class="font-display text-2xl small-caps text-text font-semibold">{{ project?.title }}</h3>
+          <button @click="close" class="text-xl leading-none text-text cursor-pointer p-1" aria-label="Fechar">✕</button>
         </div>
-        <p class="text-xs ink-muted mb-6">Ano: {{ project?.year }}</p>
-        <p class="ink-muted leading-relaxed mb-8">{{ project?.desc }}</p>
+        <p class="text-xs text-muted mb-6">Ano: {{ project?.year }}</p>
+        <p class="text-muted leading-relaxed mb-8">{{ project?.desc }}</p>
         <div class="flex items-center gap-3">
           <a 
             v-if="project?.github_url" 
             :href="project.github_url" 
             target="_blank" 
-            class="px-4 py-2 rounded-full border ink-border text-xs font-display small-caps ink-muted hover:text-paper transition flex items-center gap-1.5"
+            class="px-4 py-2 rounded-full border border-border text-xs font-display small-caps text-muted hover:text-text transition flex items-center gap-1.5"
           >
             🐙 GitHub
           </a>
@@ -29,7 +29,7 @@
             v-if="project?.test_url" 
             :href="project.test_url" 
             target="_blank" 
-            class="px-4 py-2 rounded-full bg-periwinkle text-navy text-xs font-display small-caps hover:opacity-85 transition flex items-center gap-1.5 font-semibold"
+            class="px-4 py-2 rounded-full bg-primary text-background text-xs font-display small-caps hover:opacity-85 transition flex items-center gap-1.5 font-semibold"
           >
             🔗 Demo Direct
           </a>

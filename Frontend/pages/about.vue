@@ -21,7 +21,7 @@
     </section>
 
     <!-- RADIAL ORBITAL TIMELINE / SKILLS ORBIT -->
-    <section class="mb-20">
+    <section class="mb-20" ref="orbitalSectionRef">
       <div class="mb-6 text-center">
         <span class="eyebrow">Visualização Interativa 3D</span>
         <h2 class="font-display text-2xl small-caps text-text font-semibold mt-1">Mapa de Trajetória & Habilidades</h2>
@@ -174,10 +174,18 @@ const aboutInfoRef = ref<HTMLElement | null>(null)
 const timelineSectionRef = ref<HTMLElement | null>(null)
 const certSectionRef = ref<HTMLElement | null>(null)
 const extraSectionRef = ref<HTMLElement | null>(null)
+const orbitalSectionRef = ref<HTMLElement | null>(null)
 
 useGsap(containerRef, () => {
   if (avatarRef.value) gsap.fromTo(avatarRef.value, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6 })
   if (aboutInfoRef.value) gsap.fromTo(aboutInfoRef.value, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.6, delay: 0.15 })
+
+  if (orbitalSectionRef.value) {
+    gsap.fromTo(orbitalSectionRef.value, { opacity: 0, y: 30 }, {
+      opacity: 1, y: 0, duration: 0.7,
+      scrollTrigger: { trigger: orbitalSectionRef.value, start: 'top 85%' }
+    })
+  }
 
   if (timelineSectionRef.value) {
     gsap.fromTo(timelineSectionRef.value, { opacity: 0, y: 30 }, {
