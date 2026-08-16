@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from Models.user import User
     from Models.tool import Tool
     from Models.project_image import ProjectImage
+    from Models.project_link import ProjectLink
 
 
 
@@ -18,8 +19,6 @@ class Project(BaseORMModel):
 
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("user.id"), nullable=False)
     name: Mapped[str] = mapped_column(nullable=False)
-    github_url: Mapped[str] = mapped_column(nullable=True)
-    test_url: Mapped[str] = mapped_column(nullable=True)
     category: Mapped[Category] = mapped_column(nullable=False)
     likes: Mapped[int] = mapped_column(default=0, nullable=False)
     date: Mapped[Date] = mapped_column(nullable=False)
@@ -29,3 +28,4 @@ class Project(BaseORMModel):
     user: Mapped["User"] = relationship("User", back_populates="projects")
     tools: Mapped[list["Tool"]] = relationship(secondary="project_tool", back_populates="projects")
     images: Mapped[list["ProjectImage"]] = relationship("ProjectImage", back_populates="project")
+    links: Mapped[list["ProjectLink"]] = relationship("ProjectLink", back_populates="project")

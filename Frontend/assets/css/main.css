@@ -657,3 +657,20 @@ body.light .iris-shape {
 .animate-ping {
   animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
+
+/* -------------------------------------------------------------------------
+   10. Ícones customizados (PNG/SVG) com cor de tema
+   Renderiza a imagem como máscara em vez de <img>, pintada com
+   background-color: currentColor — assim ela acompanha o texto/tema
+   (claro/escuro) em vez de ficar travada na cor original do arquivo.
+   ------------------------------------------------------------------------- */
+.icon-mask {
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}

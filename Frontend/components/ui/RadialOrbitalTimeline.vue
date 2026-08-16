@@ -28,7 +28,7 @@
           v-for="(item, index) in timelineData"
           :key="item.id"
           :ref="el => nodeRefs[item.id] = el as HTMLDivElement"
-          class="absolute transition-all duration-700 cursor-pointer"
+          class="absolute transition-all duration-700 cursor-pointer group"
           :style="getNodeStyle(index, timelineData.length, item.id)"
           @click.stop="toggleItem(item.id)"
         >
@@ -53,7 +53,7 @@
                 ? 'bg-text text-background border-text shadow-lg shadow-primary/30 scale-150'
                 : isRelatedToActive(item.id)
                 ? 'bg-text/50 text-background border-text animate-pulse'
-                : 'bg-surface text-text border-text/40'
+                : 'bg-surface text-text border-text/40 hover:border-primary hover:text-primary hover:scale-125 hover:shadow-md hover:shadow-primary/30'
             ]"
           >
             <component :is="item.icon" :size="16" weight="fill" />
@@ -62,7 +62,7 @@
           <!-- Node Title -->
           <div
             class="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-semibold tracking-wider font-display small-caps transition-all duration-300"
-            :class="expandedItems[item.id] ? 'text-text scale-125' : 'text-text/70'"
+            :class="expandedItems[item.id] ? 'text-text scale-125' : 'text-text/70 group-hover:text-primary'"
           >
             {{ item.title }}
           </div>

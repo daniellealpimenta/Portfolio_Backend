@@ -73,7 +73,9 @@ import { PhCalendar, PhCode, PhFileText, PhUser, PhClock, PhBriefcase, PhGraduat
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
 import RadialOrbitalTimeline, { type TimelineItem } from '~/components/ui/RadialOrbitalTimeline.vue'
 import { useLanguage } from '~/composables/useLanguage'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const { user, experiences, certificates, loadData } = usePortfolioApi()
 const { lang } = useLanguage()
 
@@ -198,6 +200,6 @@ useGsap(containerRef, () => {
 })
 
 onMounted(() => {
-  loadData()
+  loadData(route.params.user_id as string)
 })
 </script>

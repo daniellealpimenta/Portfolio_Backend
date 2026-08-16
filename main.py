@@ -6,6 +6,7 @@ import Models.base
 import Models.user        
 import Models.project     
 import Models.project_image
+import Models.project_link
 import Models.tool
 import Models.associations
 import Models.certificate
@@ -16,6 +17,7 @@ import Models.recommendation
 from Routes.project import router as project_router
 from Routes.user import router as user_router
 from Routes.project_image import router as project_image_router
+from Routes.project_link import router as project_link_router
 from Routes.skill import router as skill_router
 from Routes.tool import router as tool_router
 from Routes.experience import router as experience_router
@@ -44,6 +46,7 @@ app.add_middleware(
 app.include_router(user_router)
 app.include_router(project_router)
 app.include_router(project_image_router)
+app.include_router(project_link_router)
 app.include_router(skill_router)
 app.include_router(tool_router)
 app.include_router(experience_router)

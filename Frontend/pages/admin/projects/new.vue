@@ -32,15 +32,10 @@
       </div>
 
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">URL do GitHub</label>
-        <input v-model="form.github_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Links do Projeto</label>
+        <ProjectLinksEditor v-model="links" />
       </div>
 
-      <div>
-        <label class="block text-meta text-xs text-muted mb-2">URL de Teste / Deploy</label>
-        <input v-model="form.test_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
-      </div>
-      
       <div v-if="errorMsg" class="text-sm text-error bg-error/10 border border-error/20 rounded-xl p-3">
         {{ errorMsg }}
       </div>
@@ -60,20 +55,21 @@ import { ref } from 'vue'
 import { definePageMeta, useRouter } from '#imports'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
 import { useAuth } from '~/composables/useAuth'
+import ProjectLinksEditor, { type EditableProjectLink } from '~/components/ProjectLinksEditor.vue'
 
 definePageMeta({ layout: 'admin', middleware: 'auth' })
 
 const router = useRouter()
-const { createProject } = usePortfolioApi()
+const { createProject, createProjectLink } = usePortfolioApi()
 const { adminUserId } = useAuth()
 
 const form = ref({
   name: '',
   category: 'FrontEnd',
-  description: '',
-  github_url: '',
-  test_url: ''
+  description: ''
 })
+
+const links = ref<EditableProjectLink[]>([])
 
 const saving = ref(false)
 const errorMsg = ref('')
@@ -87,7 +83,7 @@ async function handleSubmit() {
       user_id: adminUserId.value || '019fb45c-4672-7ab1-8d67-c04858251df8',
       ...form.value
     }
-    
+
     // Clean empty values
     Object.keys(payload).forEach(k => {
       if ((payload as any)[k] === '') {
@@ -95,7 +91,13 @@ async function handleSubmit() {
       }
     })
 
-    await createProject(payload)
+    const project: any = await createProject(payload)
+
+    const validLinks = links.value.filter(l => l.name.trim() && l.url.trim() && l.icon.trim())
+    for (const link of validLinks) {
+      await createProjectLink({ project_id: project.id, name: link.name, url: link.url, icon: link.icon })
+    }
+
     router.push('/admin/projects')
   } catch (e: any) {
     console.error(e)

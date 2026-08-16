@@ -46,4 +46,5 @@ from Models.experience import Experience
 from Models.certificate import Certificate
 from Models.recommendation import Recommendation
 from Models.project_image import ProjectImage
+from Models.project_link import ProjectLink
 import Models.associations

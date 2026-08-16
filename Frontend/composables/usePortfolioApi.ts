@@ -5,8 +5,14 @@ export interface Project {
   likes: number
   cat: 'mobile' | 'back' | 'data' | string
   desc: string
-  github_url: string | null
-  test_url: string | null
+}
+
+export interface ProjectLink {
+  id: string
+  project_id: string
+  name: string
+  url: string
+  icon: string
 }
 
 export interface Tool {
@@ -39,6 +45,7 @@ export interface Testimonial {
   quote: string
   experience_id?: string | number
   linkedin_recommender_url?: string
+  recommender_avatar_url?: string
   date?: string
   description?: string
 }
@@ -113,9 +120,7 @@ export function usePortfolioApi() {
             year: p.date ? new Date(p.date).getFullYear() : (p.year || 2025),
             likes: p.likes ?? 0,
             cat: normalizeCategory(p.category),
-            desc: p.description || p.desc || 'Projeto cadastrado via API Backend FastAPI.',
-            github_url: p.github_url || null,
-            test_url: p.test_url || null
+            desc: p.description || p.desc || 'Projeto cadastrado via API Backend FastAPI.'
           }))
         }
 
@@ -151,6 +156,7 @@ export function usePortfolioApi() {
             description: r.description || r.content || r.quote,
             experience_id: r.experience_id || '',
             linkedin_recommender_url: r.linkedin_recommender_url || '',
+            recommender_avatar_url: r.recommender_avatar_url || '',
             date: r.date || ''
           }))
         }
@@ -282,6 +288,20 @@ export function usePortfolioApi() {
     return await $fetch(`${API_BASE_URL}/project-images/${id}`, { method: 'PATCH', body: data })
   }
 
+  // Project Links
+  async function getProjectLinks(projectId: string) {
+    return await $fetch<ProjectLink[]>(`${API_BASE_URL}/project-links/project/${projectId}`)
+  }
+  async function createProjectLink(data: { project_id: string, name: string, url: string, icon: string }) {
+    return await $fetch<ProjectLink>(`${API_BASE_URL}/project-links/`, { method: 'POST', body: data })
+  }
+  async function updateProjectLink(id: string, data: { name?: string, url?: string, icon?: string }) {
+    return await $fetch<ProjectLink>(`${API_BASE_URL}/project-links/${id}`, { method: 'PATCH', body: data })
+  }
+  async function deleteProjectLink(id: string) {
+    return await $fetch(`${API_BASE_URL}/project-links/${id}`, { method: 'DELETE' })
+  }
+
   // Contact
   async function sendContactMessage(data: { user_id: string, name: string, email: string, subject: string, message: string }) {
     return await $fetch(`${API_BASE_URL}/contact/`, { method: 'POST', body: data })
@@ -316,6 +336,10 @@ export function usePortfolioApi() {
     getProjectImages,
     createProjectImage,
     updateProjectImage,
+    getProjectLinks,
+    createProjectLink,
+    updateProjectLink,
+    deleteProjectLink,
     createSkill,
     updateSkill,
     deleteSkill,

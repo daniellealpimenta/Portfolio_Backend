@@ -30,6 +30,12 @@
       </div>
 
       <div>
+        <label class="block text-meta text-xs text-muted mb-2">URL da Foto do Autor</label>
+        <input v-model="form.recommender_avatar_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors" placeholder="https://...">
+        <p class="text-xs text-muted mt-1.5">Opcional — sem foto, mostramos um avatar com as iniciais do nome.</p>
+      </div>
+
+      <div>
         <label class="block text-meta text-xs text-muted mb-2">Data da Recomendação</label>
         <input v-model="form.date" type="date" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
@@ -76,6 +82,7 @@ const form = ref({
   name_recommender: '',
   experience_id: '',
   linkedin_recommender_url: '',
+  recommender_avatar_url: '',
   date: '',
   description: ''
 })

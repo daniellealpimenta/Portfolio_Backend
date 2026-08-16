@@ -39,12 +39,17 @@
     </div>
 
     <!-- Links -->
-    <div class="flex flex-wrap gap-4 mb-16">
-      <a v-if="project.github_url" :href="project.github_url" target="_blank" class="px-6 py-3 rounded-full border border-border bg-surface text-sm font-display small-caps hover:bg-border transition flex items-center gap-2">
-        🐙 GitHub
-      </a>
-      <a v-if="project.test_url" :href="project.test_url" target="_blank" class="px-6 py-3 rounded-full bg-primary text-background text-sm font-display small-caps hover:opacity-90 transition flex items-center gap-2 font-semibold">
-        🔗 Demo Direct
+    <div v-if="links.length > 0" class="flex flex-wrap gap-4 mb-16">
+      <a
+        v-for="link in links"
+        :key="link.id"
+        :href="link.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-6 py-3 rounded-full border border-border bg-surface text-sm font-display small-caps hover:bg-border transition flex items-center gap-2"
+      >
+        <IconRenderer :icon="link.icon" :size="16" />
+        {{ link.name }}
       </a>
     </div>
 
@@ -74,14 +79,16 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { usePortfolioApi, type Project } from '~/composables/usePortfolioApi'
+import { usePortfolioApi, type Project, type ProjectLink } from '~/composables/usePortfolioApi'
+import IconRenderer from '~/components/ui/IconRenderer.vue'
 
 const route = useRoute()
-const { getProjectImages } = usePortfolioApi()
+const { getProjectImages, getProjectLinks } = usePortfolioApi()
 const projectId = route.params.id as string
 
 const project = ref<Project | null>(null)
 const images = ref<any[]>([])
+const links = ref<ProjectLink[]>([])
 const loading = ref(true)
 
 const videoUrl = computed(() => {
@@ -110,9 +117,7 @@ onMounted(async () => {
           year: res.date ? new Date(res.date).getFullYear() : (res.year || 2025),
           likes: res.likes ?? 0,
           cat: res.category || 'back',
-          desc: res.description || res.desc || '',
-          github_url: res.github_url || null,
-          test_url: res.test_url || null
+          desc: res.description || res.desc || ''
         }
       }
     } else {
@@ -124,6 +129,12 @@ onMounted(async () => {
       const imgRes = await getProjectImages(projectId)
       if (imgRes && Array.isArray(imgRes)) {
         images.value = imgRes
+      }
+      // Fetch links
+      try {
+        links.value = await getProjectLinks(projectId)
+      } catch (e) {
+        console.error('Erro ao carregar links do projeto:', e)
       }
     }
   } catch (error) {

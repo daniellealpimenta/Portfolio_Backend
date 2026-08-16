@@ -6,6 +6,7 @@ import Models.associations
 from Models.tool import Tool
 from Models.user import User
 from Models.project_image import ProjectImage
+from Models.project_link import ProjectLink
 
 class ProjectRepository:
     def __init__(self, db: Session):

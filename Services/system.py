@@ -9,6 +9,7 @@ from Models.experience import Experience
 from Models.certificate import Certificate
 from Models.recommendation import Recommendation
 from Models.project_image import ProjectImage
+from Models.project_link import ProjectLink
 import Models.associations
 from fastapi import HTTPException
 
@@ -35,9 +36,10 @@ class SystemService:
                     "category": p.category,
                     "date": str(p.date) if p.date else None,
                     "likes": p.likes,
-                    "github_url": p.github_url,
-                    "test_url": p.test_url,
-                    "description": p.description
+                    "description": p.description,
+                    "links": [
+                        {"name": l.name, "url": l.url, "icon": l.icon} for l in p.links
+                    ]
                 } for p in projects
             ],
             "skills": [
@@ -73,6 +75,7 @@ class SystemService:
                     "name_recommender": r.name_recommender,
                     "description": r.description,
                     "linkedin_recommender_url": r.linkedin_recommender_url,
+                    "recommender_avatar_url": r.recommender_avatar_url,
                     "date": str(r.date) if r.date else None,
                     "experience_id": str(r.experience_id) if r.experience_id else None
                 } for r in recommendations
@@ -113,11 +116,19 @@ class SystemService:
                         category=valid_cat,
                         date=date.fromisoformat(p.get('date')) if p.get('date') else date.today(),
                         likes=p.get('likes', 0),
-                        github_url=p.get('github_url') if p.get('github_url') else None,
-                        test_url=p.get('test_url') if p.get('test_url') else None,
                         description=p.get('description')
                     )
                     self.db.add(new_p)
+                    self.db.flush()
+
+                    for l in p.get('links', []):
+                        if l.get('name') and l.get('url') and l.get('icon'):
+                            self.db.add(ProjectLink(
+                                project_id=new_p.id,
+                                name=l['name'],
+                                url=l['url'],
+                                icon=l['icon']
+                            ))
             
             # Habilidades
             if 'skills' in data:
@@ -197,6 +208,7 @@ class SystemService:
                             name_recommender=r.get('name_recommender') or r.get('name', ''),
                             description=r.get('description') or r.get('quote', ''),
                             linkedin_recommender_url=r.get('linkedin_recommender_url'),
+                            recommender_avatar_url=r.get('recommender_avatar_url'),
                             date=date.fromisoformat(r.get('date')) if r.get('date') else date.today()
                         )
                         self.db.add(new_r)

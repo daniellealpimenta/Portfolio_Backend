@@ -17,20 +17,36 @@
       <span class="absolute -bottom-12 right-2 md:right-4 text-[6rem] text-primary/30 font-serif leading-none select-none">”</span>
 
       <!-- Informações do Recomendador -->
-      <div class="mt-4 border-t border-border/50 pt-6 flex flex-col relative z-10">
-        <a 
-          v-if="item.linkedin_recommender_url" 
-          :href="item.linkedin_recommender_url" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="text-base font-display small-caps text-primary font-bold hover:underline hover:text-primary/80 transition-colors self-start"
+      <div class="mt-4 border-t border-border/50 pt-6 flex items-center gap-4 relative z-10">
+        <img
+          v-if="item.recommender_avatar_url"
+          :src="item.recommender_avatar_url"
+          :alt="item.name"
+          class="w-11 h-11 rounded-full object-cover border border-border shrink-0"
+        />
+        <div
+          v-else
+          class="w-11 h-11 rounded-full bg-primary/15 text-primary border border-primary/25 flex items-center justify-center font-display font-bold text-sm shrink-0"
+          aria-hidden="true"
         >
-          — {{ item.name }}
-        </a>
-        <span v-else class="text-base font-display small-caps text-primary font-bold self-start">
-          — {{ item.name }}
-        </span>
-        <span v-if="item.date" class="text-xs text-muted font-mono mt-1">{{ item.date }}</span>
+          {{ getInitials(item.name) }}
+        </div>
+
+        <div class="flex flex-col">
+          <a
+            v-if="item.linkedin_recommender_url"
+            :href="item.linkedin_recommender_url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-base font-display small-caps text-primary font-bold hover:underline hover:text-primary/80 transition-colors self-start"
+          >
+            — {{ item.name }}
+          </a>
+          <span v-else class="text-base font-display small-caps text-primary font-bold self-start">
+            — {{ item.name }}
+          </span>
+          <span v-if="item.date" class="text-xs text-muted font-mono mt-1">{{ item.date }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -46,4 +62,11 @@ const props = defineProps<{
 
 const listRef = ref<HTMLElement | null>(null)
 useScrollStagger(listRef, computed(() => props.recommendations.length), { y: 30, duration: 0.6, stagger: 0.15 })
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) return parts[0][0].toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
 </script>

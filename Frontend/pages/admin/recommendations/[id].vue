@@ -30,6 +30,12 @@
       </div>
 
       <div>
+        <label class="block text-meta text-xs text-muted mb-2">URL da Foto do Autor</label>
+        <input v-model="form.recommender_avatar_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors" placeholder="https://...">
+        <p class="text-xs text-muted mt-1.5">Opcional — sem foto, mostramos um avatar com as iniciais do nome.</p>
+      </div>
+
+      <div>
         <label class="block text-meta text-xs text-muted mb-2">Data da Recomendação</label>
         <input v-model="form.date" type="date" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text text-body focus:outline-none focus:border-primary transition-colors">
       </div>
@@ -73,6 +79,7 @@ const form = ref({
   description: '',
   date: '',
   linkedin_recommender_url: '',
+  recommender_avatar_url: '',
   experience_id: ''
 })
 
@@ -95,6 +102,7 @@ function syncData() {
       form.value.description = item.quote || ''
       form.value.date = item.date || ''
       form.value.linkedin_recommender_url = item.linkedin_recommender_url || ''
+      form.value.recommender_avatar_url = item.recommender_avatar_url || ''
       form.value.experience_id = item.experience_id || ''
   }
 }

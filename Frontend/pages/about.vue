@@ -210,6 +210,6 @@ useGsap(containerRef, () => {
 })
 
 onMounted(() => {
-  loadData()
+  loadData('daniel.pimenta')
 })
 </script>

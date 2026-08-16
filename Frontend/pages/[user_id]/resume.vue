@@ -31,13 +31,15 @@ import VuePdfEmbed from 'vue-pdf-embed'
 import CrowdCanvas from '~/components/ui/CrowdCanvas.vue'
 import { useLanguage } from '~/composables/useLanguage'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const { lang } = useLanguage()
 const { user, loadData } = usePortfolioApi()
 
 const pdfUrl = computed(() => lang.value === 'en' ? user.value?.curriculum_en_url : user.value?.curriculum_url)
 
 onMounted(() => {
-  loadData()
+  loadData(route.params.user_id as string)
 })
 </script>

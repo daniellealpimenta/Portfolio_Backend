@@ -17,6 +17,7 @@ class Recommendation(BaseORMModel):
     name_recommender: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
     linkedin_recommender_url: Mapped[str] = mapped_column(nullable=True)
+    recommender_avatar_url: Mapped[str] = mapped_column(nullable=True)
     date: Mapped[Date] = mapped_column(nullable=True)
 
     # Relationship

@@ -32,15 +32,10 @@
       </div>
 
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">URL do GitHub</label>
-        <input v-model="form.github_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
+        <label class="block text-meta text-xs text-muted mb-2">Links do Projeto</label>
+        <ProjectLinksEditor v-model="links" />
       </div>
 
-      <div>
-        <label class="block text-meta text-xs text-muted mb-2">URL de Teste / Deploy</label>
-        <input v-model="form.test_url" type="url" class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors">
-      </div>
-      
       <div v-if="errorMsg" class="text-sm text-error bg-error/10 border border-error/20 rounded-xl p-3">
         {{ errorMsg }}
       </div>
@@ -60,6 +55,7 @@ import { ref, onMounted, watch } from 'vue'
 import { definePageMeta, useRouter, useRoute } from '#imports'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
 import { useAuth } from '~/composables/useAuth'
+import ProjectLinksEditor, { type EditableProjectLink } from '~/components/ProjectLinksEditor.vue'
 
 definePageMeta({ layout: 'admin', middleware: 'auth' })
 
@@ -67,16 +63,17 @@ const router = useRouter()
 const route = useRoute()
 const id = route.params.id as string
 
-const { projects, updateProject, loadData } = usePortfolioApi()
+const { projects, updateProject, loadData, getProjectLinks, createProjectLink, updateProjectLink, deleteProjectLink } = usePortfolioApi()
 const { adminUserId } = useAuth()
 
 const form = ref({
   name: '',
   category: 'FrontEnd',
-  description: '',
-  github_url: '',
-  test_url: ''
+  description: ''
 })
+
+const links = ref<EditableProjectLink[]>([])
+const originalLinkIds = ref<string[]>([])
 
 const saving = ref(false)
 const errorMsg = ref('')
@@ -86,6 +83,14 @@ onMounted(async () => {
     await loadData('daniel.pimenta')
   }
   syncData()
+
+  try {
+    const existingLinks = await getProjectLinks(id)
+    links.value = existingLinks.map(l => ({ id: l.id, name: l.name, url: l.url, icon: l.icon }))
+    originalLinkIds.value = existingLinks.map(l => l.id)
+  } catch (e) {
+    console.error('Erro ao carregar links do projeto:', e)
+  }
 })
 
 watch(projects, () => syncData())
@@ -96,8 +101,6 @@ function syncData() {
     form.value.name = item.title || ''
     form.value.category = item.cat || 'FrontEnd'
     form.value.description = item.desc || ''
-    form.value.github_url = item.github_url || ''
-    form.value.test_url = item.test_url || ''
   }
 }
 
@@ -113,8 +116,25 @@ async function handleSubmit() {
         (payload as any)[k] = null
       }
     })
-    
+
     await updateProject(id, payload)
+
+    // Sincroniza os links: remove os excluídos, atualiza os existentes, cria os novos
+    const currentIds = links.value.filter(l => l.id).map(l => l.id!)
+    const removedIds = originalLinkIds.value.filter(oid => !currentIds.includes(oid))
+    for (const removedId of removedIds) {
+      await deleteProjectLink(removedId)
+    }
+
+    for (const link of links.value) {
+      if (!link.name.trim() || !link.url.trim() || !link.icon.trim()) continue
+      if (link.id) {
+        await updateProjectLink(link.id, { name: link.name, url: link.url, icon: link.icon })
+      } else {
+        await createProjectLink({ project_id: id, name: link.name, url: link.url, icon: link.icon })
+      }
+    }
+
     router.push('/admin/projects')
   } catch (e: any) {
     console.error(e)

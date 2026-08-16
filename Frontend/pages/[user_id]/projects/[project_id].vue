@@ -7,14 +7,18 @@
       <header class="text-left">
         <h1 class="text-h1 mb-4 uppercase text-text font-bold tracking-tight text-4xl md:text-5xl">{{ project.title }}</h1>
         
-        <!-- Badges -->
-        <div class="flex items-center justify-start gap-4">
-          <a v-if="project.test_url" :href="project.test_url" target="_blank" class="px-5 py-2 rounded-full bg-text text-background text-xs font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">
-            Teste
-          </a>
-          <div v-if="project.test_url && project.github_url" class="w-[1.5px] h-6 bg-border"></div>
-          <a v-if="project.github_url" :href="project.github_url" target="_blank" class="px-5 py-2 rounded-full bg-text text-background text-xs font-display small-caps tracking-wide hover:opacity-85 transition font-semibold">
-            GitHub
+        <!-- Links do Projeto -->
+        <div v-if="projectLinks.length > 0" class="flex items-center justify-start gap-3 flex-wrap">
+          <a
+            v-for="link in projectLinks"
+            :key="link.id"
+            :href="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-5 py-2 rounded-full bg-text text-background text-xs font-display small-caps tracking-wide hover:opacity-85 transition font-semibold flex items-center gap-2"
+          >
+            <IconRenderer :icon="link.icon" :size="16" />
+            {{ link.name }}
           </a>
         </div>
       </header>
@@ -56,16 +60,18 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { usePortfolioApi, type Project } from '~/composables/usePortfolioApi'
+import { usePortfolioApi, type Project, type ProjectLink } from '~/composables/usePortfolioApi'
 import { gsap } from 'gsap'
 import { marked } from 'marked'
+import IconRenderer from '~/components/ui/IconRenderer.vue'
 
 const route = useRoute()
 const projectId = route.params.project_id as string
-const { projects, loadData, getProjectImages } = usePortfolioApi()
+const { projects, loadData, getProjectImages, getProjectLinks } = usePortfolioApi()
 
 const loading = ref(true)
 const projectMedias = ref<any[]>([])
+const projectLinks = ref<ProjectLink[]>([])
 const containerRef = ref<HTMLElement | null>(null)
 
 const project = computed(() => {
@@ -101,6 +107,11 @@ onMounted(async () => {
       projectMedias.value = await getProjectImages(projectId)
     } catch (e) {
       console.error('Erro ao carregar imagens do projeto:', e)
+    }
+    try {
+      projectLinks.value = await getProjectLinks(projectId)
+    } catch (e) {
+      console.error('Erro ao carregar links do projeto:', e)
     }
   }
   
