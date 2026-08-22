@@ -24,6 +24,11 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css'
   ],
+  routeRules: {
+    // Painel autenticado, sem necessidade de SEO — roda só no cliente, o que evita
+    // ter que reencaminhar cookies pro backend durante o SSR pra checar login.
+    '/admin/**': { ssr: false }
+  },
   runtimeConfig: {
     public: {
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || '',

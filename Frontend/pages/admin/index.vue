@@ -128,6 +128,7 @@
 import { onMounted, ref } from 'vue'
 import { definePageMeta } from '#imports'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
+import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
   layout: 'admin',
@@ -135,6 +136,7 @@ definePageMeta({
 })
 
 const { user, projects, skills, experiences, tools, certificates, testimonials, loading, loadData, importSystemData, exportSystemData } = usePortfolioApi()
+const { adminUserId } = useAuth()
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const importing = ref(false)
@@ -148,7 +150,7 @@ const handleExport = async () => {
   importStatus.value = 'Gerando JSON...'
   
   try {
-    const userIdToExport = user.value?.id || '019fb45c-4672-7ab1-8d67-c04858251df8'
+    const userIdToExport = user.value?.id || adminUserId.value
     const data = await exportSystemData(userIdToExport)
     
     // Download logic
@@ -193,7 +195,7 @@ const handleFileUpload = async (event: Event) => {
     const json = JSON.parse(text)
     
     // Supondo que estamos usando o usuário daniel.pimenta ou o ID que já está carregado
-    const userIdToImport = user.value?.id || '019fb45c-4672-7ab1-8d67-c04858251df8'
+    const userIdToImport = user.value?.id || adminUserId.value
     
     importStatus.value = 'Processando dados...'
     await importSystemData(userIdToImport, json)
@@ -211,6 +213,6 @@ const handleFileUpload = async (event: Event) => {
 }
 
 onMounted(() => {
-  loadData('daniel.pimenta')
+  loadData(adminUserId.value)
 })
 </script>

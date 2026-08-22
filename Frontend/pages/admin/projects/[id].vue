@@ -14,16 +14,21 @@
       </div>
 
       <div>
-        <label class="block text-meta text-xs text-muted mb-2">Categoria *</label>
-        <select v-model="form.category" required class="w-full bg-background border border-border rounded-xl px-4 py-3 text-text focus:outline-none focus:border-primary transition-colors appearance-none">
-          <option value="FrontEnd">FrontEnd</option>
-          <option value="BackEnd">BackEnd</option>
-          <option value="FullStack">FullStack</option>
-          <option value="DataScience">DataScience</option>
-          <option value="GameDev">GameDev</option>
-          <option value="Mobile">Mobile</option>
-          <option value="Other">Other</option>
-        </select>
+        <label class="block text-meta text-xs text-muted mb-2">Categorias * (selecione uma ou mais)</label>
+        <div class="flex flex-wrap gap-2">
+          <label
+            v-for="opt in categoryOptions"
+            :key="opt"
+            class="cursor-pointer select-none px-4 py-2 rounded-xl border text-sm transition-colors"
+            :class="form.categories.includes(opt)
+              ? 'bg-primary text-background border-primary'
+              : 'bg-background border-border text-muted hover:text-text'"
+          >
+            <input type="checkbox" :value="opt" v-model="form.categories" class="hidden">
+            {{ opt }}
+          </label>
+        </div>
+        <p v-if="form.categories.length === 0" class="text-xs text-error mt-2">Selecione ao menos uma categoria.</p>
       </div>
 
       <div>
@@ -66,9 +71,11 @@ const id = route.params.id as string
 const { projects, updateProject, loadData, getProjectLinks, createProjectLink, updateProjectLink, deleteProjectLink } = usePortfolioApi()
 const { adminUserId } = useAuth()
 
+const categoryOptions = ['FrontEnd', 'BackEnd', 'FullStack', 'DataScience', 'GameDev', 'Mobile', 'Other']
+
 const form = ref({
   name: '',
-  category: 'FrontEnd',
+  categories: [] as string[],
   description: ''
 })
 
@@ -80,7 +87,7 @@ const errorMsg = ref('')
 
 onMounted(async () => {
   if (projects.value.length === 0) {
-    await loadData('daniel.pimenta')
+    await loadData(adminUserId.value)
   }
   syncData()
 
@@ -99,12 +106,17 @@ function syncData() {
   const item = projects.value.find((x: any) => x.id === id || x.id == id)
   if (item) {
     form.value.name = item.title || ''
-    form.value.category = item.cat || 'FrontEnd'
+    form.value.categories = item.categories && item.categories.length > 0 ? [...item.categories] : ['FrontEnd']
     form.value.description = item.desc || ''
   }
 }
 
 async function handleSubmit() {
+  if (form.value.categories.length === 0) {
+    errorMsg.value = 'Selecione ao menos uma categoria.'
+    return
+  }
+
   saving.value = true
   errorMsg.value = ''
 

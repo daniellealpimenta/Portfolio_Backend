@@ -3,7 +3,9 @@ export interface Project {
   title: string
   year: number
   likes: number
-  cat: 'mobile' | 'back' | 'data' | string
+  liked?: boolean
+  cat: 'mobile' | 'back' | 'data' | string // balde simplificado, usado pelas abas de filtro do site público
+  categories: string[] // categorias reais (podem ser mais de uma), usadas no admin e nos badges
   desc: string
 }
 
@@ -70,12 +72,24 @@ const API_BASE_URL = 'http://127.0.0.1:8000'
 
 
 
-function normalizeCategory(category?: string): string {
-  if (!category) return 'back'
-  const c = category.toLowerCase()
-  if (c.includes('mobile') || c.includes('ios') || c.includes('swift')) return 'mobile'
-  if (c.includes('data') || c.includes('datascience')) return 'data'
+// Reduz a lista real de categorias a um balde simples ('mobile'/'data'/'back'),
+// usado só pelas abas de filtro simplificadas do site público (work.vue).
+function normalizeCategory(categories?: string[]): string {
+  if (!categories || categories.length === 0) return 'back'
+  const lower = categories.map(c => c.toLowerCase())
+  if (lower.some(c => c.includes('mobile') || c.includes('ios') || c.includes('swift'))) return 'mobile'
+  if (lower.some(c => c.includes('data'))) return 'data'
   return 'back'
+}
+
+// Identificador anônimo persistido em cookie — usado só pra saber, no backend,
+// se ESTE navegador já curtiu um projeto (sem precisar de login de visitante).
+function getVisitorId(): string {
+  const cookie = useCookie<string | null>('visitor_id', { maxAge: 60 * 60 * 24 * 365 * 2 })
+  if (!cookie.value) {
+    cookie.value = crypto.randomUUID()
+  }
+  return cookie.value
 }
 
 export function usePortfolioApi() {
@@ -87,31 +101,45 @@ export function usePortfolioApi() {
   const certificates = useState<Certificate[]>('portfolio-certificates', () => [])
   const testimonials = useState<Testimonial[]>('portfolio-testimonials', () => [])
   const loading = useState('portfolio-loading', () => false)
+  // Guarda pra quem os dados atuais foram carregados — evita refazer a busca
+  // inteira toda vez que o usuário navega de volta pra uma página já visitada.
+  const loadedFor = useState<string | null>('portfolio-loaded-for', () => null)
 
-  async function loadData(userIdOrUsername: string) {
+  async function loadData(userIdOrUsername: string, force = false) {
     if (!userIdOrUsername) {
       console.error('loadData: userIdOrUsername is required')
       return
     }
-    
+
+    if (!force && loadedFor.value === userIdOrUsername && user.value) {
+      return
+    }
+
     loading.value = true
     try {
       // 1. Fetch user first using identifier (username or UUID)
-      const userRes = await $fetch<any>(`${API_BASE_URL}/users/${userIdOrUsername}`, { timeout: 3000 }).catch(() => null)
-      
+      const userRes = await $fetch<any>(`${API_BASE_URL}/users/${userIdOrUsername}`, { timeout: 8000 }).catch(() => null)
+
       if (userRes) {
         user.value = userRes
         const actualUserId = userRes.id // Always the UUID
-        
+        const visitorId = getVisitorId()
+
         // 2. Fetch dependencies using the actual UUID
-        const [projRes, toolRes, skillRes, expRes, certRes, testRes] = await Promise.allSettled([
-          $fetch<any[]>(`${API_BASE_URL}/projects/user/${actualUserId}`, { timeout: 3000 }).catch(() => $fetch<any[]>(`${API_BASE_URL}/projects/`, { timeout: 3000 })),
-          $fetch<any[]>(`${API_BASE_URL}/tools/user/${actualUserId}`, { timeout: 3000 }).catch(() => $fetch<any[]>(`${API_BASE_URL}/tools/`, { timeout: 3000 })),
-          $fetch<any[]>(`${API_BASE_URL}/skills/user/${actualUserId}`, { timeout: 3000 }).catch(() => $fetch<any[]>(`${API_BASE_URL}/skills/`, { timeout: 3000 })),
-          $fetch<any[]>(`${API_BASE_URL}/experiences/user/${actualUserId}`, { timeout: 3000 }).catch(() => $fetch<any[]>(`${API_BASE_URL}/experiences/`, { timeout: 3000 })),
-          $fetch<any[]>(`${API_BASE_URL}/certificates/user/${actualUserId}`, { timeout: 3000 }).catch(() => $fetch<any[]>(`${API_BASE_URL}/certificates/`, { timeout: 3000 })),
-          $fetch<any[]>(`${API_BASE_URL}/recommendations/user/${actualUserId}`, { timeout: 3000 }).catch(() => $fetch<any[]>(`${API_BASE_URL}/recommendations/`, { timeout: 3000 }))
+        // Sem fallback pra "buscar tudo" — cada portfólio é isolado por usuário
+        // agora, então um erro/timeout aqui deve resultar em lista vazia, não
+        // nos dados de outra pessoa.
+        const [projRes, toolRes, skillRes, expRes, certRes, testRes, likedRes] = await Promise.allSettled([
+          $fetch<any[]>(`${API_BASE_URL}/projects/user/${actualUserId}`, { timeout: 8000 }),
+          $fetch<any[]>(`${API_BASE_URL}/tools/user/${actualUserId}`, { timeout: 8000 }),
+          $fetch<any[]>(`${API_BASE_URL}/skills/user/${actualUserId}`, { timeout: 8000 }),
+          $fetch<any[]>(`${API_BASE_URL}/experiences/user/${actualUserId}`, { timeout: 8000 }),
+          $fetch<any[]>(`${API_BASE_URL}/certificates/user/${actualUserId}`, { timeout: 8000 }),
+          $fetch<any[]>(`${API_BASE_URL}/recommendations/user/${actualUserId}`, { timeout: 8000 }),
+          $fetch<string[]>(`${API_BASE_URL}/projects/liked/${visitorId}`, { timeout: 8000 }).catch(() => [])
         ])
+
+        const likedIds = new Set(likedRes.status === 'fulfilled' ? likedRes.value : [])
 
         if (projRes.status === 'fulfilled' && Array.isArray(projRes.value)) {
           projects.value = projRes.value.map(p => ({
@@ -119,7 +147,9 @@ export function usePortfolioApi() {
             title: p.name || p.title,
             year: p.date ? new Date(p.date).getFullYear() : (p.year || 2025),
             likes: p.likes ?? 0,
-            cat: normalizeCategory(p.category),
+            liked: likedIds.has(p.id),
+            cat: normalizeCategory(p.categories),
+            categories: p.categories || [],
             desc: p.description || p.desc || 'Projeto cadastrado via API Backend FastAPI.'
           }))
         }
@@ -160,6 +190,8 @@ export function usePortfolioApi() {
             date: r.date || ''
           }))
         }
+
+        loadedFor.value = userIdOrUsername
       }
     } catch (e) {
       console.warn('Erro ao buscar API backend:', e)
@@ -172,109 +204,113 @@ export function usePortfolioApi() {
 
   // User
   async function updateUser(id: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/users/${id}`, { method: 'PATCH', body: data })
-    await loadData(id)
+    const res = await $fetch(`${API_BASE_URL}/users/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
+    await loadData(id, true)
     return res
   }
 
   // Projects
   async function createProject(data: any) {
-    const res = await $fetch(`${API_BASE_URL}/projects/`, { method: 'POST', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/projects/`, { method: 'POST', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function updateProject(id: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'PATCH', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
-  async function likeProject(id: string, newLikes: number) {
-    // Only patches the likes without triggering a full loadData reload
-    return await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'PATCH', body: { likes: newLikes } })
+  // Curtida é pública (qualquer visitante pode curtir) — usa os endpoints dedicados,
+  // não a rota de update geral (que agora exige login).
+  async function likeProject(id: string, liked: boolean) {
+    return await $fetch(`${API_BASE_URL}/projects/${id}/${liked ? 'like' : 'unlike'}`, {
+      method: 'POST',
+      body: { visitor_id: getVisitorId() }
+    })
   }
   async function deleteProject(id: string) {
-    await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'DELETE' })
-    if (user.value) await loadData(user.value.id)
+    await $fetch(`${API_BASE_URL}/projects/${id}`, { method: 'DELETE', credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
   }
 
   // Skills
   async function createSkill(data: any) {
-    const res = await $fetch(`${API_BASE_URL}/skills/`, { method: 'POST', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/skills/`, { method: 'POST', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function updateSkill(id: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/skills/${id}`, { method: 'PATCH', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/skills/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function deleteSkill(id: string) {
-    await $fetch(`${API_BASE_URL}/skills/${id}`, { method: 'DELETE' })
-    if (user.value) await loadData(user.value.id)
+    await $fetch(`${API_BASE_URL}/skills/${id}`, { method: 'DELETE', credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
   }
 
   // Experiences
   async function createExperience(data: any) {
-    const res = await $fetch(`${API_BASE_URL}/experiences/`, { method: 'POST', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/experiences/`, { method: 'POST', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function updateExperience(id: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/experiences/${id}`, { method: 'PATCH', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/experiences/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function deleteExperience(id: string) {
-    await $fetch(`${API_BASE_URL}/experiences/${id}`, { method: 'DELETE' })
-    if (user.value) await loadData(user.value.id)
+    await $fetch(`${API_BASE_URL}/experiences/${id}`, { method: 'DELETE', credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
   }
 
   // Certificates
   async function createCertificate(data: any) {
-    const res = await $fetch(`${API_BASE_URL}/certificates/`, { method: 'POST', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/certificates/`, { method: 'POST', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function updateCertificate(id: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/certificates/${id}`, { method: 'PATCH', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/certificates/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function deleteCertificate(id: string) {
-    await $fetch(`${API_BASE_URL}/certificates/${id}`, { method: 'DELETE' })
-    if (user.value) await loadData(user.value.id)
+    await $fetch(`${API_BASE_URL}/certificates/${id}`, { method: 'DELETE', credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
   }
 
   // Tools
   async function createTool(data: any) {
-    const res = await $fetch(`${API_BASE_URL}/tools/`, { method: 'POST', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/tools/`, { method: 'POST', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function updateTool(id: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/tools/${id}`, { method: 'PATCH', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/tools/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function deleteTool(id: string) {
-    await $fetch(`${API_BASE_URL}/tools/${id}`, { method: 'DELETE' })
-    if (user.value) await loadData(user.value.id)
+    await $fetch(`${API_BASE_URL}/tools/${id}`, { method: 'DELETE', credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
   }
 
   // Recommendations
   async function createRecommendation(data: any) {
-    const res = await $fetch(`${API_BASE_URL}/recommendations/`, { method: 'POST', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/recommendations/`, { method: 'POST', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function updateRecommendation(id: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/recommendations/${id}`, { method: 'PATCH', body: data })
-    if (user.value) await loadData(user.value.id)
+    const res = await $fetch(`${API_BASE_URL}/recommendations/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
     return res
   }
   async function deleteRecommendation(id: string) {
-    await $fetch(`${API_BASE_URL}/recommendations/${id}`, { method: 'DELETE' })
-    if (user.value) await loadData(user.value.id)
+    await $fetch(`${API_BASE_URL}/recommendations/${id}`, { method: 'DELETE', credentials: 'include' })
+    if (user.value) await loadData(user.value.id, true)
   }
 
   // Project Images
@@ -282,10 +318,10 @@ export function usePortfolioApi() {
     return await $fetch<any[]>(`${API_BASE_URL}/project-images/project/${projectId}`)
   }
   async function createProjectImage(data: { project_id: string, image_path: string }) {
-    return await $fetch(`${API_BASE_URL}/project-images/`, { method: 'POST', body: data })
+    return await $fetch(`${API_BASE_URL}/project-images/`, { method: 'POST', body: data, credentials: 'include' })
   }
   async function updateProjectImage(id: string, data: { image_path: string }) {
-    return await $fetch(`${API_BASE_URL}/project-images/${id}`, { method: 'PATCH', body: data })
+    return await $fetch(`${API_BASE_URL}/project-images/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
   }
 
   // Project Links
@@ -293,13 +329,13 @@ export function usePortfolioApi() {
     return await $fetch<ProjectLink[]>(`${API_BASE_URL}/project-links/project/${projectId}`)
   }
   async function createProjectLink(data: { project_id: string, name: string, url: string, icon: string }) {
-    return await $fetch<ProjectLink>(`${API_BASE_URL}/project-links/`, { method: 'POST', body: data })
+    return await $fetch<ProjectLink>(`${API_BASE_URL}/project-links/`, { method: 'POST', body: data, credentials: 'include' })
   }
   async function updateProjectLink(id: string, data: { name?: string, url?: string, icon?: string }) {
-    return await $fetch<ProjectLink>(`${API_BASE_URL}/project-links/${id}`, { method: 'PATCH', body: data })
+    return await $fetch<ProjectLink>(`${API_BASE_URL}/project-links/${id}`, { method: 'PATCH', body: data, credentials: 'include' })
   }
   async function deleteProjectLink(id: string) {
-    return await $fetch(`${API_BASE_URL}/project-links/${id}`, { method: 'DELETE' })
+    return await $fetch(`${API_BASE_URL}/project-links/${id}`, { method: 'DELETE', credentials: 'include' })
   }
 
   // Contact
@@ -309,13 +345,13 @@ export function usePortfolioApi() {
 
   // System
   async function importSystemData(userId: string, data: any) {
-    const res = await $fetch(`${API_BASE_URL}/system/import/${userId}`, { method: 'POST', body: data })
-    await loadData(userId)
+    const res = await $fetch(`${API_BASE_URL}/system/import/${userId}`, { method: 'POST', body: data, credentials: 'include' })
+    await loadData(userId, true)
     return res
   }
 
   async function exportSystemData(userId: string) {
-    return await $fetch(`${API_BASE_URL}/system/export/${userId}`)
+    return await $fetch(`${API_BASE_URL}/system/export/${userId}`, { credentials: 'include' })
   }
 
   return {

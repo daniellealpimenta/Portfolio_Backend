@@ -17,6 +17,23 @@ class SystemService:
     def __init__(self, db: Session):
         self.db = db
 
+    @staticmethod
+    def _normalize_category(raw: str) -> str:
+        val = (raw or '').lower()
+        if 'mobile' in val:
+            return 'Mobile'
+        if 'front' in val:
+            return 'FrontEnd'
+        if 'back' in val:
+            return 'BackEnd'
+        if 'full' in val:
+            return 'FullStack'
+        if 'data' in val:
+            return 'DataScience'
+        if 'game' in val:
+            return 'GameDev'
+        return 'Other'
+
     def export_system_data(self, user_id: UUID):
         user = self.db.query(User).filter(User.id == user_id).first()
         if not user:
@@ -24,7 +41,7 @@ class SystemService:
             
         projects = self.db.query(Project).filter(Project.user_id == user_id).all()
         skills = self.db.query(Skill).filter(Skill.user_id == user_id).all()
-        tools = self.db.query(Tool).all()  # Tools are global in this DB
+        tools = self.db.query(Tool).filter(Tool.user_id == user_id).all()
         experiences = self.db.query(Experience).filter(Experience.user_id == user_id).all()
         certificates = self.db.query(Certificate).filter(Certificate.user_id == user_id).all()
         recommendations = self.db.query(Recommendation).filter(Recommendation.user_id == user_id).all()
@@ -33,7 +50,7 @@ class SystemService:
             "projects": [
                 {
                     "name": p.name,
-                    "category": p.category,
+                    "categories": p.categories,
                     "date": str(p.date) if p.date else None,
                     "likes": p.likes,
                     "description": p.description,
@@ -92,28 +109,20 @@ class SystemService:
             if 'projects' in data:
                 self.db.query(Project).filter(Project.user_id == user_id).delete()
                 for p in data['projects']:
-                    cat_val = p.get('category') or p.get('cat', 'FrontEnd')
-                    # Normalize category string to match Enum
-                    cat_val_lower = cat_val.lower()
-                    if 'mobile' in cat_val_lower:
-                        valid_cat = 'Mobile'
-                    elif 'front' in cat_val_lower:
-                        valid_cat = 'FrontEnd'
-                    elif 'back' in cat_val_lower:
-                        valid_cat = 'BackEnd'
-                    elif 'full' in cat_val_lower:
-                        valid_cat = 'FullStack'
-                    elif 'data' in cat_val_lower:
-                        valid_cat = 'DataScience'
-                    elif 'game' in cat_val_lower:
-                        valid_cat = 'GameDev'
-                    else:
-                        valid_cat = 'Other'
-                        
+                    # Aceita tanto o formato novo (lista "categories") quanto o
+                    # antigo (uma "category"/"cat" só), pra continuar lendo backups antigos.
+                    raw_cats = p.get('categories')
+                    if not raw_cats:
+                        single = p.get('category') or p.get('cat')
+                        raw_cats = [single] if single else ['Other']
+
+                    valid_cats = [self._normalize_category(c) for c in raw_cats]
+                    valid_cats = list(dict.fromkeys(valid_cats))  # remove duplicatas, preserva ordem
+
                     new_p = Project(
                         user_id=user_id,
                         name=p.get('name') or p.get('title', ''),
-                        category=valid_cat,
+                        categories=valid_cats,
                         date=date.fromisoformat(p.get('date')) if p.get('date') else date.today(),
                         likes=p.get('likes', 0),
                         description=p.get('description')
@@ -141,15 +150,14 @@ class SystemService:
                     )
                     self.db.add(new_s)
                     
-            # Ferramentas (Tools are global, just add if not exists)
+            # Ferramentas (por usuário)
             if 'tools' in data:
-                existing_tools = {t.name for t in self.db.query(Tool).all()}
+                self.db.query(Tool).filter(Tool.user_id == user_id).delete()
                 for t in data['tools']:
                     t_name = t.get('name', '')
-                    if t_name and t_name not in existing_tools:
-                        new_t = Tool(name=t_name, icon_url=t.get('icon_url'))
+                    if t_name:
+                        new_t = Tool(user_id=user_id, name=t_name, icon_url=t.get('icon_url'))
                         self.db.add(new_t)
-                        existing_tools.add(t_name)
                     
             # Experiências
             exp_mapping = {}

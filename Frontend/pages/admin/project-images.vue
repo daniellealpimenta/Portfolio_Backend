@@ -85,10 +85,12 @@
 import { ref, onMounted } from 'vue'
 import { definePageMeta } from '#imports'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
+import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({ layout: 'admin', middleware: 'auth' })
 
 const { projects, loading, loadData, getProjectImages, createProjectImage } = usePortfolioApi()
+const { adminUserId } = useAuth()
 
 const selectedProjectId = ref('')
 const currentImages = ref<any[]>([])
@@ -97,7 +99,7 @@ const newImageUrl = ref('')
 const saving = ref(false)
 
 onMounted(() => {
-  loadData('daniel.pimenta')
+  loadData(adminUserId.value)
 })
 
 const isVideo = (url: string) => {

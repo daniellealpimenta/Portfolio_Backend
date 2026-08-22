@@ -1,44 +1,154 @@
-import { ref } from 'vue'
-import { useRouter, useCookie } from '#imports'
+import { computed } from 'vue'
+import { useRouter, useState } from '#imports'
+
+// Perfil completo — só é preenchido assim por /auth/me (autenticado, "seus
+// próprios dados"). As respostas de /auth/verify-code e /auth/signup trazem
+// só o essencial (id/name/username/email), o resto fica undefined até o
+// fetchSession() rodar.
+interface AuthUser {
+  id: string
+  name: string
+  username: string | null
+  email: string
+  description?: string | null
+  main_phrase?: string | null
+  cellphone_number?: string | null
+  avatar_url?: string | null
+  linkedin_url?: string | null
+  github_url?: string | null
+  medium_url?: string | null
+  instagram_url?: string | null
+  personality_test_url?: string | null
+  curriculum_url?: string | null
+  curriculum_en_url?: string | null
+}
+
+const API_BASE_URL = 'http://127.0.0.1:8000'
+
+function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase()
+}
 
 export const useAuth = () => {
   const router = useRouter()
-  // Armazena a sessão em cookies para persistir após recarregar a página
-  const adminUserId = useCookie<string | null>('adminUserId')
-  const adminUserName = useCookie<string | null>('adminUserName')
-  
-  const loading = ref(false)
-  const error = ref('')
+  const currentUser = useState<AuthUser | null>('admin-current-user', () => null)
+  const loading = useState('admin-auth-loading', () => false)
+  const error = useState('admin-auth-error', () => '')
 
-  const login = async (email: string) => {
+  // Mantidos com esses nomes por compatibilidade com o restante do admin,
+  // que já usa adminUserId/adminUserName em várias telas.
+  const adminUserId = computed(() => currentUser.value?.id || '')
+  const adminUserName = computed(() => currentUser.value?.name || '')
+
+  // Repopula currentUser a partir da sessão (cookie httpOnly) após um refresh de página.
+  async function fetchSession(): Promise<boolean> {
+    try {
+      const res = await $fetch<AuthUser>(`${API_BASE_URL}/auth/me`, { credentials: 'include' })
+      currentUser.value = res
+      return true
+    } catch {
+      currentUser.value = null
+      return false
+    }
+  }
+
+  async function requestCode(rawEmail: string): Promise<'sent' | 'not_found'> {
+    if (loading.value) return 'sent' // já tem uma chamada em andamento, evita duplo código/e-mail
+    const email = normalizeEmail(rawEmail)
     loading.value = true
     error.value = ''
     try {
-      const res = await $fetch<any>(`http://127.0.0.1:8000/users/email/${email}`)
-      if (res && res.id) {
-        adminUserId.value = res.id
-        adminUserName.value = res.name || res.email
-        router.push('/admin')
-        return true
-      }
+      await $fetch(`${API_BASE_URL}/auth/request-code`, {
+        method: 'POST',
+        credentials: 'include',
+        body: { email }
+      })
+      return 'sent'
     } catch (e: any) {
-      console.error(e)
-      if (e.response && e.response.status === 404) {
-        error.value = 'E-mail não encontrado no banco de dados.'
+      if (e?.response?.status === 404) return 'not_found'
+      if (e?.response?.status === 429) {
+        error.value = 'Muitas tentativas. Aguarde um pouco antes de tentar de novo.'
       } else {
-        error.value = 'Erro ao tentar fazer login. O backend está rodando?'
+        error.value = 'Erro ao solicitar o código. O backend está rodando?'
       }
+      throw e
     } finally {
       loading.value = false
     }
-    return false
   }
 
-  const logout = () => {
-    adminUserId.value = null
-    adminUserName.value = null
+  async function verifyCode(rawEmail: string, rawCode: string): Promise<boolean> {
+    if (loading.value) return false
+    const email = normalizeEmail(rawEmail)
+    const code = rawCode.trim()
+    loading.value = true
+    error.value = ''
+    try {
+      const res = await $fetch<AuthUser>(`${API_BASE_URL}/auth/verify-code`, {
+        method: 'POST',
+        credentials: 'include',
+        body: { email, code }
+      })
+      currentUser.value = res
+      router.push('/admin')
+      return true
+    } catch (e: any) {
+      error.value = e?.response?.status === 429
+        ? 'Muitas tentativas. Aguarde um pouco antes de tentar de novo.'
+        : 'Código inválido ou expirado.'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function signup(rawName: string, rawUsername: string, rawEmail: string): Promise<boolean> {
+    if (loading.value) return false
+    const name = rawName.trim()
+    const username = rawUsername.trim().toLowerCase()
+    const email = normalizeEmail(rawEmail)
+    loading.value = true
+    error.value = ''
+    try {
+      await $fetch(`${API_BASE_URL}/auth/signup`, {
+        method: 'POST',
+        credentials: 'include',
+        body: { name, username, email }
+      })
+      return true
+    } catch (e: any) {
+      const detail = e?.data?.detail
+      if (e?.response?.status === 429) {
+        error.value = 'Muitas tentativas. Aguarde um pouco antes de tentar de novo.'
+      } else {
+        error.value = detail || 'Erro ao criar a conta.'
+      }
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const logout = async () => {
+    try {
+      await $fetch(`${API_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' })
+    } catch {
+      // segue o baile mesmo se a chamada falhar — limpamos o estado local de qualquer forma
+    }
+    currentUser.value = null
     router.push('/admin/login')
   }
 
-  return { adminUserId, adminUserName, loading, error, login, logout }
+  return {
+    currentUser,
+    adminUserId,
+    adminUserName,
+    loading,
+    error,
+    fetchSession,
+    requestCode,
+    verifyCode,
+    signup,
+    logout
+  }
 }

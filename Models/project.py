@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 from Models.base import BaseORMModel
 from sqlalchemy.orm import mapped_column, Mapped, relationship
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.dialects.postgresql import ARRAY
 from datetime import date as Date
-from Schemas.project import Category
 import uuid
 
 if TYPE_CHECKING:
@@ -19,7 +19,10 @@ class Project(BaseORMModel):
 
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("user.id"), nullable=False)
     name: Mapped[str] = mapped_column(nullable=False)
-    category: Mapped[Category] = mapped_column(nullable=False)
+    # Um projeto pode pertencer a mais de uma categoria (ex: Mobile + GameDev).
+    # Guardado como array de texto; os valores válidos são garantidos pelo enum
+    # Category na camada de schema (Pydantic), não por constraint no banco.
+    categories: Mapped[list[str]] = mapped_column(ARRAY(String), nullable=False, default=list)
     likes: Mapped[int] = mapped_column(default=0, nullable=False)
     date: Mapped[Date] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=True)

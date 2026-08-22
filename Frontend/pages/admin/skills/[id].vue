@@ -67,7 +67,7 @@ const errorMsg = ref('')
 
 onMounted(async () => {
   if (skills.value.length === 0) {
-    await loadData()
+    await loadData(adminUserId.value)
   }
   syncData()
 })

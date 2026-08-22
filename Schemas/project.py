@@ -16,19 +16,25 @@ class Category(str, Enum):
 
 class ProjectBase(BaseModel):
     name: str = Field(min_length=5, max_length=255, example="Todo List App")
-    category: Category = Field(example="FullStack")
+    categories: List[Category] = Field(min_length=1, example=["FullStack", "Mobile"])
     date: Date = Field(example="2023-08-15")
     description: Optional[str] = Field(None, example="Projeto de automação financeira...")
 
 class ProjectCreate(ProjectBase):
-    user_id: UUID
+    # Ignorado/sobrescrito pelo backend com o dono real da sessão autenticada —
+    # opcional aqui só pra não travar a requisição se o cliente não mandar.
+    user_id: Optional[UUID] = None
 
 class ProjectUpdate(BaseModel):
     name: Optional[str] = None
-    category: Optional[Category] = None
+    categories: Optional[List[Category]] = Field(default=None, min_length=1)
     date: Optional[Date] = None
     description: Optional[str] = None
     likes: Optional[int] = None
+
+class LikeIn(BaseModel):
+    # Identificador anônimo persistido num cookie no navegador (não é UUID de usuário logado)
+    visitor_id: str = Field(min_length=8, max_length=100)
 
 class ProjectResponse(ProjectBase):
     id: UUID

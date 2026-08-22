@@ -166,26 +166,18 @@ function getGlowColor(index: number): 'blue' | 'purple' | 'green' {
 }
 
 async function toggleLike(project: any) {
-  if (project.liked) {
-    project.likes--
-    project.liked = false
-  } else {
-    project.likes++
-    project.liked = true
-  }
-  
+  const wasLiked = !!project.liked
+  project.liked = !wasLiked
+  project.likes += wasLiked ? -1 : 1
+
   try {
-    await likeProject(project.id as string, project.likes)
+    const res: any = await likeProject(project.id as string, project.liked)
+    if (res && typeof res.likes === 'number') project.likes = res.likes
   } catch (e) {
     console.error('Failed to update likes', e)
     // Revert optimistic update on failure
-    if (project.liked) {
-      project.likes--
-      project.liked = false
-    } else {
-      project.likes++
-      project.liked = true
-    }
+    project.liked = wasLiked
+    project.likes += wasLiked ? 1 : -1
   }
 }
 

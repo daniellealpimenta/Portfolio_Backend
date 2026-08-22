@@ -8,7 +8,8 @@ class ToolService:
     def __init__(self, db: Session):
         self.repository = ToolRepository(db)
 
-    def create_tool(self, tool_data: ToolCreate):
+    def create_tool(self, tool_data: ToolCreate, current_user_id: UUID):
+        tool_data.user_id = current_user_id
         return self.repository.create(tool_data)
 
     def get_all_tools(self):
@@ -21,20 +22,20 @@ class ToolService:
         return tool
 
     def get_tools_by_user_id(self, user_id: UUID):
-        from Repositories.user import UserRepository
-        user_repo = UserRepository(self.repository.db)
-        if not user_repo.get_by_id(user_id):
-            raise HTTPException(status_code=404, detail="Usuário não encontrado")
         return self.repository.get_by_user_id(user_id)
 
-    def update_tool(self, tool_id: UUID, tool_data: ToolUpdate):
+    def update_tool(self, tool_id: UUID, tool_data: ToolUpdate, current_user_id: UUID):
+        tool = self.get_tool_by_id(tool_id)
+        if tool.user_id != current_user_id:
+            raise HTTPException(status_code=403, detail="Sem permissão para editar essa ferramenta")
+
         updated = self.repository.update(tool_id, tool_data)
-        if not updated:
-            raise HTTPException(status_code=404, detail="Ferramenta não encontrada")
         return updated
 
-    def delete_tool(self, tool_id: UUID):
-        success = self.repository.delete(tool_id)
-        if not success:
-            raise HTTPException(status_code=404, detail="Ferramenta não encontrada")
+    def delete_tool(self, tool_id: UUID, current_user_id: UUID):
+        tool = self.get_tool_by_id(tool_id)
+        if tool.user_id != current_user_id:
+            raise HTTPException(status_code=403, detail="Sem permissão para excluir essa ferramenta")
+
+        self.repository.delete(tool_id)
         return {"detail": "Ferramenta deletada com sucesso"}

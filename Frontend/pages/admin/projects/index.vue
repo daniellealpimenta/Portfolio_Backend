@@ -43,12 +43,14 @@
 import { onMounted } from 'vue'
 import { definePageMeta } from '#imports'
 import { usePortfolioApi } from '~/composables/usePortfolioApi'
+import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({ layout: 'admin', middleware: 'auth' })
 
 const { projects, loading, loadData, deleteProject } = usePortfolioApi()
+const { adminUserId } = useAuth()
 
-onMounted(() => loadData('daniel.pimenta'))
+onMounted(() => loadData(adminUserId.value))
 
 async function handleDelete(id: string) {
   if (confirm('Tem certeza que deseja excluir?')) {

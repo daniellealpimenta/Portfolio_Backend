@@ -98,7 +98,7 @@ async function setFilter(filterId: string) {
 }
 
 function openProject(projectId: string | number) {
-  window.open(`/${route.params.user_id}/projects/${projectId}`.replace('//', '/'), '_blank')
+  router.push(`/${route.params.user_id}/projects/${projectId}`.replace('//', '/'))
 }
 
 onMounted(() => {

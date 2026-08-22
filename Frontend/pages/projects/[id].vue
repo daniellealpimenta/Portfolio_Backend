@@ -116,7 +116,7 @@ onMounted(async () => {
           title: res.name || res.title,
           year: res.date ? new Date(res.date).getFullYear() : (res.year || 2025),
           likes: res.likes ?? 0,
-          cat: res.category || 'back',
+          cat: (res.categories && res.categories[0]) || 'back',
           desc: res.description || res.desc || ''
         }
       }

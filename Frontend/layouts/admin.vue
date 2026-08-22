@@ -70,7 +70,14 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 
-const { adminUserName, logout } = useAuth()
+const { currentUser, adminUserName, fetchSession, logout } = useAuth()
+
+onMounted(() => {
+  if (!currentUser.value) {
+    fetchSession()
+  }
+})
 </script>

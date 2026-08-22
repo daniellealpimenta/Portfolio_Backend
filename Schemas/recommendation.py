@@ -11,7 +11,7 @@ class RecommendationBase(BaseModel):
     date: Optional[Date] = None
 
 class RecommendationCreate(RecommendationBase):
-    user_id: UUID
+    user_id: Optional[UUID] = None  # sobrescrito pelo backend com o dono da sessão
     experience_id: UUID
 
 class RecommendationUpdate(BaseModel):

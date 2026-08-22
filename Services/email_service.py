@@ -41,3 +41,38 @@ def send_contact_email_task(name: str, email: str, subject: str, message_body: s
         print("✓ Email enviado com sucesso via BackgroundTask.")
     except Exception as e:
         print(f"❌ Erro ao enviar email na BackgroundTask: {e}")
+
+
+def send_login_code_email_task(target_email: str, code: str):
+    """
+    Envia o código de acesso de uso único pro e-mail do usuário.
+    Executado via BackgroundTasks no FastAPI.
+    """
+    if not SMTP_USER or not SMTP_PASSWORD:
+        print("="*40)
+        print(" 📨 SIMULANDO ENVIO DE CÓDIGO DE LOGIN (SMTP NÃO CONFIGURADO)")
+        print(f"Para: {target_email}")
+        print(f"Código: {code}")
+        print("="*40)
+        return
+
+    try:
+        msg = EmailMessage()
+        msg['Subject'] = "Seu código de acesso"
+        msg['From'] = SMTP_USER
+        msg['To'] = target_email
+
+        content = (
+            f"Seu código de acesso é: {code}\n\n"
+            f"Ele expira em 10 minutos. Se você não solicitou esse código, pode ignorar este e-mail."
+        )
+        msg.set_content(content)
+
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASSWORD)
+            server.send_message(msg)
+
+        print("✓ Código de login enviado com sucesso via BackgroundTask.")
+    except Exception as e:
+        print(f"❌ Erro ao enviar código de login na BackgroundTask: {e}")

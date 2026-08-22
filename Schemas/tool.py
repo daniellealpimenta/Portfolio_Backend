@@ -8,7 +8,7 @@ class ToolBase(BaseModel):
     icon_url: Optional[str] = None
 
 class ToolCreate(ToolBase):
-    pass
+    user_id: Optional[UUID] = None  # sobrescrito pelo backend com o dono da sessão
 
 class ToolUpdate(BaseModel):
     name: Optional[str] = None
@@ -16,6 +16,7 @@ class ToolUpdate(BaseModel):
 
 class ToolResponse(ToolBase):
     id: UUID
+    user_id: UUID
     created_at: datetime
     updated_at: datetime
 

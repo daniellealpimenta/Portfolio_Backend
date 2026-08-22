@@ -12,7 +12,7 @@ class ExperienceBase(BaseModel):
     image_url: Optional[str] = None
 
 class ExperienceCreate(ExperienceBase):
-    user_id: UUID
+    user_id: Optional[UUID] = None  # sobrescrito pelo backend com o dono da sessão
 
 class ExperienceUpdate(BaseModel):
     position: Optional[str] = None

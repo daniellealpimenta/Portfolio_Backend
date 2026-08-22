@@ -76,7 +76,7 @@ const errorMsg = ref('')
 
 onMounted(async () => {
   if (experiences.value.length === 0) {
-    await loadData()
+    await loadData(adminUserId.value)
   }
   syncData()
 })

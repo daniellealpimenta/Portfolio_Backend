@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from Models.user import User
 from Schemas.user import UserBase, UserCreate, UserResponse, UserUpdate
@@ -21,10 +22,10 @@ class UserRepository:
         return self.db.query(User).filter(User.id == user_id).first()
     
     def get_by_email(self, email: str) -> User | None:
-        return self.db.query(User).filter(User.email == email).first()
+        return self.db.query(User).filter(func.lower(User.email) == email.strip().lower()).first()
 
     def get_by_username(self, username: str) -> User | None:
-        return self.db.query(User).filter(User.username == username).first()
+        return self.db.query(User).filter(func.lower(User.username) == username.strip().lower()).first()
     
     def update(self, user_id: UUID, user_data: UserUpdate) -> User | None:
         usuario = self.get_by_id(user_id)

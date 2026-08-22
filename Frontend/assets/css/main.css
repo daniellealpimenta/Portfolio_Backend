@@ -40,6 +40,9 @@
   --color-muted: #4F566A;
   --color-disabled: #8B909D;
   --color-primary: #2054C5; /* contraste corrigido (era #9DB9F4, herdado do dark: ~2:1 contra branco) */
+  --color-accent-1: #208652; /* contraste corrigido (era #A7DEC2, herdado do dark: ~1.5:1 contra branco) */
+  --color-accent-2: #E12358; /* contraste corrigido (era #E6A6B8, herdado do dark: ~2:1 contra branco) */
+  --color-accent-3: #8E720D; /* contraste corrigido (era #E8D89D, herdado do dark: ~1.4:1 contra branco) */
 }
 
 /* 2. Forest */
@@ -68,6 +71,9 @@ body.light[data-theme="forest"] {
   --color-text: #1E2A26;
   --color-muted: #59655E;
   --color-primary: #2D7652; /* contraste corrigido (era #6DAE8D: ~2.6:1 contra branco) */
+  --color-accent-1: #238645;
+  --color-accent-2: #CD4168;
+  --color-accent-3: #8E7207;
 }
 
 /* 3. Burgundy */
@@ -96,6 +102,9 @@ body.light[data-theme="burgundy"] {
   --color-text: #32222A;
   --color-muted: #72646A;
   --color-primary: #91305A; /* contraste corrigido (era #C289A2: ~2.8:1 contra branco) */
+  --color-accent-1: #2A6EF0;
+  --color-accent-2: #D0397A;
+  --color-accent-3: #8D721B;
 }
 
 /* 4. Amber */
@@ -124,6 +133,9 @@ body.light[data-theme="amber"] {
   --color-text: #31271C;
   --color-muted: #74695C;
   --color-primary: #8B681D; /* contraste corrigido (era #D5A94D: ~2.2:1 contra branco) */
+  --color-accent-1: #2B8545;
+  --color-accent-2: #D43B5E;
+  --color-accent-3: #2771E3;
 }
 
 /* 5. Ocean */
@@ -152,6 +164,9 @@ body.light[data-theme="ocean"] {
   --color-text: #1A2B44;
   --color-muted: #58657A;
   --color-primary: #1F4DA3; /* contraste corrigido (era #6D98E6: ~2.9:1 contra branco) */
+  --color-accent-1: #218463;
+  --color-accent-2: #D03E67;
+  --color-accent-3: #7F5AEA;
 }
 
 /* 6. Slate */
@@ -180,6 +195,9 @@ body.light[data-theme="slate"] {
   --color-text: #202734;
   --color-muted: #5F6774;
   --color-primary: #35558D; /* contraste corrigido (era #7A97C8: ~3:1 contra branco) */
+  --color-accent-1: #2B8461;
+  --color-accent-2: #CC4365;
+  --color-accent-3: #90710E;
 }
 
 html {

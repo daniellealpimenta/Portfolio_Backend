@@ -80,7 +80,7 @@ const errorMsg = ref('')
 
 onMounted(async () => {
   if (certificates.value.length === 0) {
-    await loadData()
+    await loadData(adminUserId.value)
   }
   syncData()
 })

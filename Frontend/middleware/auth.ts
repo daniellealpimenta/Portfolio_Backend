@@ -1,17 +1,25 @@
-import { defineNuxtRouteMiddleware, navigateTo, useCookie } from '#imports'
+import { defineNuxtRouteMiddleware, navigateTo } from '#imports'
+import { useAuth } from '~/composables/useAuth'
 
-export default defineNuxtRouteMiddleware((to, from) => {
-  const adminUserId = useCookie('adminUserId')
-  
-  // Se estiver tentando acessar /admin (mas não for /admin/login) e não estiver logado
-  if (to.path.startsWith('/admin') && to.path !== '/admin/login') {
-    if (!adminUserId.value) {
-      return navigateTo('/admin/login')
-    }
+export default defineNuxtRouteMiddleware(async (to) => {
+  const isProtected = to.path.startsWith('/admin') && to.path !== '/admin/login'
+  const isLoginPage = to.path === '/admin/login'
+
+  if (!isProtected && !isLoginPage) return
+
+  const { currentUser, fetchSession } = useAuth()
+
+  // currentUser já pode estar populado em memória (ex: acabou de logar nesta mesma
+  // sessão do app) — só bate no backend se ainda não sabemos quem é.
+  if (!currentUser.value) {
+    await fetchSession()
   }
 
-  // Se já estiver logado e tentar acessar o login, redirecionar pro dashboard admin
-  if (to.path === '/admin/login' && adminUserId.value) {
+  if (isProtected && !currentUser.value) {
+    return navigateTo('/admin/login')
+  }
+
+  if (isLoginPage && currentUser.value) {
     return navigateTo('/admin')
   }
 })

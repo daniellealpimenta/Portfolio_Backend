@@ -9,7 +9,7 @@ class SkillBase(BaseModel):
     icon_url: Optional[str] = None
 
 class SkillCreate(SkillBase):
-    user_id: UUID
+    user_id: Optional[UUID] = None  # sobrescrito pelo backend com o dono da sessão
 
 class SkillUpdate(BaseModel):
     name: Optional[str] = None

@@ -122,8 +122,8 @@ import { createClient } from '@supabase/supabase-js'
 
 definePageMeta({ layout: 'admin', middleware: 'auth' })
 
-const { user, updateUser, loadData } = usePortfolioApi()
-const { adminUserId } = useAuth()
+const { updateUser } = usePortfolioApi()
+const { currentUser, adminUserId, fetchSession } = useAuth()
 
 const form = ref({
   name: '',
@@ -153,29 +153,29 @@ const errorMsg = ref('')
 const successMsg = ref('')
 
 onMounted(async () => {
-  if (!user.value) {
-    await loadData('daniel.pimenta')
+  if (!currentUser.value?.email) {
+    await fetchSession()
   }
   syncData()
 })
 
-watch(user, () => syncData())
+watch(currentUser, () => syncData())
 
 function syncData() {
-  if (user.value) {
-    form.value.name = user.value.name || ''
-    form.value.description = user.value.description || ''
-    form.value.main_phrase = user.value.main_phrase || ''
-    form.value.email = user.value.email || ''
-    form.value.cellphone_number = user.value.cellphone_number || ''
-    form.value.avatar_url = user.value.avatar_url || ''
-    form.value.curriculum_url = user.value.curriculum_url || ''
-    form.value.curriculum_en_url = user.value.curriculum_en_url || ''
-    form.value.personality_test_url = user.value.personality_test_url || ''
-    form.value.linkedin_url = user.value.linkedin_url || ''
-    form.value.github_url = user.value.github_url || ''
-    form.value.instagram_url = user.value.instagram_url || ''
-    form.value.medium_url = user.value.medium_url || ''
+  if (currentUser.value) {
+    form.value.name = currentUser.value.name || ''
+    form.value.description = currentUser.value.description || ''
+    form.value.main_phrase = currentUser.value.main_phrase || ''
+    form.value.email = currentUser.value.email || ''
+    form.value.cellphone_number = currentUser.value.cellphone_number || ''
+    form.value.avatar_url = currentUser.value.avatar_url || ''
+    form.value.curriculum_url = currentUser.value.curriculum_url || ''
+    form.value.curriculum_en_url = currentUser.value.curriculum_en_url || ''
+    form.value.personality_test_url = currentUser.value.personality_test_url || ''
+    form.value.linkedin_url = currentUser.value.linkedin_url || ''
+    form.value.github_url = currentUser.value.github_url || ''
+    form.value.instagram_url = currentUser.value.instagram_url || ''
+    form.value.medium_url = currentUser.value.medium_url || ''
   }
 }
 
@@ -264,9 +264,9 @@ async function handleSubmit() {
     })
     
     savingStatus.value = 'Atualizando banco de dados...'
-    const idToUpdate = user.value?.id || adminUserId.value || '019fb45c-4672-7ab1-8d67-c04858251df8'
-    await updateUser(idToUpdate, payload)
-    
+    await updateUser(adminUserId.value, payload)
+    await fetchSession() // recarrega o perfil completo (currentUser) com o que acabou de ser salvo
+
     successMsg.value = 'Perfil atualizado com sucesso!'
   } catch (e: any) {
     console.error(e)

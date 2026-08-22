@@ -1,47 +1,35 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
 
 # Dependência do seu Core que abre a conexão com o banco
 from Core.database import get_db
+from Core.deps import get_current_user
 
-from Schemas.user import UserBase, UserCreate, UserResponse, UserUpdate
+from Models.user import User
+from Schemas.user import UserPublicResponse, UserUpdate
 from Services.user import UserService
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-@router.post("/", response_model=UserResponse, status_code=201)
-def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
-    # 1. Instancia o Service passando a conexão do banco
-    service = UserService(db)
-    
-    # 2. Chama a função do service (que vai aplicar as regras e chamar o repo)
-    usuario_criado = service.create_user(user_in)
-    
-    # 3. Retorna pro usuário (O FastAPI converte pro UserResponse magicamente)
-    return usuario_criado
+# Criação de conta passou a ser feita via /auth/signup (com validação de
+# username, checagem de nomes reservados e confirmação por código de e-mail).
 
-@router.get("/{identifier}", response_model=UserResponse)
+@router.get("/{identifier}", response_model=UserPublicResponse)
 def get_user(identifier: str, db: Session = Depends(get_db)):
     service = UserService(db)
     return service.get_user_by_identifier(identifier)
 
-@router.get("/email/{email}", response_model=UserResponse)
-def get_user_by_email(email: str, db: Session = Depends(get_db)):
-    service = UserService(db)
-    return service.get_user_by_email(email)
-
-@router.get("/", response_model=list[UserResponse])
-def get_all_users(db: Session = Depends(get_db)):
-    service = UserService(db)
-    return service.get_all_users()
-
-@router.patch("/{user_id}", response_model=UserResponse)
-def update_user(user_id: UUID, user_in: UserUpdate, db: Session = Depends(get_db)):
+@router.patch("/{user_id}", response_model=UserPublicResponse)
+def update_user(user_id: UUID, user_in: UserUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Só é possível editar o seu próprio perfil")
     service = UserService(db)
     return service.update_user(user_id, user_in)
 
 @router.delete("/{user_id}")
-def delete_user(user_id: UUID, db: Session = Depends(get_db)):
+def delete_user(user_id: UUID, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Só é possível excluir a sua própria conta")
     service = UserService(db)
     return service.delete_user(user_id)

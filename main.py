@@ -1,12 +1,18 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 from Core.database import engine, Base
+from Core.limiter import limiter
 import Models.base
 import Models.user        
 import Models.project     
 import Models.project_image
 import Models.project_link
+import Models.project_like
 import Models.tool
 import Models.associations
 import Models.certificate
@@ -14,6 +20,7 @@ import Models.experience
 import Models.skill
 import Models.recommendation
 
+from Routes.auth import router as auth_router
 from Routes.project import router as project_router
 from Routes.user import router as user_router
 from Routes.project_image import router as project_image_router
@@ -25,6 +32,7 @@ from Routes.certificate import router as certificate_router
 from Routes.recommendation import router as recommendation_router
 from Routes.contact import router as contact_router
 from Routes.system import router as system_router
+from Routes.resume_analysis import router as resume_analysis_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -34,15 +42,25 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 # Habilitar CORS para o Frontend (Navegador)
+# Precisa ser uma lista explícita (não "*") porque o login usa cookie de sessão
+# com credenciais — navegadores recusam cookies em respostas com
+# Access-Control-Allow-Origin: "*" quando allow_credentials é True.
+_default_origins = "http://localhost:3000,http://127.0.0.1:3000"
+allowed_origins = os.getenv("CORS_ALLOWED_ORIGINS", _default_origins).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permite requisições de qualquer origem local ou de produção
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
 app.include_router(user_router)
 app.include_router(project_router)
 app.include_router(project_image_router)
@@ -54,6 +72,7 @@ app.include_router(certificate_router)
 app.include_router(recommendation_router)
 app.include_router(contact_router)
 app.include_router(system_router)
+app.include_router(resume_analysis_router)
 
 @app.get("/")
 def read_root():

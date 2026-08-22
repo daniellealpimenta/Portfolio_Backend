@@ -32,8 +32,8 @@
       </div>
 
       <!-- Descrição -->
-      <div 
-        class="prose prose-invert prose-lg max-w-none text-body text-text leading-relaxed markdown-content"
+      <div
+        class="text-body text-text leading-relaxed markdown-content"
         v-html="renderedDescription"
       ></div>
 
@@ -130,27 +130,122 @@ onMounted(async () => {
 </script>
 
 <style>
+/* Estilos do markdown renderizado (v-html) — a página não tem o plugin de
+   tipografia do Tailwind instalado, então isso é escrito à mão, usando as
+   variáveis de tema do site. overflow-wrap/overflow-x são de propósito:
+   sem eles, um link comprido ou uma linha de código longa estoura a
+   largura da página inteira. */
+.markdown-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.25;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.markdown-content h1 { font-size: 1.75rem; }
+.markdown-content h2 { font-size: 1.5rem; }
+.markdown-content h3 { font-size: 1.25rem; }
+.markdown-content h4 { font-size: 1.125rem; }
+.markdown-content > :first-child {
+  margin-top: 0;
+}
+
 .markdown-content p {
   margin-bottom: 1.5rem;
 }
+
+.markdown-content strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.markdown-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0 0 1.5rem 1.5rem;
+  color: var(--color-text);
+}
+.markdown-content ul { list-style: disc; }
+.markdown-content ol { list-style: decimal; }
+.markdown-content li { margin-bottom: 0.5rem; }
+
+.markdown-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.375rem;
+  color: var(--color-primary);
+}
+
+.markdown-content pre {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin: 0 0 1.5rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.markdown-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-text);
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.markdown-content table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.markdown-content th {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
 .markdown-content blockquote {
-  background-color: var(--color-surface, #F3F4F6);
-  border: 1px solid var(--color-border, #E5E7EB);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
   border-radius: 1rem;
   padding: 1.5rem;
-  margin: 2rem 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.875rem;
+  margin: 0 0 1.5rem;
+  font-style: italic;
+  color: var(--color-muted);
 }
 .markdown-content blockquote p {
   margin-bottom: 0.5rem;
 }
 .markdown-content blockquote p:last-child {
   margin-bottom: 0;
-}
-/* Adaptação para o dark mode do Tailwind/Site */
-.dark .markdown-content blockquote {
-  background-color: #1F2937;
-  border-color: #374151;
 }
 </style>

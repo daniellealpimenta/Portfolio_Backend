@@ -47,4 +47,5 @@ from Models.certificate import Certificate
 from Models.recommendation import Recommendation
 from Models.project_image import ProjectImage
 from Models.project_link import ProjectLink
+from Models.project_like import ProjectLike
 import Models.associations

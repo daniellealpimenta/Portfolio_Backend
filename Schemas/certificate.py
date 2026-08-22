@@ -12,7 +12,7 @@ class CertificateBase(BaseModel):
     description: Optional[str] = None
 
 class CertificateCreate(CertificateBase):
-    user_id: UUID
+    user_id: Optional[UUID] = None  # sobrescrito pelo backend com o dono da sessão
 
 class CertificateUpdate(BaseModel):
     name_course: Optional[str] = None
